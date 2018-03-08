@@ -9,13 +9,29 @@ import java.net.URL;
  *
  * @author voice
  */
-public class Game extends Applet implements Runnable, KeyListener{
+public class Game extends Applet implements Runnable{
     long framerate = 34;
     private Image i;
     private Graphics gP;
     private URL url;
     private Map m = new Map(8, 8, 384, 384);
     private TextField t = new TextField("", 20);
+    private KeyListener k = new KeyListener() {
+        @Override
+        public void keyTyped(KeyEvent e) {
+            
+        }
+
+        @Override
+        public void keyPressed(KeyEvent e) {
+            e.getKeyChar();
+        }
+
+        @Override
+        public void keyReleased(KeyEvent e) {
+            
+        }
+    };
     
     /*
     Applet runs init, then start, then paint..
@@ -26,7 +42,7 @@ public class Game extends Applet implements Runnable, KeyListener{
         
         add(t);
         
-        addKeyListener(this);
+        
         try {
             url = getDocumentBase();
         } catch (Exception ex){
@@ -83,36 +99,8 @@ public class Game extends Applet implements Runnable, KeyListener{
     }
 
     
-    public void keyTyped(KeyEvent e) {
-        
-    }
-
     
-    public void keyPressed(KeyEvent e) {
-        System.out.println(e.getKeyCode());
-        int g = e.getKeyCode();
-        //Left
-        if (g == 37){
-                    
-        }
-        //Right
-        if (g == 39){
-            
-        }
-        //Up
-        if (g == 38){
-            
-        }
-        //Down
-        if (g == 40){
-            
-        }
-    }
 
-    
-    public void keyReleased(KeyEvent e) {
-        
-    }
     
     /*public void checkWalls(double[] d, Player p){
         double[] d2 = new double[2];
