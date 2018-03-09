@@ -22,6 +22,7 @@ public class Game extends Applet implements Runnable{
         @Override
         public void actionPerformed(ActionEvent e) {
             System.out.println(e.getActionCommand());
+            t.setText("Ahhhhhh!");
         }
         
     };
