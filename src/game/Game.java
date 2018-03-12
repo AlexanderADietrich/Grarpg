@@ -11,20 +11,26 @@ import java.net.URL;
  */
 public class Game extends Applet implements Runnable{
     long framerate = 34;
+    private Commands c = new Commands(this);
     private Image i;
     private Graphics gP;
     private URL url;
     private Map m = new Map(8, 8, 384, 384);
     private TextField t = new TextField("", 20);
-    private int acX = 0;
-    private int acY = 0;
+    public int acX = 0;
+    public int acY = 0;
     private ActionListener k = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
             System.out.println(e.getActionCommand());
+            c.parseCommand(e.getActionCommand());
             t.setText("Ahhhhhh!");
         }
     };
+    public void setActive (int x, int y){
+        acX = acX + x;
+        acY = acY + y;
+    }
     
     /*
     Applet runs init, then start, then paint..
