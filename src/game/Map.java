@@ -16,7 +16,7 @@ public class Map {
         int d = 0;
         for (Tile[] tList1 : tiles){
             for (int c = 0; c < tList1.length; c++){
-                tList1[c] = new Tile("images/defaultTile.jpg", b*(areaWidth / mapWidth), d*(areaHeight / mapHeight));
+                tList1[c] = new Tile("images/defaultTile.png", b*(areaWidth / mapWidth), d*(areaHeight / mapHeight));
                 b++;
             }
             b = 0;

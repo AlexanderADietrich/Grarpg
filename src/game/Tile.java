@@ -15,10 +15,4 @@ public class Tile {
         this.x=x;
         this.y=y;
     }
-    /*private ArrayList<Game.GameObject> list = new ArrayList<>();
-    public void addActor(Game.GameObject a){
-        list.add(a);
-    }*/
-
-    
 }
