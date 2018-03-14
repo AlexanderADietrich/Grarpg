@@ -3,6 +3,8 @@ import java.applet.Applet;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.TextEvent;
+import java.awt.event.TextListener;
 import java.net.URL;
 
 /**
@@ -16,7 +18,7 @@ public class Game extends Applet implements Runnable{
     private Graphics gP;
     private URL url;
     private Map m = new Map(8, 8, 384, 384);
-    private TextField t = new TextField("", 20);
+    private TextField t = new TextField("", 10);
     public int acX = 0;
     public int acY = 0;
     private ActionListener k = new ActionListener() {
@@ -24,7 +26,7 @@ public class Game extends Applet implements Runnable{
         public void actionPerformed(ActionEvent e) {
             System.out.println(e.getActionCommand());
             c.parseCommand(e.getActionCommand());
-            t.setText("Ahhhhhh!");
+            t.setText("\n" + "Ahhhhhh!");
         }
     };
     public void setActive (int x, int y){
@@ -38,7 +40,6 @@ public class Game extends Applet implements Runnable{
     public void init(){
         setSize(584, 384);
         setLayout(null);
-        
         t.addActionListener(k);
         add(t);
         
@@ -91,9 +92,11 @@ public class Game extends Applet implements Runnable{
         for (int b = 0; b < m.tiles.length; b++){
             for (int c = 0; c < m.tiles[b].length; c++){
                 if (c == acX && b == acY){
+                    //System.out.println(1 + " " + b + " " + c);
                     g.drawImage(getImage(url, m.tiles[b][c].imagePath), m.tiles[b][c].x, m.tiles[b][c].y, new Color(200, 0, 0), this);
                 }
                 else {
+                    //System.out.println(2 + " " + b + " " + c);
                     g.drawImage(getImage(url, m.tiles[b][c].imagePath), m.tiles[b][c].x, m.tiles[b][c].y, this);
                 }
             }
