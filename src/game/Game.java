@@ -90,7 +90,7 @@ public class Game extends Applet implements Runnable{
         g.fillRect(0, 0, this.getWidth(), this.getHeight());
         for (int b = 0; b < m.tiles.length; b++){
             for (int c = 0; c < m.tiles[b].length; c++){
-                if (b == acX && c == acY){
+                if (c == acX && b == acY){
                     g.drawImage(getImage(url, m.tiles[b][c].imagePath), m.tiles[b][c].x, m.tiles[b][c].y, new Color(200, 0, 0), this);
                 }
                 else {
