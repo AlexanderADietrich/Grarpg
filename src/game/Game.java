@@ -3,8 +3,6 @@ import java.applet.Applet;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.TextEvent;
-import java.awt.event.TextListener;
 import java.net.URL;
 //TEST COMMENT PLEASE WORK
 /**
@@ -19,6 +17,8 @@ public class Game extends Applet implements Runnable{
     private URL url;
     private Map m = new Map(8, 8, 384, 384);
     private TextField t = new TextField("", 10);
+    public TextArea s = new TextArea(10, TextArea.SCROLLBARS_VERTICAL_ONLY);
+    private Font f = new Font(Font.MONOSPACED, 10, 15);
     public int acX = 0;
     public int acY = 0;
     private ActionListener k = new ActionListener() {
@@ -26,7 +26,6 @@ public class Game extends Applet implements Runnable{
         public void actionPerformed(ActionEvent e) {
             System.out.println(e.getActionCommand());
             c.parseCommand(e.getActionCommand());
-            t.setText("\n" + "Ahhhhhh!");
         }
     };
     public void setActive (int x, int y){
@@ -41,7 +40,11 @@ public class Game extends Applet implements Runnable{
         setSize(584, 384);
         setLayout(null);
         t.addActionListener(k);
+        s.setEditable(false);
+        t.setFont(f);
+        s.setFont(f);
         add(t);
+        add(s);
         
         
         try {
@@ -102,8 +105,10 @@ public class Game extends Applet implements Runnable{
                 }
             }
         }
+        s.setLocation(384, 21);
+        s.setSize(200, 363);
         t.setLocation(384, 0);
-        t.setSize(200, 384);
+        t.setSize(200, 20);
         super.paint(g);
     }
 
