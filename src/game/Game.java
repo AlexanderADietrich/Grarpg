@@ -93,6 +93,7 @@ public class Game extends Applet implements Runnable{
             for (int c = 0; c < m.tiles[b].length; c++){
                 if (c == acX && b == acY){
                     //System.out.println(1 + " " + b + " " + c);
+                    System.out.println(url);
                     g.drawImage(getImage(url, m.tiles[b][c].imagePath), m.tiles[b][c].x, m.tiles[b][c].y, new Color(200, 0, 0), this);
                 }
                 else {
