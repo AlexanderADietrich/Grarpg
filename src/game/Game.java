@@ -10,27 +10,27 @@ import java.net.URL;
  * @author voice
  */
 public class Game extends Applet implements Runnable{
-    long framerate = 34;
-    private Commands c = new Commands(this);
-    private Image i;
-    private Graphics gP;
-    private URL url;
-    private Map m = new Map(8, 8, 384, 384);
-    private TextField t = new TextField("", 10);
-    public TextArea s = new TextArea(10, TextArea.SCROLLBARS_VERTICAL_ONLY);
-    private Font f = new Font(Font.MONOSPACED, 10, 15);
-    public int acX = 0;
-    public int acY = 0;
-    private ActionListener k = new ActionListener() {
+    private long                    framerate = 34;
+    private Commands        commandHandler = new Commands(this);
+    private Image           image;
+    private Graphics        graphicsBuffer;
+    private URL             mainURL;
+    private Map             mainMap = new Map(8, 8, 384, 384);
+    private TextField       textInput = new TextField("", 10);
+    public TextArea         textOutput = new TextArea(10, TextArea.SCROLLBARS_VERTICAL_ONLY);
+    private Font            mainFont = new Font(Font.MONOSPACED, 10, 15);
+    public int              activeXPOS = 0;
+    public int              activeYPOS = 0;
+    private ActionListener  textInputListener = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
             System.out.println(e.getActionCommand());
-            c.parseCommand(e.getActionCommand());
+            commandHandler.parseCommand(e.getActionCommand());
         }
     };
     public void setActive (int x, int y){
-        acX = acX + x;
-        acY = acY + y;
+        activeXPOS = activeXPOS + x;
+        activeYPOS = activeYPOS + y;
     }
     
     /*
@@ -39,16 +39,16 @@ public class Game extends Applet implements Runnable{
     public void init(){
         setSize(584, 384);
         setLayout(null);
-        t.addActionListener(k);
-        s.setEditable(false);
-        t.setFont(f);
-        s.setFont(f);
-        add(t);
-        add(s);
+        textInput.addActionListener(textInputListener);
+        textOutput.setEditable(false);
+        textInput.setFont(mainFont);
+        textOutput.setFont(mainFont);
+        add(textInput);
+        add(textOutput);
         
         
         try {
-            url = getDocumentBase();
+            mainURL = getDocumentBase();
         } catch (Exception ex){
             ex.printStackTrace();
         }
@@ -63,24 +63,24 @@ public class Game extends Applet implements Runnable{
     public void run() {
         while (2<3){
             repaint();
-            tSleep();
+            threadSleep();
         }
     }
     
     
-    public void update(Graphics g){//Double Buffer.
-        if (i == null){
-            i = createImage(this.getSize().width, this.getSize().height);
-            gP = i.getGraphics();
+    public void update(Graphics mainGraphics){//Double Buffer.
+        if (image == null){
+            image = createImage(this.getSize().width, this.getSize().height);
+            graphicsBuffer = image.getGraphics();
         }
-        gP.setColor(getBackground());
-        gP.fillRect(0, 0, this.getSize().width, this.getSize().height);
-        gP.setColor(getForeground());
-        paint(gP);
-        g.drawImage(i, 0, 0, this);
+        graphicsBuffer.setColor(getBackground());
+        graphicsBuffer.fillRect(0, 0, this.getSize().width, this.getSize().height);
+        graphicsBuffer.setColor(getForeground());
+        paint(graphicsBuffer);
+        mainGraphics.drawImage(image, 0, 0, this);
     }
     
-    public void tSleep(){
+    public void threadSleep(){
         try {
             Thread.sleep(framerate);
         } catch (InterruptedException ex) {
@@ -89,27 +89,35 @@ public class Game extends Applet implements Runnable{
     }
     
     
-    public void paint(Graphics g){
-        g.setColor(Color.black);
-        g.fillRect(0, 0, this.getWidth(), this.getHeight());
-        for (int b = 0; b < m.tiles.length; b++){
-            for (int c = 0; c < m.tiles[b].length; c++){
-                if (c == acX && b == acY){
+    public void paint(Graphics mainGraphics){
+        mainGraphics.setColor(Color.black);
+        mainGraphics.fillRect(0, 0, this.getWidth(), this.getHeight());
+        for (int b = 0; b < mainMap.tiles.length; b++){
+            for (int c = 0; c < mainMap.tiles[b].length; c++){
+                if (c == activeXPOS && b == activeYPOS){
                     //System.out.println(1 + " " + b + " " + c);
-                    System.out.println(url);
-                    g.drawImage(getImage(url, m.tiles[b][c].imagePath), m.tiles[b][c].x, m.tiles[b][c].y, new Color(200, 0, 0), this);
+                    System.out.println(mainURL);
+                    mainGraphics.drawImage(getImage(mainURL, 
+                            mainMap.tiles[b][c].imagePath), 
+                            mainMap.tiles[b][c].x, mainMap.tiles[b][c].y, 
+                            new Color(200, 0, 0), 
+                            this);
                 }
                 else {
                     //System.out.println(2 + " " + b + " " + c);
-                    g.drawImage(getImage(url, m.tiles[b][c].imagePath), m.tiles[b][c].x, m.tiles[b][c].y, this);
+                    mainGraphics.drawImage(getImage(mainURL, 
+                            mainMap.tiles[b][c].imagePath), 
+                            mainMap.tiles[b][c].x, 
+                            mainMap.tiles[b][c].y, 
+                            this);
                 }
             }
         }
-        s.setLocation(384, 21);
-        s.setSize(200, 363);
-        t.setLocation(384, 0);
-        t.setSize(200, 20);
-        super.paint(g);
+        textOutput.setLocation(384, 21);
+        textOutput.setSize(200, 363);
+        textInput.setLocation(384, 0);
+        textInput.setSize(200, 20);
+        super.paint(mainGraphics);
     }
 
     
