@@ -10,7 +10,7 @@ import java.net.URL;
  * @author voice
  */
 public class Game extends Applet implements Runnable{
-    private long                    framerate = 34;
+    private long            framerate = 34;
     private Commands        commandHandler = new Commands(this);
     private Image           image;
     private Graphics        graphicsBuffer;
