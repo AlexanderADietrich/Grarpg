@@ -13,9 +13,10 @@ public class Game extends Applet implements Runnable{
     private long            framerate = 34;
     private Commands        commandHandler = new Commands(this);
     private Image           image;
+    private Image           basicTile;
     private Graphics        graphicsBuffer;
     private URL             mainURL;
-    private Map             mainMap = new Map(8, 8, 384, 384);
+    private Map             mainMap = new Map(4, 4, 384, 384);
     private TextField       textInput = new TextField("", 10);
     public TextArea         textOutput = new TextArea(10, TextArea.SCROLLBARS_VERTICAL_ONLY);
     private Font            mainFont = new Font(Font.MONOSPACED, 10, 15);
@@ -52,6 +53,7 @@ public class Game extends Applet implements Runnable{
         } catch (Exception ex){
             ex.printStackTrace();
         }
+        basicTile = getImage(mainURL, "images/defaultTile.png");
     }
      
     public void start(){
@@ -90,6 +92,7 @@ public class Game extends Applet implements Runnable{
     
     
     public void paint(Graphics mainGraphics){
+        mainGraphics.drawImage(basicTile, Integer.MAX_VALUE, Integer.MAX_VALUE, this);
         mainGraphics.setColor(Color.black);
         mainGraphics.fillRect(0, 0, this.getWidth(), this.getHeight());
         for (int b = 0; b < mainMap.tiles.length; b++){
@@ -99,7 +102,8 @@ public class Game extends Applet implements Runnable{
                     System.out.println(mainURL);
                     mainGraphics.drawImage(getImage(mainURL, 
                             mainMap.tiles[b][c].imagePath), 
-                            mainMap.tiles[b][c].x, mainMap.tiles[b][c].y, 
+                            mainMap.tiles[b][c].x, mainMap.tiles[b][c].y,
+                            mainMap.areaWidth/mainMap.mapWidth, mainMap.areaHeight/mainMap.mapHeight,
                             new Color(200, 0, 0), 
                             this);
                 }
@@ -109,6 +113,7 @@ public class Game extends Applet implements Runnable{
                             mainMap.tiles[b][c].imagePath), 
                             mainMap.tiles[b][c].x, 
                             mainMap.tiles[b][c].y, 
+                            mainMap.areaWidth/mainMap.mapWidth, mainMap.areaHeight/mainMap.mapHeight,
                             this);
                 }
             }

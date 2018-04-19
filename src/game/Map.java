@@ -6,11 +6,15 @@ package game;
  */
 public class Map {
     public Tile[][] tiles;
-    private int mapWidth;   //Number of Tiles in Map Horizontally
-    private int mapHeight;  //Number of Tiles in Map Vertically
-    private int areaWidth;  //Width of Map Area (pixels).
-    private int areaHeight; //Height of Map Area (pixels).
+    public int mapWidth;   //Number of Tiles in Map Horizontally
+    public int mapHeight;  //Number of Tiles in Map Vertically
+    public int areaWidth;  //Width of Map Area (pixels).
+    public int areaHeight; //Height of Map Area (pixels).
     public Map(int mapWidth, int mapHeight, int areaWidth, int areaHeight){
+        this.mapWidth = mapWidth;
+        this.mapHeight = mapHeight;
+        this.areaWidth = areaWidth;
+        this.areaHeight = areaHeight;
         tiles =  new Tile[mapWidth][mapHeight];
         int currentXPOS = 0;
         int currentYPOS = 0;
