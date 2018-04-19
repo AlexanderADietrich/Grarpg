@@ -6,21 +6,21 @@ package game;
  */
 public class Map {
     public Tile[][] tiles;
-    private int mapWidth;
-    private int mapHeight;
-    private int areaWidth;
-    private int areaHeight;
+    private int mapWidth;   //Number of Tiles in Map Horizontally
+    private int mapHeight;  //Number of Tiles in Map Vertically
+    private int areaWidth;  //Width of Map Area (pixels).
+    private int areaHeight; //Height of Map Area (pixels).
     public Map(int mapWidth, int mapHeight, int areaWidth, int areaHeight){
         tiles =  new Tile[mapWidth][mapHeight];
-        int b = 0;
-        int d = 0;
-        for (Tile[] tList1 : tiles){
-            for (int c = 0; c < tList1.length; c++){
-                tList1[c] = new Tile("images/defaultTile.png", b*(areaWidth / mapWidth), d*(areaHeight / mapHeight));
-                b++;
+        int currentXPOS = 0;
+        int currentYPOS = 0;
+        for (Tile[] tiles2 : tiles){
+            for (int currentX = 0; currentX < tiles2.length; currentX++){
+                tiles2[currentX] = new Tile("images/defaultTile.png", currentXPOS*(areaWidth / mapWidth), currentYPOS*(areaHeight / mapHeight));
+                currentXPOS++;
             }
-            b = 0;
-            d++;
+            currentXPOS = 0;
+            currentYPOS++;
         }
     }
 }

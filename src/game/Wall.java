@@ -7,14 +7,14 @@ package game;
  */
 public class Wall extends Entity {
     
-    public Wall(int xPos, int yPos){
-        setxPos(xPos);
-        setyPos(yPos);
+    public Wall(int xPOS, int yPOS){
+        setXPOS(xPOS);
+        setYPOS(yPOS);
         setName("Wall");
     }
-    public Wall(int xPos, int yPos, String name){
-        setxPos(xPos);
-        setyPos(yPos);
+    public Wall(int xPOS, int yPOS, String name){
+        setXPOS(xPOS);
+        setYPOS(yPOS);
         setName(name);
     }
     

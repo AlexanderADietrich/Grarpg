@@ -6,24 +6,24 @@ package game;
  * @author Nathan Geddis
  */
 public class Entity {
-    private int xPos;
-    private int yPos;
+    private int xPOS;
+    private int yPOS;
     private String name;
 
-    public int getxPos() {
-        return xPos;
+    public int getXPOS() {
+        return xPOS;
     }
 
-    public void setxPos(int xPos) {
-        this.xPos = xPos;
+    public void setXPOS(int xPOS) {
+        this.xPOS = xPOS;
     }
 
-    public int getyPos() {
-        return yPos;
+    public int getYPOS() {
+        return yPOS;
     }
 
-    public void setyPos(int yPos) {
-        this.yPos = yPos;
+    public void setYPOS(int yPOS) {
+        this.yPOS = yPOS;
     }
 
     public String getName() {
