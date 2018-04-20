@@ -47,7 +47,6 @@ public class Game extends Applet implements Runnable{
         add(textInput);
         add(textOutput);
         
-        
         try {
             mainURL = getDocumentBase();
         } catch (Exception ex){
@@ -108,7 +107,7 @@ public class Game extends Applet implements Runnable{
                             new Color(200, 0, 0), 
                             this);
                 }
-                else { 
+                else{ 
                     mainGraphics.drawImage(getImage(mainURL, 
                             mainMap.tiles[b][c].imagePath), 
                             c*mainMap.areaWidth/mainMap.mapWidth-1, 
