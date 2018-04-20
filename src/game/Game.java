@@ -16,7 +16,7 @@ public class Game extends Applet implements Runnable{
     private Image           basicTile;
     private Graphics        graphicsBuffer;
     private URL             mainURL;
-    private Map             mainMap = new Map(4, 4, 384, 384);
+    private Map             mainMap = new Map(8, 8, 384, 384);
     private TextField       textInput = new TextField("", 10);
     public TextArea         textOutput = new TextArea(10, TextArea.SCROLLBARS_VERTICAL_ONLY);
     private Font            mainFont = new Font(Font.MONOSPACED, 10, 15);
@@ -69,8 +69,8 @@ public class Game extends Applet implements Runnable{
         }
     }
     
-    
-    public void update(Graphics mainGraphics){//Double Buffer.
+    //Double Buffer.
+    public void update(Graphics mainGraphics){
         if (image == null){
             image = createImage(this.getSize().width, this.getSize().height);
             graphicsBuffer = image.getGraphics();
@@ -95,62 +95,33 @@ public class Game extends Applet implements Runnable{
         mainGraphics.drawImage(basicTile, Integer.MAX_VALUE, Integer.MAX_VALUE, this);
         mainGraphics.setColor(Color.black);
         mainGraphics.fillRect(0, 0, this.getWidth(), this.getHeight());
+        mainMap.areaHeight = this.getHeight();
+        mainMap.areaWidth = this.getHeight();
         for (int b = 0; b < mainMap.tiles.length; b++){
             for (int c = 0; c < mainMap.tiles[b].length; c++){
                 if (c == activeXPOS && b == activeYPOS){
-                    //System.out.println(1 + " " + b + " " + c);
                     System.out.println(mainURL);
                     mainGraphics.drawImage(getImage(mainURL, 
                             mainMap.tiles[b][c].imagePath), 
-                            mainMap.tiles[b][c].x, mainMap.tiles[b][c].y,
+                            b*mainMap.areaWidth/mainMap.mapWidth, c*mainMap.areaHeight/mainMap.mapHeight,
                             mainMap.areaWidth/mainMap.mapWidth, mainMap.areaHeight/mainMap.mapHeight,
                             new Color(200, 0, 0), 
                             this);
                 }
-                else {
-                    //System.out.println(2 + " " + b + " " + c);
+                else { 
                     mainGraphics.drawImage(getImage(mainURL, 
                             mainMap.tiles[b][c].imagePath), 
-                            mainMap.tiles[b][c].x, 
-                            mainMap.tiles[b][c].y, 
+                            b*mainMap.areaWidth/mainMap.mapWidth, 
+                            c*mainMap.areaHeight/mainMap.mapHeight, 
                             mainMap.areaWidth/mainMap.mapWidth, mainMap.areaHeight/mainMap.mapHeight,
                             this);
                 }
             }
         }
-        textOutput.setLocation(384, 21);
-        textOutput.setSize(200, 363);
-        textInput.setLocation(384, 0);
-        textInput.setSize(200, 20);
+        textOutput.setLocation(mainMap.areaWidth, 26);
+        textOutput.setSize(this.getWidth()-mainMap.areaWidth, this.getHeight()-25);
+        textInput.setLocation(mainMap.areaWidth, 0);
+        textInput.setSize(this.getWidth()-mainMap.areaWidth, 25);
         super.paint(mainGraphics);
     }
-
-    
-    
-
-    
-    /*public void checkWalls(double[] d, Player p){
-        double[] d2 = new double[2];
-        if (d[0] + d[2] < 0 ){
-            System.out.println("1");
-            d2[0] = 0;
-        } else if (this.getSize().width - p.size*2  < d[0] + d[2]){
-            System.out.println("2");
-            d2[0] = this.getSize().width - p.size*2-1;
-        } else {
-            d2[0] = d[0] + d[2];
-        }
-            
-        if (d[1] + d[3] < 0){
-            System.out.println("3");
-            d2[1] =  0;
-        } else if (this.getSize().height - p.size*2 < d[1] + d[3]){
-            System.out.println("4");
-            d2[1] = this.getSize().height - p.size*2-1;
-        } else {
-            d2[1] = d[1] + d[3];
-        }
-        p.x = d2[0];
-        p.y = d2[1];
-    }*/
 }
