@@ -20,7 +20,7 @@ public class Map {
         int currentYPOS = 0;
         for (Tile[] tiles2 : tiles){
             for (int currentX = 0; currentX < tiles2.length; currentX++){
-                tiles2[currentX] = new Tile("images/defaultTile.png", currentXPOS*(areaWidth / mapWidth), currentYPOS*(areaHeight / mapHeight));
+                tiles2[currentX] = new Tile("images/defaultTile.png", currentXPOS, currentYPOS);
                 currentXPOS++;
             }
             currentXPOS = 0;

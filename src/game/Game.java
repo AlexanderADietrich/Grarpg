@@ -100,10 +100,10 @@ public class Game extends Applet implements Runnable{
         for (int b = 0; b < mainMap.tiles.length; b++){
             for (int c = 0; c < mainMap.tiles[b].length; c++){
                 if (c == activeXPOS && b == activeYPOS){
-                    System.out.println(mainURL);
                     mainGraphics.drawImage(getImage(mainURL, 
                             mainMap.tiles[b][c].imagePath), 
-                            b*mainMap.areaWidth/mainMap.mapWidth, c*mainMap.areaHeight/mainMap.mapHeight,
+                            c*mainMap.areaWidth/mainMap.mapWidth, 
+                            b*mainMap.areaHeight/mainMap.mapHeight,
                             mainMap.areaWidth/mainMap.mapWidth, mainMap.areaHeight/mainMap.mapHeight,
                             new Color(200, 0, 0), 
                             this);
@@ -111,8 +111,8 @@ public class Game extends Applet implements Runnable{
                 else { 
                     mainGraphics.drawImage(getImage(mainURL, 
                             mainMap.tiles[b][c].imagePath), 
-                            b*mainMap.areaWidth/mainMap.mapWidth, 
-                            c*mainMap.areaHeight/mainMap.mapHeight, 
+                            c*mainMap.areaWidth/mainMap.mapWidth, 
+                            b*mainMap.areaHeight/mainMap.mapHeight, 
                             mainMap.areaWidth/mainMap.mapWidth, mainMap.areaHeight/mainMap.mapHeight,
                             this);
                 }
