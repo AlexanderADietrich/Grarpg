@@ -7,10 +7,10 @@ public class Commands {
     public void parseCommand(String str){
         int b = str.length();
         int i;
-        
+        int d = (game.textOutput.getWidth()-1) / 10;
         //Wrapping Script. Needs Improving.
-        for (i=0 ; i+19 < b; i+= 19){
-            game.textOutput.append(str.substring(i, i+19) + "\n");
+        for (i=0 ; i+d < b; i+= d){
+            game.textOutput.append(str.substring(i, i+d) + "\n");
         }
         game.textOutput.append(str.substring(i, str.length()) + "\n");
         str = str.trim();

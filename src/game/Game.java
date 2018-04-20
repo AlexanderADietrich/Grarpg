@@ -102,18 +102,18 @@ public class Game extends Applet implements Runnable{
                 if (c == activeXPOS && b == activeYPOS){
                     mainGraphics.drawImage(getImage(mainURL, 
                             mainMap.tiles[b][c].imagePath), 
-                            c*mainMap.areaWidth/mainMap.mapWidth, 
-                            b*mainMap.areaHeight/mainMap.mapHeight,
-                            mainMap.areaWidth/mainMap.mapWidth, mainMap.areaHeight/mainMap.mapHeight,
+                            c*mainMap.areaWidth/mainMap.mapWidth-1, 
+                            b*mainMap.areaHeight/mainMap.mapHeight-1,
+                            mainMap.areaWidth/mainMap.mapWidth+2, mainMap.areaHeight/mainMap.mapHeight+2,
                             new Color(200, 0, 0), 
                             this);
                 }
                 else { 
                     mainGraphics.drawImage(getImage(mainURL, 
                             mainMap.tiles[b][c].imagePath), 
-                            c*mainMap.areaWidth/mainMap.mapWidth, 
-                            b*mainMap.areaHeight/mainMap.mapHeight, 
-                            mainMap.areaWidth/mainMap.mapWidth, mainMap.areaHeight/mainMap.mapHeight,
+                            c*mainMap.areaWidth/mainMap.mapWidth-1, 
+                            b*mainMap.areaHeight/mainMap.mapHeight-1, 
+                            mainMap.areaWidth/mainMap.mapWidth+2, mainMap.areaHeight/mainMap.mapHeight+2,
                             this);
                 }
             }
