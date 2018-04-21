@@ -22,16 +22,22 @@ public class Game extends Applet implements Runnable{
     private Font            mainFont = new Font(Font.MONOSPACED, 10, 15);
     public int              activeXPOS = 0;
     public int              activeYPOS = 0;
+    public Player           p = new Player(0, 0, "");
+    
     private ActionListener  textInputListener = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
+            textInput.setText(" ");
             System.out.println(e.getActionCommand());
             commandHandler.parseCommand(e.getActionCommand());
         }
     };
+    
     public void setActive (int x, int y){
         activeXPOS = activeXPOS + x;
         activeYPOS = activeYPOS + y;
+        p.setXPOS(activeXPOS);
+        p.setYPOS(activeYPOS);
     }
     
     /*
@@ -58,6 +64,7 @@ public class Game extends Applet implements Runnable{
     public void start(){
         Thread thread = new Thread(this);
         thread.start();
+        textOutput.append("Who are you?\n");
     }
     
      // For the thread above.

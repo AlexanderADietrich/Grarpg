@@ -14,7 +14,12 @@ public class Commands {
         }
         game.textOutput.append(command.substring(cPos, command.length()) + "\n");
         command = command.trim();
-        
+        if (command.startsWith("I'm")){
+                game.p = new Player(game.activeXPOS, game.activeYPOS, 
+                        command.substring(4, command.length()));
+                game.textOutput.append("You're now " + 
+                        command.substring(4, command.length()) + "\n");
+        }
         if (command.startsWith("go")){
             command = command.substring(3, command.length());
             if (command.startsWith("right")){

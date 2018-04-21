@@ -2,9 +2,9 @@ package game;
 import java.util.HashMap;
 
 public class Player extends Entity{
-    private HashMap<String, Item> inventory = new HashMap<>();
-    private int level;
-    private Skills skillChecker;
+    public HashMap<String, Item> inventory = new HashMap<>();
+    public int level;
+    public Skills skillChecker;
     
     public Player(int xPOS, int yPOS, String name){
         this.setXPOS(xPOS);
