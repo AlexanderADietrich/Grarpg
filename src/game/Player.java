@@ -7,6 +7,7 @@ public class Player extends Entity{
     public Skills skillChecker;
     
     public Player(int xPOS, int yPOS, String name){
+        skillChecker = new Skills(this);
         this.setXPOS(xPOS);
         this.setYPOS(yPOS);
         this.setName(name);

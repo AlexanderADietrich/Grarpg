@@ -29,7 +29,7 @@ public class Game extends Applet implements Runnable{
         public void actionPerformed(ActionEvent e) {
             textInput.setText(" ");
             System.out.println(e.getActionCommand());
-            commandHandler.parseCommand(e.getActionCommand());
+            commandHandler.parsePlayerCommand(e.getActionCommand(), p);
         }
     };
     
