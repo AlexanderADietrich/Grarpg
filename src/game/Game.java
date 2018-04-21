@@ -75,11 +75,21 @@ public class Game extends Applet implements Runnable{
         }
     }
     
-    //Double Buffer.
+    private int prevWid     = this.getWidth();
+    private int prevHeight  = this.getHeight();
+    
+    //Double Buffer. If something graphically bugs, try here.
+    ///*
     public void update(Graphics mainGraphics){
         if (image == null){
             image = createImage(this.getSize().width, this.getSize().height);
             graphicsBuffer = image.getGraphics();
+        }
+        if (this.getWidth() != prevWid || this.getHeight() != prevHeight){
+            image = createImage(this.getSize().width, this.getSize().height);
+            graphicsBuffer = image.getGraphics();
+            prevWid = this.getWidth();
+            prevHeight = this.getHeight();
         }
         graphicsBuffer.setColor(getBackground());
         graphicsBuffer.fillRect(0, 0, this.getSize().width, this.getSize().height);
@@ -87,6 +97,8 @@ public class Game extends Applet implements Runnable{
         paint(graphicsBuffer);
         mainGraphics.drawImage(image, 0, 0, this);
     }
+    //*/
+    
     
     public void threadSleep(){
         try {
@@ -103,6 +115,7 @@ public class Game extends Applet implements Runnable{
         mainGraphics.fillRect(0, 0, this.getWidth(), this.getHeight());
         mainMap.areaHeight = this.getHeight();
         mainMap.areaWidth = this.getHeight();
+        
         for (int b = 0; b < mainMap.tiles.length; b++){
             for (int c = 0; c < mainMap.tiles[b].length; c++){
                 if (c == activeXPOS && b == activeYPOS){
