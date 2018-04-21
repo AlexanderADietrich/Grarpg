@@ -7,16 +7,18 @@ public class Commands {
     public String wrap(String command, Integer cLength){
         int cPos;
         int wrap = (game.textOutput.getWidth()-1) / 10;
+        String newString = "";
         //Wrapping Script. Needs Improving.
         for (cPos=0; cPos+wrap < cLength; cPos+= wrap){
-            game.textOutput.append(command.substring(cPos, cPos+wrap) + "\n");
+            newString += (command.substring(cPos, cPos+wrap) + "\n");
         }
-        return (command.substring(cPos, command.length()) + "\n");
+        return newString + (command.substring(cPos, command.length()) + "\n");
     }
     public void parsePlayerCommand(String command, Player p){
         int cLength = command.length();
-        command = wrap(command, cLength);
         command = command.trim();
+        command = wrap(command, cLength);
+        game.textOutput.append(command);
         if (command.startsWith("I'm")){
                 game.p = new Player(game.activeXPOS, game.activeYPOS, 
                 command.substring(4, command.length()));
