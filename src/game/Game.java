@@ -23,6 +23,7 @@ public class Game extends Applet implements Runnable{
     public int              activeXPOS = 0;
     public int              activeYPOS = 0;
     public Player           p = new Player(0, 0, "");
+    public Enemy            e = new Enemy (7, 7, "BadGuy", 10, p, "images/BadGuy.png" ); 
     
     private ActionListener  textInputListener = new ActionListener() {
         @Override
@@ -38,6 +39,7 @@ public class Game extends Applet implements Runnable{
         activeYPOS = activeYPOS + y;
         p.setXPOS(activeXPOS);
         p.setYPOS(activeYPOS);
+        e.getAi().nextMove(); // Moves enemy after player moves.
     }
     
     /*
@@ -69,7 +71,7 @@ public class Game extends Applet implements Runnable{
     
      // For the thread above.
     public void run() {
-        while (2<3){
+        while (2<3){ // WHY ALEX WHY??????
             repaint();
             threadSleep();
         }
@@ -115,12 +117,21 @@ public class Game extends Applet implements Runnable{
         mainGraphics.fillRect(0, 0, this.getWidth(), this.getHeight());
         mainMap.areaHeight = this.getHeight();
         mainMap.areaWidth = this.getHeight();
-        
         for (int b = 0; b < mainMap.tiles.length; b++){
             for (int c = 0; c < mainMap.tiles[b].length; c++){
                 if (c == activeXPOS && b == activeYPOS){
                     mainGraphics.drawImage(getImage(mainURL, 
                             mainMap.tiles[b][c].imagePath), 
+                            c*mainMap.areaWidth/mainMap.mapWidth-1, 
+                            b*mainMap.areaHeight/mainMap.mapHeight-1,
+                            mainMap.areaWidth/mainMap.mapWidth+2, mainMap.areaHeight/mainMap.mapHeight+2,
+                            new Color(200, 0, 0), 
+                            this);
+                }
+                // Moves Enemy image 
+                else if (c == e.getXPOS() && b == e.getYPOS()){
+                    mainGraphics.drawImage(getImage(mainURL, 
+                            e.getImagePath()), 
                             c*mainMap.areaWidth/mainMap.mapWidth-1, 
                             b*mainMap.areaHeight/mainMap.mapHeight-1,
                             mainMap.areaWidth/mainMap.mapWidth+2, mainMap.areaHeight/mainMap.mapHeight+2,

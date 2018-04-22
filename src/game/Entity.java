@@ -12,6 +12,15 @@ public class Entity {
     private double hp;
     private String name;
 
+    public String getImagePath() {
+        return imagePath;
+    }
+
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
+    }
+    private String imagePath;
+
     public int getXPOS() {
         return xPOS;
     }
