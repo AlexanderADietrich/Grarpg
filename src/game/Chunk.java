@@ -13,6 +13,7 @@ public class Chunk {
         this.chunkWidth = chunkWidth;
         this.chunkHeight = chunkHeight;
         tiles =  new Tile[chunkWidth][chunkHeight];
+        entities = new Entity[chunkWidth][chunkHeight];
         int currentXPOS = 0;
         int currentYPOS = 0;
         for (Tile[] tiles2 : tiles){
@@ -22,6 +23,21 @@ public class Chunk {
             }
             currentXPOS = 0;
             currentYPOS++;
+        }
+    }
+    
+    // Communication Entity <-> Chunk.
+    public void updateLoc(Entity e, int xDif, int yDif){
+        if (e.getXPOS() + xDif < entities[0].length
+                && e.getYPOS() + yDif < entities.length
+                && e.getXPOS() + xDif >= 0
+                && e.getYPOS() + yDif >= 0){
+                if (entities[e.getYPOS()+yDif][e.getXPOS()+xDif] == null) {
+                    entities[e.getYPOS()][e.getXPOS()] = null;
+                    entities[e.getYPOS()+yDif][e.getXPOS()+xDif] = e;
+                    e.setXPOS(e.getXPOS()+xDif);
+                    e.setYPOS(e.getYPOS()+yDif);
+                }
         }
     }
 }

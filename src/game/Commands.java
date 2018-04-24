@@ -21,7 +21,7 @@ public class Commands {
         game.textOutput.append(command);
         if (command.startsWith("I'm")){
                 game.p = new Player(game.activeXPOS, game.activeYPOS, 
-                command.substring(4, command.length()));
+                command.substring(4, command.length()), "images/GoodGuy.png");
                 game.textOutput.append("You're now \n" + 
                 command.substring(4, command.length()) + "\n");
         }
@@ -29,16 +29,16 @@ public class Commands {
             && p.skillChecker.getSkillLevel("go") > 0){
                 command = command.substring(3, command.length());
                 if (command.startsWith("right")){
-                    game.setActive(1, 0);
+                    game.currentChunk.updateLoc(p, 1, 0);
                 } 
                 else if (command.startsWith("left")){
-                    game.setActive(-1, 0);
+                    game.currentChunk.updateLoc(p, -1, 0);
                 } 
                 else if (command.startsWith("down")){
-                    game.setActive(0, 1);
+                    game.currentChunk.updateLoc(p, 0, 1);
                 } 
                 else if (command.startsWith("up")){
-                    game.setActive(0, -1);
+                    game.currentChunk.updateLoc(p, 0, -1);
                 }
         }
     }

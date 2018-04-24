@@ -6,11 +6,12 @@ public class Player extends Entity{
     public int level;
     public Skills skillChecker;
     
-    public Player(int xPOS, int yPOS, String name){
+    public Player(int xPOS, int yPOS, String name, String address){
         skillChecker = new Skills(this);
         this.setXPOS(xPOS);
         this.setYPOS(yPOS);
         this.setName(name);
         this.setHP(100);
+        this.setImagePath(address);
     }
 }

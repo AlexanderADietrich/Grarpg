@@ -9,8 +9,12 @@ package game;
 public class Enemy extends Entity{
     private AI ai;
     
-    public Enemy (int x, int y, String name, double hp, Entity t, String path){
-        ai = new AI(t,this);
+    @Override
+    public void doTick(){
+        ai.nextMove();
+    }
+    public Enemy (int x, int y, String name, double hp, Entity t, String path, Chunk c){
+        ai = new AI(t, this, c);
         this.setXPOS(x);
         this.setYPOS(y);
         this.setHP(hp);

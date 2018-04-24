@@ -11,7 +11,10 @@ public class Entity {
     private int yPOS;
     private double hp;
     private String name;
-
+    
+    public void doTick(){
+        
+    }
     public String getImagePath() {
         return imagePath;
     }
