@@ -36,13 +36,12 @@ public class AI{
         this.Target = Target;
     }
 
-
     /*
     Contains the specifecs algorithm for the ai called whenever the player
     makes a move
     */
     public void nextMove(){
-        System.out.println("Count: " + count);
+        //System.out.println("Count: " + count);
         //random movement for six turns (five first run)
         if (count < 5)
             moveRand();
@@ -89,7 +88,7 @@ public class AI{
     }
     public void moveRand(){
         int r = rand.nextInt(4);
-        System.out.println("Rand: " + r);
+        //System.out.println("Rand: " + r);
         switch (r) {
             case 0:
                 moveRight();

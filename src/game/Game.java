@@ -15,8 +15,8 @@ public class Game extends Applet implements Runnable{
     private Image           image;
     private Image           basicTile;
     private Graphics        graphicsBuffer;
-    private URL             mainURL;
-    public Chunk           currentChunk = new Chunk(8, 8);
+    public URL              mainURL;
+    public Chunk            currentChunk = new Chunk(8, 8);
     private TextField       textInput = new TextField("", 10);
     public TextArea         textOutput = new TextArea(10, TextArea.SCROLLBARS_VERTICAL_ONLY);
     private Font            mainFont = new Font(Font.MONOSPACED, 10, 15);
@@ -41,6 +41,7 @@ public class Game extends Applet implements Runnable{
         for(Entity[] elist : currentChunk.entities){
             for(Entity e : elist){
                 if (e != null) e.doTick();
+                
             }
         }
     }
@@ -92,7 +93,7 @@ public class Game extends Applet implements Runnable{
     
      // For the thread above.
     public void run() {
-        while (3<5){ // Better? - Alex.
+        while (3<5){ // Slightly but it can still be improved upon.
             repaint();
             threadSleep();
         }

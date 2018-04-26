@@ -1,4 +1,7 @@
 package game;
+
+import java.io.File;
+
 public class Commands {
     private Game game;
     public Commands(Game g){
@@ -40,6 +43,24 @@ public class Commands {
                 else if (command.startsWith("up")){
                     game.currentChunk.updateLoc(p, 0, -1);
                 }
+        }
+        //Saves the Game. Latter add ability to specify file name.
+        if (command.startsWith("Save")){
+            System.out.println(game.textOutput.getText());
+            if (Save.saveFile(game.textOutput.getText()))
+                game.textOutput.append("Save Successful");
+            else
+                game.textOutput.append("Save Failed");
+        }
+        
+        //Loads the Game, Type file name after Load
+        if (command.startsWith("Load")){
+            command = command.substring(5, command.length()-1) + ".txt";
+            File f = new File(new File("").getAbsoluteFile() + "\\" + command);
+            if (Save.loadFile(f, game))
+                game.textOutput.append("Load Successful");
+            else
+                game.textOutput.append("Load Failed");
         }
     }
 }
