@@ -25,6 +25,11 @@ public class Chunk {
             currentYPOS++;
         }
     }
+    public Chunk(Tile[][] tiles){
+        chunkWidth = tiles[0].length;
+        chunkHeight = tiles.length;
+        this.tiles = tiles;
+    }
     
     // Communication Entity <-> Chunk.
     public void updateLoc(Entity e, int xDif, int yDif){

@@ -50,6 +50,14 @@ public class Game extends Applet implements Runnable{
     Applet runs init, then start, then paint..
     */
     public void init(){
+        Map m = new Map();
+        for (Tile[] t : m.tiles){
+            for (Tile tt : t){
+                if (tt.imagePath.substring(7,8).equals("d")) System.out.print("_");
+                else System.out.print(tt.imagePath.substring(7, 8) + "");
+            }
+            System.out.println();
+        }
         setSize(584, 384);
         areaWidth = this.getHeight();
         areaHeight = this.getHeight();
