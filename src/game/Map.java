@@ -18,17 +18,17 @@ public class Map {
     public Chunk[][] chunks;
     private Random rand = new Random();
     public Map(){
-        width = 256;
-        height = 256;
-        tiles = new Tile[256][256];
-        for (int i = 0; i < 256; i++){
-            for (int b = 0; b < 256; b++){
+        width = 64;
+        height = 64;
+        tiles = new Tile[64][64];
+        for (int i = 0; i < 64; i++){
+            for (int b = 0; b < 64; b++){
                 tiles[i][b] = new Tile("images/defaultTile.png", b, i);
             }
         }
-        chunks = new Chunk[32][32];
-        for (int i = 0; i < 32; i++){
-            for (int b = 0; b < 32; b++){
+        chunks = new Chunk[8][8];
+        for (int i = 0; i < 8; i++){
+            for (int b = 0; b < 8; b++){
                 chunks[b][i] = new Chunk(8, 8);
             }
         }
@@ -40,10 +40,11 @@ public class Map {
         }
         
         Tile[][] chunkTiles = new Tile[8][8];
-        for (int i = 0; i < 32; i++){
-            for (int b = 0; b < 32; b++){
+        for (int i = 0; i < 8; i++){
+            for (int b = 0; b < 8; b++){
                 for (int y = 0; y < 8; y++){
                     for (int x = 0; x < 8; x++){
+                        System.out.println(x + " " + y + " " + tiles[b*8+x][i*8+y].imagePath.substring(6, 13));
                         chunkTiles[x][y] = tiles[b*8+x][i*8+y];
                     }
                 }

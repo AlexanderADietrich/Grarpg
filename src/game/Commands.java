@@ -32,6 +32,10 @@ public class Commands {
             && p.skillChecker.getSkillLevel("go") > 0){
                 command = command.substring(3, command.length());
                 if (command.startsWith("right")){
+                    if (game.p.getXPOS() + 1 > 7){
+                        game.currentChunk = game.m.chunks[game.chunkX+1][game.chunkY];
+                        game.currentChunk.entities[0][p.getYPOS()] = p;
+                    }
                     game.currentChunk.updateLoc(p, 1, 0);
                 } 
                 else if (command.startsWith("left")){
@@ -61,6 +65,6 @@ public class Commands {
                 game.textOutput.append("Load Successful");
             else
                 game.textOutput.append("Load Failed");
-        }
+        }   
     }
 }

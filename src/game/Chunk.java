@@ -26,6 +26,13 @@ public class Chunk {
         }
     }
     public Chunk(Tile[][] tiles){
+        entities = new Entity[8][8];
+        for (Tile[] tlist : tiles){
+            for (Tile t : tlist){
+                System.out.print(t.imagePath.substring(6, 9));
+            }
+            System.out.println();
+        }
         chunkWidth = tiles[0].length;
         chunkHeight = tiles.length;
         this.tiles = tiles;
@@ -43,6 +50,6 @@ public class Chunk {
                     e.setXPOS(e.getXPOS()+xDif);
                     e.setYPOS(e.getYPOS()+yDif);
                 }
-        }
+        } 
     }
 }

@@ -16,7 +16,10 @@ public class Game extends Applet implements Runnable{
     private Image           basicTile;
     private Graphics        graphicsBuffer;
     public URL              mainURL;
-    public Chunk            currentChunk = new Chunk(8, 8);
+    public Map m = new Map();
+    public Chunk            currentChunk = m.chunks[0][0];
+    public int              chunkX = 0;
+    public int              chunkY = 0;
     private TextField       textInput = new TextField("", 10);
     public TextArea         textOutput = new TextArea(10, TextArea.SCROLLBARS_VERTICAL_ONLY);
     private Font            mainFont = new Font(Font.MONOSPACED, 10, 15);
@@ -24,8 +27,10 @@ public class Game extends Applet implements Runnable{
     public int              activeYPOS = 0;
     public Player           p = new Player(0, 0, "", "images/GoodGuy.png");
     public Enemy            e = new Enemy (7, 7, "BadGuy", 10, p, "images/BadGuy.png", currentChunk);
+    
     public int areaWidth;  //Width of Map Area (pixels).
     public int areaHeight; //Height of Map Area (pixels).
+    
     
     private ActionListener  textInputListener = new ActionListener() {
         @Override
@@ -50,14 +55,8 @@ public class Game extends Applet implements Runnable{
     Applet runs init, then start, then paint..
     */
     public void init(){
-        Map m = new Map();
-        for (Tile[] t : m.tiles){
-            for (Tile tt : t){
-                if (tt.imagePath.substring(7,8).equals("d")) System.out.print("_");
-                else System.out.print(tt.imagePath.substring(7, 8) + "");
-            }
-            System.out.println();
-        }
+        currentChunk.entities[0][0] = p;
+        currentChunk.entities[7][7] = e;
         setSize(584, 384);
         areaWidth = this.getHeight();
         areaHeight = this.getHeight();
