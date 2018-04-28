@@ -16,6 +16,7 @@ public class Map {
     public int height;
     public Tile[][] tiles;
     public Chunk[][] chunks;
+    public Chunk currentChunk;
     private Random rand = new Random();
     public Map(){
         width = 64;
@@ -51,6 +52,7 @@ public class Map {
                 chunks[b][i] = new Chunk(chunkTiles);
             }
         }
+        currentChunk = chunks[0][0];
     }
     public Tile[][] generateMountain(Tile[][] input, int locX, int locY){
         Tile[][] mountainBounds = new Tile[24][24];

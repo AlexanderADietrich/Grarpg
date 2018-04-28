@@ -17,7 +17,6 @@ public class Game extends Applet implements Runnable{
     private Graphics        graphicsBuffer;
     public URL              mainURL;
     public Map m = new Map();
-    public Chunk            currentChunk = m.chunks[0][0];
     public int              chunkX = 0;
     public int              chunkY = 0;
     private TextField       textInput = new TextField("", 10);
@@ -26,7 +25,7 @@ public class Game extends Applet implements Runnable{
     public int              activeXPOS = 0;
     public int              activeYPOS = 0;
     public Player           p = new Player(0, 0, "", "images/GoodGuy.png");
-    public Enemy            e = new Enemy (7, 7, "BadGuy", 10, p, "images/BadGuy.png", currentChunk);
+    public Enemy            e = new Enemy (7, 7, "BadGuy", 10, p, "images/BadGuy.png", m.currentChunk);
     
     public int areaWidth;  //Width of Map Area (pixels).
     public int areaHeight; //Height of Map Area (pixels).
@@ -43,7 +42,7 @@ public class Game extends Applet implements Runnable{
     
     //Tick any timers/ AI's.
     public void doTick(){
-        for(Entity[] elist : currentChunk.entities){
+        for(Entity[] elist : m.currentChunk.entities){
             for(Entity e : elist){
                 if (e != null) e.doTick();
                 
@@ -55,8 +54,8 @@ public class Game extends Applet implements Runnable{
     Applet runs init, then start, then paint..
     */
     public void init(){
-        currentChunk.entities[0][0] = p;
-        currentChunk.entities[7][7] = e;
+        m.currentChunk.entities[0][0] = p;
+        m.currentChunk.entities[7][7] = e;
         setSize(584, 384);
         areaWidth = this.getHeight();
         areaHeight = this.getHeight();
@@ -91,11 +90,11 @@ public class Game extends Applet implements Runnable{
         
         textOutput.append("Who are you?\n");
         //Initialize Player and Enemy. TODO; Improve this.
-        if (currentChunk == null) System.out.println("Chunk");
+        if (m.currentChunk == null) System.out.println("Chunk");
         if (p == null) System.out.println("Player");
         
-        currentChunk.updateLoc(p, 0, 0);
-        currentChunk.updateLoc(e, 0, 0);
+        m.currentChunk.updateLoc(p, 0, 0);
+        m.currentChunk.updateLoc(e, 0, 0);
     }
     
      // For the thread above.
@@ -162,22 +161,22 @@ public class Game extends Applet implements Runnable{
         areaWidth = this.getHeight();
         
         //Main rendering of the map. TODO: Make based on Chunks.
-        for (int b = 0; b < currentChunk.tiles.length; b++){
-            for (int c = 0; c < currentChunk.tiles[b].length; c++){
-                    if (currentChunk.entities[b][c] != null){
+        for (int b = 0; b < m.currentChunk.tiles.length; b++){
+            for (int c = 0; c < m.currentChunk.tiles[b].length; c++){
+                    if (m.currentChunk.entities[b][c] != null){
                         mainGraphics.drawImage(getImage(mainURL, 
-                            currentChunk.entities[b][c].getImagePath()), 
-                            c*areaWidth/currentChunk.chunkWidth-1, 
-                            b*areaHeight/currentChunk.chunkHeight-1,
-                            areaWidth/currentChunk.chunkWidth+2, areaHeight/currentChunk.chunkHeight+2,
+                            m.currentChunk.entities[b][c].getImagePath()), 
+                            c*areaWidth/m.currentChunk.chunkWidth-1, 
+                            b*areaHeight/m.currentChunk.chunkHeight-1,
+                            areaWidth/m.currentChunk.chunkWidth+2, areaHeight/m.currentChunk.chunkHeight+2,
                             new Color(0, 0, 50),/*This line could be used for day/night*/
                             this);
                     } else {
                         mainGraphics.drawImage(getImage(mainURL, 
-                                currentChunk.tiles[b][c].imagePath), 
-                                c*areaWidth/currentChunk.chunkWidth-1, 
-                                b*areaHeight/currentChunk.chunkHeight-1,
-                                areaWidth/currentChunk.chunkWidth+2, areaHeight/currentChunk.chunkHeight+2,
+                                m.currentChunk.tiles[b][c].imagePath), 
+                                c*areaWidth/m.currentChunk.chunkWidth-1, 
+                                b*areaHeight/m.currentChunk.chunkHeight-1,
+                                areaWidth/m.currentChunk.chunkWidth+2, areaHeight/m.currentChunk.chunkHeight+2,
                                 new Color(0, 0, 50),/*This line could be used for day/night*/
                                 this);
                     }

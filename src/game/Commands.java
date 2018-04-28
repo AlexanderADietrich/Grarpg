@@ -32,20 +32,30 @@ public class Commands {
             && p.skillChecker.getSkillLevel("go") > 0){
                 command = command.substring(3, command.length());
                 if (command.startsWith("right")){
-                    if (game.p.getXPOS() + 1 > 7){
-                        game.currentChunk = game.m.chunks[game.chunkX+1][game.chunkY];
-                        game.currentChunk.entities[0][p.getYPOS()] = p;
+                    if (game.p.getXPOS() + 1 > 7 && game.chunkX < 7){
+                        game.m.currentChunk = game.m.chunks[game.chunkX+1][game.chunkY];
+                        game.m.currentChunk.entities[0][p.getYPOS()] = p;
+                        game.chunkX++;
+                        p.setXPOS(0);
+                        return;
                     }
-                    game.currentChunk.updateLoc(p, 1, 0);
+                    game.m.currentChunk.updateLoc(p, 1, 0);
                 } 
                 else if (command.startsWith("left")){
-                    game.currentChunk.updateLoc(p, -1, 0);
+                    if (game.p.getXPOS() - 1 < 0 && game.chunkX > 0){
+                        game.m.currentChunk = game.m.chunks[game.chunkX-1][game.chunkY];
+                        game.m.currentChunk.entities[7][p.getYPOS()] = p;
+                        game.chunkX--;
+                        p.setXPOS(7);
+                        return;
+                    }
+                    game.m.currentChunk.updateLoc(p, -1, 0);
                 } 
                 else if (command.startsWith("down")){
-                    game.currentChunk.updateLoc(p, 0, 1);
+                    game.m.currentChunk.updateLoc(p, 0, 1);
                 } 
                 else if (command.startsWith("up")){
-                    game.currentChunk.updateLoc(p, 0, -1);
+                    game.m.currentChunk.updateLoc(p, 0, -1);
                 }
         }
         //Saves the Game. Latter add ability to specify file name.
