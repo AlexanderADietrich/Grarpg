@@ -33,6 +33,7 @@ public class Chunk {
             }
             System.out.println();
         }
+        System.out.println();
         chunkWidth = tiles[0].length;
         chunkHeight = tiles.length;
         this.tiles = tiles;

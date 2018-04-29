@@ -45,7 +45,6 @@ public class Map {
             for (int b = 0; b < 8; b++){
                 for (int y = 0; y < 8; y++){
                     for (int x = 0; x < 8; x++){
-                        System.out.println(x + " " + y + " " + tiles[b*8+x][i*8+y].imagePath.substring(6, 13));
                         chunkTiles[x][y] = tiles[b*8+x][i*8+y];
                     }
                 }

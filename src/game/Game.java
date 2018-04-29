@@ -56,6 +56,13 @@ public class Game extends Applet implements Runnable{
     public void init(){
         m.currentChunk.entities[0][0] = p;
         m.currentChunk.entities[7][7] = e;
+        for (Tile[] tlist : m.tiles){
+            for (Tile t : tlist){
+                if (t.imagePath.substring(7, 8).equals("d")) System.out.print("_");
+                else System.out.print(t.imagePath.substring(7, 8));
+            }
+            System.out.println();
+        }
         setSize(584, 384);
         areaWidth = this.getHeight();
         areaHeight = this.getHeight();

@@ -28,6 +28,11 @@ public class Commands {
                 game.textOutput.append("You're now \n" + 
                 command.substring(4, command.length()) + "\n");
         }
+        /*
+        __-__
+        -_O_+
+        __+__
+        */
         if (command.startsWith("go") 
             && p.skillChecker.getSkillLevel("go") > 0){
                 command = command.substring(3, command.length());
@@ -52,9 +57,23 @@ public class Commands {
                     game.m.currentChunk.updateLoc(p, -1, 0);
                 } 
                 else if (command.startsWith("down")){
+                    if (game.p.getYPOS() + 1 > 7 && game.chunkY < 7){
+                        game.m.currentChunk = game.m.chunks[game.chunkX][game.chunkY+1];
+                        game.m.currentChunk.entities[p.getXPOS()][0] = p;
+                        game.chunkY++;
+                        p.setYPOS(0);
+                        return;
+                    }
                     game.m.currentChunk.updateLoc(p, 0, 1);
                 } 
                 else if (command.startsWith("up")){
+                    if (game.p.getYPOS() - 1 < 0 && game.chunkY > 0){
+                        game.m.currentChunk = game.m.chunks[game.chunkX][game.chunkY-1];
+                        game.m.currentChunk.entities[p.getXPOS()][7] = p;
+                        game.chunkY--;
+                        p.setYPOS(7);
+                        return;
+                    }
                     game.m.currentChunk.updateLoc(p, 0, -1);
                 }
         }
