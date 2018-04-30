@@ -24,20 +24,15 @@ public class Map {
         tiles = new Tile[64][64];
         for (int i = 0; i < 64; i++){
             for (int b = 0; b < 64; b++){
-                tiles[i][b] = new Tile("images/defaultTile.png", b, i);
+                tiles[b][i] = new Tile("images/defaultTile.png", b, i);
             }
         }
         chunks = new Chunk[8][8];
-        for (int i = 0; i < 8; i++){
-            for (int b = 0; b < 8; b++){
-                chunks[b][i] = new Chunk(8, 8);
-            }
-        }
         for (int i = 0; i < 10; i++){
-            tiles = generateMountain(tiles, rand.nextInt(width-24), rand.nextInt(height-24));
+            generateMountain(tiles, rand.nextInt(width-24), rand.nextInt(height-24));
         }
         for (int i = 0; i < 6; i++){
-            tiles = generateOcean(tiles, rand.nextInt(width-48), rand.nextInt(height-48));
+            generateOcean(tiles, rand.nextInt(width-48), rand.nextInt(height-48));
         }
         
         Tile[][] chunkTiles = new Tile[8][8];
@@ -45,15 +40,16 @@ public class Map {
             for (int b = 0; b < 8; b++){
                 for (int y = 0; y < 8; y++){
                     for (int x = 0; x < 8; x++){
-                        chunkTiles[x][y] = tiles[b*8+x][i*8+y];
+                        chunkTiles[y][x] = tiles[((i*8)+y)][((b*8)+x)];
                     }
                 }
-                chunks[b][i] = new Chunk(chunkTiles);
+                chunks[i][b] = new Chunk(chunkTiles);
             }
         }
+        
         currentChunk = chunks[0][0];
     }
-    public Tile[][] generateMountain(Tile[][] input, int locX, int locY){
+    public void generateMountain(Tile[][] input, int locX, int locY){
         Tile[][] mountainBounds = new Tile[24][24];
         for (int i = 0; i < 24; i++){
             for (int b = 0; b < 24; b++){
@@ -83,12 +79,11 @@ public class Map {
         }
         for (int i = 0; i < 24; i++){
             for (int b = 0; b < 24; b++){
-                input[b+locX][i+locY] = mountainBounds[b][i];
+                if (input[i+locX][b+locY] != null && input[i+locX][b+locY].imagePath.startsWith("images/default")) input[b+locX][i+locY] = mountainBounds[b][i];
             }
         }
-        return input;
     }
-    public Tile[][] generateOcean(Tile[][] input, int locX, int locY){
+    public void generateOcean(Tile[][] input, int locX, int locY){
         Tile[][] oceanBounds = new Tile[48][48];
         for (int i = 0; i < 48; i++){
             for (int b = 0; b < 48; b++){
@@ -114,9 +109,8 @@ public class Map {
         }
         for (int i = 0; i < 48; i++){
             for (int b = 0; b < 48; b++){
-                input[i+locX][b+locY] = oceanBounds[i][b];
+                if (input[i+locX][b+locY] != null && input[i+locX][b+locY].imagePath.startsWith("images/default"))input[i+locX][b+locY] = oceanBounds[i][b];
             }
         }
-        return input;
     }
 }

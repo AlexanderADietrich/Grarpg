@@ -39,7 +39,7 @@ public class Commands {
                 if (command.startsWith("right")){
                     if (game.p.getXPOS() + 1 > 7 && game.chunkX < 7){
                         game.m.currentChunk = game.m.chunks[game.chunkX+1][game.chunkY];
-                        game.m.currentChunk.entities[0][p.getYPOS()] = p;
+                        game.m.currentChunk.entities[p.getYPOS()][0] = p;
                         game.chunkX++;
                         p.setXPOS(0);
                         return;
@@ -48,8 +48,8 @@ public class Commands {
                 } 
                 else if (command.startsWith("left")){
                     if (game.p.getXPOS() - 1 < 0 && game.chunkX > 0){
-                        game.m.currentChunk = game.m.chunks[game.chunkX-1][game.chunkY];
-                        game.m.currentChunk.entities[7][p.getYPOS()] = p;
+                        game.m.currentChunk = game.m.chunks[game.chunkY][game.chunkX-1];
+                        game.m.currentChunk.entities[p.getYPOS()][0] = p;
                         game.chunkX--;
                         p.setXPOS(7);
                         return;
@@ -58,8 +58,8 @@ public class Commands {
                 } 
                 else if (command.startsWith("down")){
                     if (game.p.getYPOS() + 1 > 7 && game.chunkY < 7){
-                        game.m.currentChunk = game.m.chunks[game.chunkX][game.chunkY+1];
-                        game.m.currentChunk.entities[p.getXPOS()][0] = p;
+                        game.m.currentChunk = game.m.chunks[game.chunkY+1][game.chunkX];
+                        game.m.currentChunk.entities[0][p.getXPOS()] = p;
                         game.chunkY++;
                         p.setYPOS(0);
                         return;
@@ -69,7 +69,7 @@ public class Commands {
                 else if (command.startsWith("up")){
                     if (game.p.getYPOS() - 1 < 0 && game.chunkY > 0){
                         game.m.currentChunk = game.m.chunks[game.chunkX][game.chunkY-1];
-                        game.m.currentChunk.entities[p.getXPOS()][7] = p;
+                        game.m.currentChunk.entities[7][p.getXPOS()] = p;
                         game.chunkY--;
                         p.setYPOS(7);
                         return;

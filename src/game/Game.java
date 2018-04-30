@@ -167,6 +167,13 @@ public class Game extends Applet implements Runnable{
         areaHeight = this.getHeight();
         areaWidth = this.getHeight();
         
+        //System.out.println(m.currentChunk.tiles[p.getYPOS()][p.getXPOS()].imagePath + m.tiles[chunkY*8 + p.getYPOS()][chunkX*8 + p.getXPOS()].imagePath);
+        /*System.out.println(p.getXPOS() + "" + p.getYPOS());
+        for (int i = 0; i < m.currentChunk.entities.length; i++){
+            for (int b = 0; b < m.currentChunk.entities[i].length; b++){
+                if (m.currentChunk.entities[b][i] != null && m.currentChunk.entities[b][i].equals(p)) System.out.println("ACTUAL" + i + "" + b);
+            }
+        }*/
         //Main rendering of the map. TODO: Make based on Chunks.
         for (int b = 0; b < m.currentChunk.tiles.length; b++){
             for (int c = 0; c < m.currentChunk.tiles[b].length; c++){

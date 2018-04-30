@@ -27,16 +27,17 @@ public class Chunk {
     }
     public Chunk(Tile[][] tiles){
         entities = new Entity[8][8];
-        for (Tile[] tlist : tiles){
-            for (Tile t : tlist){
-                System.out.print(t.imagePath.substring(6, 9));
+        this.tiles = new Tile[tiles.length][tiles[0].length];
+        for (int i = 0; i < tiles.length; i++){
+            for (int b = 0; b < tiles[0].length; b++){
+                this.tiles[i][b] = tiles[i][b];
+                System.out.print(tiles[i][b].imagePath.substring(6, 9));
             }
             System.out.println();
         }
         System.out.println();
         chunkWidth = tiles[0].length;
         chunkHeight = tiles.length;
-        this.tiles = tiles;
     }
     
     // Communication Entity <-> Chunk.
