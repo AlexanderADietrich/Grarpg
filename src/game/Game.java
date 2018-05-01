@@ -17,8 +17,6 @@ public class Game extends Applet implements Runnable{
     private Graphics        graphicsBuffer;
     public URL              mainURL;
     public Map m = new Map();
-    public int              chunkX = 0;
-    public int              chunkY = 0;
     private TextField       textInput = new TextField("", 10);
     public TextArea         textOutput = new TextArea(10, TextArea.SCROLLBARS_VERTICAL_ONLY);
     private Font            mainFont = new Font(Font.MONOSPACED, 10, 15);
@@ -29,7 +27,6 @@ public class Game extends Applet implements Runnable{
     
     public int areaWidth;  //Width of Map Area (pixels).
     public int areaHeight; //Height of Map Area (pixels).
-    
     
     private ActionListener  textInputListener = new ActionListener() {
         @Override
@@ -167,13 +164,6 @@ public class Game extends Applet implements Runnable{
         areaHeight = this.getHeight();
         areaWidth = this.getHeight();
         
-        //System.out.println(m.currentChunk.tiles[p.getYPOS()][p.getXPOS()].imagePath + m.tiles[chunkY*8 + p.getYPOS()][chunkX*8 + p.getXPOS()].imagePath);
-        /*System.out.println(p.getXPOS() + "" + p.getYPOS());
-        for (int i = 0; i < m.currentChunk.entities.length; i++){
-            for (int b = 0; b < m.currentChunk.entities[i].length; b++){
-                if (m.currentChunk.entities[b][i] != null && m.currentChunk.entities[b][i].equals(p)) System.out.println("ACTUAL" + i + "" + b);
-            }
-        }*/
         //Main rendering of the map. TODO: Make based on Chunks.
         for (int b = 0; b < m.currentChunk.tiles.length; b++){
             for (int c = 0; c < m.currentChunk.tiles[b].length; c++){
@@ -183,7 +173,7 @@ public class Game extends Applet implements Runnable{
                             c*areaWidth/m.currentChunk.chunkWidth-1, 
                             b*areaHeight/m.currentChunk.chunkHeight-1,
                             areaWidth/m.currentChunk.chunkWidth+2, areaHeight/m.currentChunk.chunkHeight+2,
-                            new Color(0, 0, 50),/*This line could be used for day/night*/
+                            new Color(0, 0, 50),//This line could be used for day/night
                             this);
                     } else {
                         mainGraphics.drawImage(getImage(mainURL, 
@@ -191,11 +181,28 @@ public class Game extends Applet implements Runnable{
                                 c*areaWidth/m.currentChunk.chunkWidth-1, 
                                 b*areaHeight/m.currentChunk.chunkHeight-1,
                                 areaWidth/m.currentChunk.chunkWidth+2, areaHeight/m.currentChunk.chunkHeight+2,
-                                new Color(0, 0, 50),/*This line could be used for day/night*/
+                                new Color(0, 0, 50),//This line could be used for day/night
                                 this);
                     }
             }
         }
+        
+        /* 
+        Renders entire map for testing;
+        
+        for (int b = 0; b < m.tiles.length; b++){
+            for (int c = 0; c < m.tiles[b].length; c++){
+                mainGraphics.drawImage(getImage(mainURL, 
+                    m.tiles[b][c].imagePath), 
+                    c*areaWidth/m.tiles[0].length-1, 
+                    b*areaHeight/m.tiles[0].length-1,
+                    areaWidth/m.tiles[0].length+2, areaHeight/m.tiles[0].length+2,
+                    new Color(0, 0, 50),
+                    this);
+            }
+        }
+        
+        */
         
         //Main player interface.
         textOutput.setLocation(areaWidth, 26);

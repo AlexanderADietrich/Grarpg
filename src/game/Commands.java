@@ -37,40 +37,40 @@ public class Commands {
             && p.skillChecker.getSkillLevel("go") > 0){
                 command = command.substring(3, command.length());
                 if (command.startsWith("right")){
-                    if (game.p.getXPOS() + 1 > 7 && game.chunkX < 7){
-                        game.m.currentChunk = game.m.chunks[game.chunkX+1][game.chunkY];
+                    if (game.p.getXPOS() + 1 > 7 && game.m.chunkX < 7){
+                        game.m.currentChunk = game.m.chunks[game.m.chunkX+1][game.m.chunkY];
                         game.m.currentChunk.entities[p.getYPOS()][0] = p;
-                        game.chunkX++;
+                        game.m.chunkX++;
                         p.setXPOS(0);
                         return;
                     }
                     game.m.currentChunk.updateLoc(p, 1, 0);
                 } 
                 else if (command.startsWith("left")){
-                    if (game.p.getXPOS() - 1 < 0 && game.chunkX > 0){
-                        game.m.currentChunk = game.m.chunks[game.chunkY][game.chunkX-1];
+                    if (game.p.getXPOS() - 1 < 0 && game.m.chunkX > 0){
+                        game.m.currentChunk = game.m.chunks[game.m.chunkY][game.m.chunkX-1];
                         game.m.currentChunk.entities[p.getYPOS()][0] = p;
-                        game.chunkX--;
+                        game.m.chunkX--;
                         p.setXPOS(7);
                         return;
                     }
                     game.m.currentChunk.updateLoc(p, -1, 0);
                 } 
                 else if (command.startsWith("down")){
-                    if (game.p.getYPOS() + 1 > 7 && game.chunkY < 7){
-                        game.m.currentChunk = game.m.chunks[game.chunkY+1][game.chunkX];
+                    if (game.p.getYPOS() + 1 > 7 && game.m.chunkY < 7){
+                        game.m.currentChunk = game.m.chunks[game.m.chunkY+1][game.m.chunkX];
                         game.m.currentChunk.entities[0][p.getXPOS()] = p;
-                        game.chunkY++;
+                        game.m.chunkY++;
                         p.setYPOS(0);
                         return;
                     }
                     game.m.currentChunk.updateLoc(p, 0, 1);
                 } 
                 else if (command.startsWith("up")){
-                    if (game.p.getYPOS() - 1 < 0 && game.chunkY > 0){
-                        game.m.currentChunk = game.m.chunks[game.chunkX][game.chunkY-1];
+                    if (game.p.getYPOS() - 1 < 0 && game.m.chunkY > 0){
+                        game.m.currentChunk = game.m.chunks[game.m.chunkX][game.m.chunkY-1];
                         game.m.currentChunk.entities[7][p.getXPOS()] = p;
-                        game.chunkY--;
+                        game.m.chunkY--;
                         p.setYPOS(7);
                         return;
                     }

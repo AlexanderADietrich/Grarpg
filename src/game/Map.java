@@ -12,12 +12,14 @@ import java.util.Random;
  * @author voice
  */
 public class Map {
-    public int width;
-    public int height;
-    public Tile[][] tiles;
-    public Chunk[][] chunks;
-    public Chunk currentChunk;
-    private Random rand = new Random();
+    public int              width;
+    public int              height;
+    public Tile[][]         tiles;
+    public Chunk[][]        chunks;
+    public int              chunkX = 0;
+    public int              chunkY = 0;
+    public Chunk            currentChunk;
+    private Random          rand = new Random();
     public Map(){
         width = 64;
         height = 64;
