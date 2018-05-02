@@ -32,7 +32,7 @@ public class Launcher {
             }
         }
         Game g = new Game();
-        g.createImages(images);
+        g.passImages(images);
         
         //Fire Up applet using Hybrid.java
         Hybrid.fireup(g, "REEE", 584, 384);

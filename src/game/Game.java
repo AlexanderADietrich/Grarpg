@@ -30,7 +30,7 @@ public class Game extends Applet implements Runnable{
     public int areaWidth;  //Width of Map Area (pixels).
     public int areaHeight; //Height of Map Area (pixels).
     
-    public void createImages(HashMap<String, Image> imageInput){
+    public void passImages(HashMap<String, Image> imageInput){
         images = imageInput;
     }
     
@@ -162,16 +162,19 @@ public class Game extends Applet implements Runnable{
             currentTick = 0;
         }
         //"Draws" the basic tile. Necessary to get its width/height for scaling.
-        if (images == null) 
+        if (images == null){ 
             mainGraphics.drawImage(basicTile, 
                     Integer.MAX_VALUE, 
                     Integer.MAX_VALUE, 
                     this);
-        else 
+        } else {
             mainGraphics.drawImage(images.get("images/defaultTile.png"), 
                     Integer.MAX_VALUE, 
                     Integer.MAX_VALUE, 
                     this);
+            
+        }
+        
         //Sets background.
         mainGraphics.setColor(Color.black);
         mainGraphics.fillRect(0, 0, this.getWidth(), this.getHeight());
@@ -181,41 +184,42 @@ public class Game extends Applet implements Runnable{
         areaWidth = this.getHeight();
         
         //Main rendering of the map. TODO: Make based on Chunks.
-        for (int b = 0; b < m.currentChunk.tiles.length; b++){
-            for (int c = 0; c < m.currentChunk.tiles[b].length; c++){
-                    if (m.currentChunk.entities[b][c] != null){
-                        if (images == null)
-                            mainGraphics.drawImage(getImage(mainURL, 
-                                m.currentChunk.entities[b][c].getImagePath()), 
-                                c*areaWidth/m.currentChunk.chunkWidth-1, 
-                                b*areaHeight/m.currentChunk.chunkHeight-1,
-                                areaWidth/m.currentChunk.chunkWidth+2, areaHeight/m.currentChunk.chunkHeight+2,
-                                new Color(0, 0, 50),//This line could be used for day/night
-                                this);
-                        else 
-                            mainGraphics.drawImage(images.get(m.currentChunk.entities[b][c].getImagePath()),
-                            c*areaWidth/m.currentChunk.chunkWidth-1, 
-                            b*areaHeight/m.currentChunk.chunkHeight-1,
-                            areaWidth/m.currentChunk.chunkWidth+2, areaHeight/m.currentChunk.chunkHeight+2,
+        for (int b = 0; b < m.currentChunk.tiles.length; b++) {
+            for (int c = 0; c < m.currentChunk.tiles[b].length; c++) {
+                if (images == null) {
+                    mainGraphics.drawImage(getImage(mainURL,
+                            m.currentChunk.tiles[b][c].imagePath),
+                            c * areaWidth / m.currentChunk.chunkWidth - 1,
+                            b * areaHeight / m.currentChunk.chunkHeight - 1,
+                            areaWidth / m.currentChunk.chunkWidth + 2, areaHeight / m.currentChunk.chunkHeight + 2,
                             new Color(0, 0, 50),//This line could be used for day/night
                             this);
-                    } else {
-                        if (images == null)
-                            mainGraphics.drawImage(getImage(mainURL, 
-                                m.currentChunk.tiles[b][c].imagePath), 
-                                c*areaWidth/m.currentChunk.chunkWidth-1, 
-                                b*areaHeight/m.currentChunk.chunkHeight-1,
-                                areaWidth/m.currentChunk.chunkWidth+2, areaHeight/m.currentChunk.chunkHeight+2,
-                                new Color(0, 0, 50),//This line could be used for day/night
+                } else {
+                    mainGraphics.drawImage(images.get(m.currentChunk.tiles[b][c].imagePath),
+                            c * areaWidth / m.currentChunk.chunkWidth - 1,
+                            b * areaHeight / m.currentChunk.chunkHeight - 1,
+                            areaWidth / m.currentChunk.chunkWidth + 2, areaHeight / m.currentChunk.chunkHeight + 2,
+                            new Color(0, 0, 50),//This line could be used for day/night
+                            this);
+                }
+                if (m.currentChunk.entities[b][c] != null) {
+                    if (images == null) {
+                        mainGraphics.drawImage(getImage(mainURL,
+                                m.currentChunk.entities[b][c].getImagePath()),
+                                c * areaWidth / m.currentChunk.chunkWidth - 1,
+                                b * areaHeight / m.currentChunk.chunkHeight - 1,
+                                areaWidth / m.currentChunk.chunkWidth + 2, areaHeight / m.currentChunk.chunkHeight + 2,
+                                //new Color(0, 0, 50),//This line could be used for day/night
                                 this);
-                        else 
-                            mainGraphics.drawImage(images.get(m.currentChunk.tiles[b][c].imagePath),  
-                                c*areaWidth/m.currentChunk.chunkWidth-1, 
-                                b*areaHeight/m.currentChunk.chunkHeight-1,
-                                areaWidth/m.currentChunk.chunkWidth+2, areaHeight/m.currentChunk.chunkHeight+2,
-                                new Color(0, 0, 50),//This line could be used for day/night
+                    } else {
+                        mainGraphics.drawImage(images.get(m.currentChunk.entities[b][c].getImagePath()),
+                                c * areaWidth / m.currentChunk.chunkWidth - 1,
+                                b * areaHeight / m.currentChunk.chunkHeight - 1,
+                                areaWidth / m.currentChunk.chunkWidth + 2, areaHeight / m.currentChunk.chunkHeight + 2,
+                                //new Color(0, 0, 50),//This line could be used for day/night
                                 this);
                     }
+                }
             }
         }
         

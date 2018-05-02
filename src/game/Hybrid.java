@@ -18,6 +18,7 @@
 package game;
 
 import java.applet.Applet;
+import java.awt.Color;
 import java.awt.Frame;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -68,6 +69,7 @@ public final class Hybrid
         frame.add( applet );
         applet.init();
         frame.validate();
+        frame.setBackground(Color.BLACK);
         frame.setVisible( true );
         applet.start();
         }
