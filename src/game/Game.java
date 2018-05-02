@@ -4,29 +4,35 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.net.URL;
+import java.util.HashMap;
 //TEST COMMENT PLEASE WORK
 /**
  *
  * @author voice
  */
 public class Game extends Applet implements Runnable{
-    private long            framerate = 34;
-    private Commands        commandHandler = new Commands(this);
-    private Image           image;
-    private Image           basicTile;
-    private Graphics        graphicsBuffer;
-    public URL              mainURL;
-    public Map m = new Map();
-    private TextField       textInput = new TextField("", 10);
-    public TextArea         textOutput = new TextArea(10, TextArea.SCROLLBARS_VERTICAL_ONLY);
-    private Font            mainFont = new Font(Font.MONOSPACED, 10, 15);
-    public int              activeXPOS = 0;
-    public int              activeYPOS = 0;
-    public Player           p = new Player(0, 0, "", "images/GoodGuy.png");
-    public Enemy            e = new Enemy (7, 7, "BadGuy", 10, p, "images/BadGuy.png", m.currentChunk);
+    private long                    framerate = 34;
+    private Commands                commandHandler = new Commands(this);
+    public  HashMap<String, Image>  images;
+    private Image                   image;
+    private Image                   basicTile;
+    private Graphics                graphicsBuffer;
+    public URL                      mainURL;
+    public Map                      m = new Map();
+    private TextField               textInput = new TextField("", 10);
+    public TextArea                 textOutput = new TextArea(10, TextArea.SCROLLBARS_VERTICAL_ONLY);
+    private Font                    mainFont = new Font(Font.MONOSPACED, 10, 15);
+    public int                      activeXPOS = 0;
+    public int                      activeYPOS = 0;
+    public Player                   p = new Player(0, 0, "", "images/GoodGuy.png");
+    public Enemy                    e = new Enemy (7, 7, "BadGuy", 10, p, "images/BadGuy.png", m.currentChunk);
     
     public int areaWidth;  //Width of Map Area (pixels).
     public int areaHeight; //Height of Map Area (pixels).
+    
+    public void createImages(HashMap<String, Image> imageInput){
+        images = imageInput;
+    }
     
     private ActionListener  textInputListener = new ActionListener() {
         @Override
@@ -84,8 +90,10 @@ public class Game extends Applet implements Runnable{
             ex.printStackTrace();
         }
         
-        //Load in the "base tile" in order to gauge size for scaling.
-        basicTile = getImage(mainURL, "images/defaultTile.png");
+        if (images == null){
+            //Load in the "base tile" in order to gauge size for scaling.
+            basicTile = getImage(mainURL, "images/defaultTile.png");
+        }
     }
      
     public void start(){
@@ -154,8 +162,16 @@ public class Game extends Applet implements Runnable{
             currentTick = 0;
         }
         //"Draws" the basic tile. Necessary to get its width/height for scaling.
-        mainGraphics.drawImage(basicTile, Integer.MAX_VALUE, Integer.MAX_VALUE, this);
-        
+        if (images == null) 
+            mainGraphics.drawImage(basicTile, 
+                    Integer.MAX_VALUE, 
+                    Integer.MAX_VALUE, 
+                    this);
+        else 
+            mainGraphics.drawImage(images.get("images/defaultTile.png"), 
+                    Integer.MAX_VALUE, 
+                    Integer.MAX_VALUE, 
+                    this);
         //Sets background.
         mainGraphics.setColor(Color.black);
         mainGraphics.fillRect(0, 0, this.getWidth(), this.getHeight());
@@ -168,16 +184,32 @@ public class Game extends Applet implements Runnable{
         for (int b = 0; b < m.currentChunk.tiles.length; b++){
             for (int c = 0; c < m.currentChunk.tiles[b].length; c++){
                     if (m.currentChunk.entities[b][c] != null){
-                        mainGraphics.drawImage(getImage(mainURL, 
-                            m.currentChunk.entities[b][c].getImagePath()), 
+                        if (images == null)
+                            mainGraphics.drawImage(getImage(mainURL, 
+                                m.currentChunk.entities[b][c].getImagePath()), 
+                                c*areaWidth/m.currentChunk.chunkWidth-1, 
+                                b*areaHeight/m.currentChunk.chunkHeight-1,
+                                areaWidth/m.currentChunk.chunkWidth+2, areaHeight/m.currentChunk.chunkHeight+2,
+                                new Color(0, 0, 50),//This line could be used for day/night
+                                this);
+                        else 
+                            mainGraphics.drawImage(images.get(m.currentChunk.entities[b][c].getImagePath()),
                             c*areaWidth/m.currentChunk.chunkWidth-1, 
                             b*areaHeight/m.currentChunk.chunkHeight-1,
                             areaWidth/m.currentChunk.chunkWidth+2, areaHeight/m.currentChunk.chunkHeight+2,
                             new Color(0, 0, 50),//This line could be used for day/night
                             this);
                     } else {
-                        mainGraphics.drawImage(getImage(mainURL, 
+                        if (images == null)
+                            mainGraphics.drawImage(getImage(mainURL, 
                                 m.currentChunk.tiles[b][c].imagePath), 
+                                c*areaWidth/m.currentChunk.chunkWidth-1, 
+                                b*areaHeight/m.currentChunk.chunkHeight-1,
+                                areaWidth/m.currentChunk.chunkWidth+2, areaHeight/m.currentChunk.chunkHeight+2,
+                                new Color(0, 0, 50),//This line could be used for day/night
+                                this);
+                        else 
+                            mainGraphics.drawImage(images.get(m.currentChunk.tiles[b][c].imagePath),  
                                 c*areaWidth/m.currentChunk.chunkWidth-1, 
                                 b*areaHeight/m.currentChunk.chunkHeight-1,
                                 areaWidth/m.currentChunk.chunkWidth+2, areaHeight/m.currentChunk.chunkHeight+2,
