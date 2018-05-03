@@ -21,7 +21,28 @@ public class Commands {
         int cLength = command.length();
         command = command.trim();
         command = wrap(command, cLength);
+        
+        if (command.startsWith("n")){
+            parsePlayerCommand("go up", p);
+            return;
+        }
+        if (command.startsWith("s")){
+            parsePlayerCommand("go down", p);
+            return;
+        }
+        if (command.startsWith("e")){
+            parsePlayerCommand("go right", p);
+            return;
+        }
+        if (command.startsWith("w")){
+            parsePlayerCommand("go left", p);
+            return;
+        }
+        
+        
+        
         game.textOutput.append(command);
+        
         if (command.startsWith("I'm")){
                 game.p = new Player(game.activeXPOS, game.activeYPOS, 
                 command.substring(4, command.length()), "images/GoodGuy.png");
