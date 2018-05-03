@@ -49,7 +49,7 @@ public class Commands {
                 else if (command.startsWith("left")){
                     if (game.p.getXPOS() - 1 < 0 && game.m.chunkX > 0){
                         game.m.currentChunk = game.m.chunks[game.m.chunkY][game.m.chunkX-1];
-                        game.m.currentChunk.entities[p.getYPOS()][0] = p;
+                        game.m.currentChunk.entities[p.getYPOS()][7] = p;
                         game.m.chunkX--;
                         p.setXPOS(7);
                         return;
