@@ -26,6 +26,7 @@ public class Game extends Applet implements Runnable{
     public int                      activeYPOS = 0;
     public Player                   p = new Player(0, 0, "", "images/GoodGuy.png");
     public Enemy                    e = new Enemy (7, 7, "BadGuy", 10, p, "images/BadGuy.png", m.currentChunk);
+    public boolean                  mapActive = false;
     
     public int areaWidth;  //Width of Map Area (pixels).
     public int areaHeight; //Height of Map Area (pixels).
@@ -82,18 +83,6 @@ public class Game extends Applet implements Runnable{
         //Add both to the applet.
         add(textInput);
         add(textOutput);
-        
-        //Attempt to access build folder.
-        try {
-            mainURL = getDocumentBase();
-        } catch (Exception ex){
-            ex.printStackTrace();
-        }
-        
-        if (images == null){
-            //Load in the "base tile" in order to gauge size for scaling.
-            basicTile = getImage(mainURL, "images/defaultTile.png");
-        }
     }
      
     public void start(){
@@ -183,62 +172,39 @@ public class Game extends Applet implements Runnable{
         areaHeight = this.getHeight();
         areaWidth = this.getHeight();
         
-        //Main rendering of the map. TODO: Make based on Chunks.
-        for (int b = 0; b < m.currentChunk.tiles.length; b++) {
-            for (int c = 0; c < m.currentChunk.tiles[b].length; c++) {
-                if (images == null) {
-                    mainGraphics.drawImage(getImage(mainURL,
-                            m.currentChunk.tiles[b][c].imagePath),
-                            c * areaWidth / m.currentChunk.chunkWidth - 1,
-                            b * areaHeight / m.currentChunk.chunkHeight - 1,
-                            areaWidth / m.currentChunk.chunkWidth + 2, areaHeight / m.currentChunk.chunkHeight + 2,
-                            new Color(0, 0, 50),//This line could be used for day/night
-                            this);
-                } else {
+        if (!mapActive){
+            //Main rendering of the map. TODO: Make based on Chunks.
+            for (int b = 0; b < m.currentChunk.tiles.length; b++) {
+                for (int c = 0; c < m.currentChunk.tiles[b].length; c++) {
                     mainGraphics.drawImage(images.get(m.currentChunk.tiles[b][c].imagePath),
                             c * areaWidth / m.currentChunk.chunkWidth - 1,
                             b * areaHeight / m.currentChunk.chunkHeight - 1,
                             areaWidth / m.currentChunk.chunkWidth + 2, areaHeight / m.currentChunk.chunkHeight + 2,
                             new Color(0, 0, 50),//This line could be used for day/night
                             this);
-                }
-                if (m.currentChunk.entities[b][c] != null) {
-                    if (images == null) {
-                        mainGraphics.drawImage(getImage(mainURL,
-                                m.currentChunk.entities[b][c].getImagePath()),
-                                c * areaWidth / m.currentChunk.chunkWidth - 1,
-                                b * areaHeight / m.currentChunk.chunkHeight - 1,
-                                areaWidth / m.currentChunk.chunkWidth + 2, areaHeight / m.currentChunk.chunkHeight + 2,
-                                //new Color(0, 0, 50),//This line could be used for day/night
-                                this);
-                    } else {
+                    if (m.currentChunk.entities[b][c] != null) {
                         mainGraphics.drawImage(images.get(m.currentChunk.entities[b][c].getImagePath()),
-                                c * areaWidth / m.currentChunk.chunkWidth - 1,
-                                b * areaHeight / m.currentChunk.chunkHeight - 1,
-                                areaWidth / m.currentChunk.chunkWidth + 2, areaHeight / m.currentChunk.chunkHeight + 2,
-                                //new Color(0, 0, 50),//This line could be used for day/night
-                                this);
+                                    c * areaWidth / m.currentChunk.chunkWidth - 1,
+                                    b * areaHeight / m.currentChunk.chunkHeight - 1,
+                                    areaWidth / m.currentChunk.chunkWidth + 2, areaHeight / m.currentChunk.chunkHeight + 2,
+                                    //new Color(0, 0, 50),//This line could be used for day/night
+                                    this);
+                        
                     }
                 }
             }
-        }
-        
-        /* 
-        Renders entire map for testing;
-        
-        for (int b = 0; b < m.tiles.length; b++){
-            for (int c = 0; c < m.tiles[b].length; c++){
-                mainGraphics.drawImage(getImage(mainURL, 
-                    m.tiles[b][c].imagePath), 
-                    c*areaWidth/m.tiles[0].length-1, 
-                    b*areaHeight/m.tiles[0].length-1,
-                    areaWidth/m.tiles[0].length+2, areaHeight/m.tiles[0].length+2,
-                    new Color(0, 0, 50),
-                    this);
+        } else {
+            for (int b = 0; b < m.tiles.length; b++){
+                for (int c = 0; c < m.tiles[b].length; c++){
+                    mainGraphics.drawImage(images.get(m.tiles[b][c].imagePath), 
+                        c*areaWidth/m.tiles[0].length-1, 
+                        b*areaHeight/m.tiles[0].length-1,
+                        areaWidth/m.tiles[0].length+2, areaHeight/m.tiles[0].length+2,
+                        new Color(0, 0, 50),
+                        this);
+                }
             }
         }
-        
-        */
         
         //Main player interface.
         textOutput.setLocation(areaWidth, 26);

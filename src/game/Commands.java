@@ -28,6 +28,9 @@ public class Commands {
                 game.textOutput.append("You're now \n" + 
                 command.substring(4, command.length()) + "\n");
         }
+        if (command.startsWith("Map")){
+            game.mapActive = !game.mapActive;
+        }
         /*
         __-__
         -_O_+
