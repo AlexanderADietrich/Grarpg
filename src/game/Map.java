@@ -115,4 +115,23 @@ public class Map {
             }
         }
     }
+    public Map(Tile[][] t){
+        width = 64;
+        height = 64;
+        tiles = t;
+        chunks = new Chunk[8][8];
+        Tile[][] chunkTiles = new Tile[8][8];
+        for (int i = 0; i < 8; i++){
+            for (int b = 0; b < 8; b++){
+                for (int y = 0; y < 8; y++){
+                    for (int x = 0; x < 8; x++){
+                        chunkTiles[y][x] = tiles[((i*8)+y)][((b*8)+x)];
+                    }
+                }
+                chunks[i][b] = new Chunk(chunkTiles);
+            }
+        }
+        
+        currentChunk = chunks[0][0];
+    }
 }

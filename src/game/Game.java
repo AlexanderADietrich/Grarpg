@@ -27,6 +27,7 @@ public class Game extends Applet implements Runnable{
     public Player                   p = new Player(0, 0, "", "images/GoodGuy.png");
     public Enemy                    e = new Enemy (7, 7, "BadGuy", 10, p, "images/BadGuy.png", m.currentChunk);
     public boolean                  mapActive = false;
+    public String                   worldMap = "";
     
     public int areaWidth;  //Width of Map Area (pixels).
     public int areaHeight; //Height of Map Area (pixels).
@@ -62,11 +63,19 @@ public class Game extends Applet implements Runnable{
         m.currentChunk.entities[7][7] = e;
         for (Tile[] tlist : m.tiles){
             for (Tile t : tlist){
-                if (t.imagePath.substring(7, 8).equals("d")) System.out.print("_");
-                else System.out.print(t.imagePath.substring(7, 8));
+                if (t.imagePath.substring(7, 8).equals("d")){
+                    System.out.print("_");
+                    worldMap = worldMap + "_";
+                }
+                else {
+                    System.out.print(t.imagePath.substring(7, 8));
+                    worldMap = worldMap + t.imagePath.substring(7, 8);
+                }
             }
             System.out.println();
+            worldMap = worldMap + "\n";
         }
+        //System.out.print("TEST MAP SAVE \n" + worldMap );
         setSize(584, 384);
         areaWidth = this.getHeight();
         areaHeight = this.getHeight();

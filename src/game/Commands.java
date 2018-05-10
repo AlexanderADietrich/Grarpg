@@ -39,8 +39,6 @@ public class Commands {
             return;
         }
         
-        
-        
         game.textOutput.append(command);
         
         if (command.startsWith("I'm")){
@@ -49,8 +47,8 @@ public class Commands {
                 game.textOutput.append("You're now \n" + 
                 command.substring(4, command.length()) + "\n");
         }
-        if (command.startsWith("Map")){
-            game.mapActive = !game.mapActive;
+        if (command.startsWith("Map")){ 
+            game.mapActive = !game.mapActive;  
         }
         /*
         __-__
@@ -103,8 +101,8 @@ public class Commands {
         }
         //Saves the Game. Latter add ability to specify file name.
         if (command.startsWith("Save")){
-            System.out.println(game.textOutput.getText());
-            if (Save.saveFile(game.textOutput.getText()))
+            //System.out.println(game.textOutput.getText())
+            if (Save.saveFile(game.textOutput.getText(),game.worldMap))
                 game.textOutput.append("Save Successful");
             else
                 game.textOutput.append("Save Failed");
@@ -114,10 +112,10 @@ public class Commands {
         if (command.startsWith("Load")){
             command = command.substring(5, command.length()-1) + ".txt";
             File f = new File(new File("").getAbsoluteFile() + "\\" + command);
-            if (Save.loadFile(f, game))
-                game.textOutput.append("Load Successful");
-            else
-                game.textOutput.append("Load Failed");
+            if (Save.loadFile(f, game)){
+                game.textOutput.append("Load Successful\n");
+            }else
+                game.textOutput.append("Load Failed\n");
         }   
     }
 }
