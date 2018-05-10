@@ -99,6 +99,13 @@ public class Commands {
                     game.m.currentChunk.updateLoc(p, 0, -1);
                 }
         }
+        
+        
+        
+        
+        
+        
+        //test
         //Saves the Game. Latter add ability to specify file name.
         if (command.startsWith("Save")){
             //System.out.println(game.textOutput.getText())
