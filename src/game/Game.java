@@ -28,6 +28,8 @@ public class Game extends Applet implements Runnable{
     public Enemy                    e = new Enemy (7, 7, "BadGuy", 10, p, "images/BadGuy.png", m.currentChunk);
     public boolean                  mapActive = false;
     public String                   worldMap = "";
+    public Fight                    fight = new Fight(this);
+    public boolean                  fighting = false;
     
     public int areaWidth;  //Width of Map Area (pixels).
     public int areaHeight; //Height of Map Area (pixels).
@@ -47,10 +49,12 @@ public class Game extends Applet implements Runnable{
     
     //Tick any timers/ AI's.
     public void doTick(){
-        for(Entity[] elist : m.currentChunk.entities){
-            for(Entity e : elist){
-                if (e != null) e.doTick();
-                
+        if (fighting) fight.doTick();
+        else{
+            for(Entity[] elist : m.currentChunk.entities){
+                for(Entity e : elist){
+                    if (e != null) e.doTick();
+                }
             }
         }
     }
