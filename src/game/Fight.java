@@ -13,25 +13,39 @@ public class Fight {
     String reason = "";
     String target = "";
     
-    //Truly Terrible Currently
-    public String doTick(){
+    /*
+    Iterate over entities
+        For each entity get its fight command, composed of:
+            damage reason target
+            double String String
+            if target is null target next or previous entity
+            iterate over entities
+                if entity's name is target name, damage it and print the reason
+                
+    */
+    public void doTick(){
         for (int i = 0; i < entities.length; i++){
             parseThis = entities[i].doFightTick().trim().split(" ");
             if (parseThis.length < 2) break;
             if (parseThis.length == 2){
                 damage = (double) Integer.parseInt(parseThis[0]);
                 reason = parseThis[1];
-                if (i != 0) target = entities[0].getName();
-                else target = entities[1].getName();
+                if (i == 0) target = entities[1].getName();
+                else target = entities[i-1].getName();
             } else {
                 damage = (double) Integer.parseInt(parseThis[0]);
                 reason = parseThis[1];
                 target = parseThis[2];
             }
-            /*
-            Damage the Target and Print the Reason.
-            */
+            Boolean succeeded = false;
+            for (Entity e : entities){
+                if (e.getName().equals(target)){
+                    e.setHP(e.getHP()-damage);
+                    g.textOutput.append("damaged for " + damage + " " + reason);
+                    succeeded = true;
+                }
+            }
+            if (!succeeded) g.textOutput.append("Missed!");
         }
-        return "PLACEHOLDER";
-    };
+    }
 }
