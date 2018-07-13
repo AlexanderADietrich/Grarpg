@@ -68,6 +68,7 @@ public final class Save {
      * @return True if load was successful, False if not.
      */
     public static boolean loadFile(File save, Game game){
+        game.started = true;
         String section = "";
         int y = 1; // for counting rows in map
         //Load file into Scanner
