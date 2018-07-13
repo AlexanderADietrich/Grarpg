@@ -21,25 +21,26 @@ public class Commands {
         int cLength = command.length();
         command = command.trim();
         command = wrap(command, cLength);
-        
+        //Fast Movement
         //Make a setting for WASD
-        if (command.startsWith("n")){
-            parsePlayerCommand("go up", p);
-            return;
+        if (command.length() == 2){
+            if (command.startsWith("n")){
+                parsePlayerCommand("go up", p);
+                return;
+            }
+            if (command.startsWith("s")){
+                parsePlayerCommand("go down", p);
+                return;
+            }
+            if (command.startsWith("e")){
+                parsePlayerCommand("go right", p);
+                return;
+            }
+            if (command.startsWith("w")){
+                parsePlayerCommand("go left", p);
+                return;
+            }
         }
-        if (command.startsWith("s")){
-            parsePlayerCommand("go down", p);
-            return;
-        }
-        if (command.startsWith("e")){
-            parsePlayerCommand("go right", p);
-            return;
-        }
-        if (command.startsWith("w")){
-            parsePlayerCommand("go left", p);
-            return;
-        }
-        
         game.textOutput.append(command);
         
         if (command.startsWith("I'm")){
@@ -100,6 +101,13 @@ public class Commands {
                     game.m.currentChunk.updateLoc(p, 0, -1);
                 }
         }
+        
+        
+        
+        
+        
+        
+        //test
         //Saves the Game. Latter add ability to specify file name.
         if (command.startsWith("Save")){
             //System.out.println(game.textOutput.getText())
@@ -107,7 +115,7 @@ public class Commands {
                 game.textOutput.append("Save Successful");
             else
                 game.textOutput.append("Save Failed");
-        }
+        } 
         
         //Loads the Game, Type file name after Load
         if (command.startsWith("Load")){
@@ -117,6 +125,12 @@ public class Commands {
                 game.textOutput.append("Load Successful\n");
             }else
                 game.textOutput.append("Load Failed\n");
-        }   
+        } 
+        
+        //Starts Gmae form Main Menu TODO: Pause game untill started
+        if (command.startsWith("Start Game")){
+            game.started = true;
+            game.textOutput.append("Who are you?\n");
+        }
     }
 }

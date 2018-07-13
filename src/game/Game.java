@@ -31,6 +31,8 @@ public class Game extends Applet implements Runnable{
     public String                   worldMap = "";
     public Fight                    fight = new Fight(this);
     public boolean                  fighting = false;
+    public boolean                  started = false;
+    
     
     public int areaWidth;  //Width of Map Area (pixels).
     public int areaHeight; //Height of Map Area (pixels).
@@ -109,7 +111,7 @@ public class Game extends Applet implements Runnable{
         Thread thread = new Thread(this);
         thread.start();
         
-        textOutput.append("Who are you?\n");
+        textOutput.append("Type \"Start Game\" in \nthe box above and \npress enter to start.\n");
         //Initialize Player and Enemy. TODO; Improve this.
         if (m.currentChunk == null) System.out.println("Chunk");
         if (p == null) System.out.println("Player");
@@ -187,13 +189,21 @@ public class Game extends Applet implements Runnable{
         //Sets background.
         mainGraphics.setColor(Color.black);
         mainGraphics.fillRect(0, 0, this.getWidth(), this.getHeight());
+        if(!started){
+            mainGraphics.setColor(Color.green);
+            mainGraphics.fillRect(0, 0, this.getWidth(), this.getHeight());
+            mainGraphics.setColor(Color.black);
+            mainGraphics.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 20)); //Find better Font
+            mainGraphics.drawString("Placeholder start screen Replace with gif \nor animaton at some point.",0 ,this.getHeight()/10 );
+        }
         
         //Sets the area that the map generates. 
         areaHeight = this.getHeight();
         areaWidth = this.getHeight();
         
-        if (!mapActive && !fighting){
+        if (!mapActive && started && !fighting){
             //Main rendering of the current section of map.
+
             for (int b = 0; b < m.currentChunk.tiles.length; b++) {
                 for (int c = 0; c < m.currentChunk.tiles[b].length; c++) {
                     mainGraphics.drawImage(images.get(m.currentChunk.tiles[b][c].imagePath),
@@ -213,7 +223,8 @@ public class Game extends Applet implements Runnable{
                     }
                 }
             }
-        }
+        } 
+
         //Render fight graphics.
         else if (fighting){
                 mainGraphics.drawImage(images.get(fight.entities[0].getImagePath()),
