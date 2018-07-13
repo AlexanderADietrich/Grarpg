@@ -30,6 +30,8 @@ public class Game extends Applet implements Runnable{
     public String                   worldMap = "";
     public Fight                    fight = new Fight(this);
     public boolean                  fighting = false;
+    public boolean                  started = false;
+    
     
     public int areaWidth;  //Width of Map Area (pixels).
     public int areaHeight; //Height of Map Area (pixels).
@@ -102,7 +104,7 @@ public class Game extends Applet implements Runnable{
         Thread thread = new Thread(this);
         thread.start();
         
-        textOutput.append("Who are you?\n");
+        textOutput.append("Type \"Start Game\" in \nthe box above and \npress enter to start.\n");
         //Initialize Player and Enemy. TODO; Improve this.
         if (m.currentChunk == null) System.out.println("Chunk");
         if (p == null) System.out.println("Player");
@@ -178,14 +180,17 @@ public class Game extends Applet implements Runnable{
         }
         
         //Sets background.
-        mainGraphics.setColor(Color.black);
+        mainGraphics.setColor(Color.green);
         mainGraphics.fillRect(0, 0, this.getWidth(), this.getHeight());
+        mainGraphics.setColor(Color.black);
+        mainGraphics.setFont(new Font("TimesRoman", Font.PLAIN, 20)); //Find better Font
+        mainGraphics.drawString("Placeholder start screen Replace with gif \nor animaton at some point.",0 ,this.getHeight()/10 );
         
         //Sets the area that the map generates. 
         areaHeight = this.getHeight();
         areaWidth = this.getHeight();
         
-        if (!mapActive){
+        if (!mapActive && started){
             //Main rendering of the map. TODO: Make based on Chunks.
             for (int b = 0; b < m.currentChunk.tiles.length; b++) {
                 for (int c = 0; c < m.currentChunk.tiles[b].length; c++) {
@@ -206,7 +211,7 @@ public class Game extends Applet implements Runnable{
                     }
                 }
             }
-        } else {
+        } else if (mapActive){
             for (int b = 0; b < m.tiles.length; b++){
                 for (int c = 0; c < m.tiles[b].length; c++){
                     mainGraphics.drawImage(images.get(m.tiles[b][c].imagePath), 
