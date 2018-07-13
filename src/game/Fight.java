@@ -11,6 +11,7 @@ public class Fight {
     double damage = 0;
     String reason = "";
     String target = "";
+    boolean turn = true;
     
     public Fight(Game g){this.g=g;}
     
@@ -30,19 +31,19 @@ public class Fight {
                 
     */
     public void doTick(){
-        Boolean[] turns = new Boolean[entities.length];
-        for (int i = 0; i < turns.length; i++) turns[i] = false;
-        turns[0] = true;
         for (int i = 0; i < entities.length; i++){
-            for (Boolean b : turns) System.out.print(b + " ");
-            System.out.println();
-            if (!turns[i]) continue;
+            if (turn) 
+                if (i == 1) continue;
+            if (!turn)
+                if (i == 0) continue;
             
             //Current Entity "attacks"
             parseThis = entities[i].doFightTick().trim().split(" ");
+            System.out.println(parseThis.length);
             
             if (parseThis.length < 2) continue;
             if (parseThis.length == 2){
+                System.out.println("HERE");
                 damage = (double) Integer.parseInt(parseThis[0]);
                 reason = parseThis[1];
                 if (i == 0) target = entities[1].getName();
@@ -62,10 +63,7 @@ public class Fight {
             }
             if (!succeeded) g.textOutput.append("Missed!");
             
-            //Pass the turn around.
-            if (i == entities.length-1) turns[0] = true;
-            else turns[i+1] = true;
-            turns[i] = false;
+            turn = !turn;
         }
     }
 }

@@ -19,6 +19,7 @@ public class Player extends Entity{
     public String doFightTick(){
         String temp = previousFightCommand;
         previousFightCommand = "";
+        System.out.println(temp);
         return temp;
     }
 }
