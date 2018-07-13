@@ -20,7 +20,10 @@ public class Map {
     public int              chunkY = 0;
     public Chunk            currentChunk;
     private Random          rand = new Random();
-    public Map(){
+    private Game            g;
+    
+    public Map(Game g){
+        this.g=g;
         width = 64;
         height = 64;
         tiles = new Tile[64][64];
@@ -50,6 +53,7 @@ public class Map {
         }
         
         currentChunk = chunks[0][0];
+        currentChunk.passGame(g);
     }
     public void generateMountain(Tile[][] input, int locX, int locY){
         Tile[][] mountainBounds = new Tile[24][24];
@@ -115,7 +119,8 @@ public class Map {
             }
         }
     }
-    public Map(Tile[][] t){
+    
+    /*public Map(Tile[][] t){
         width = 64;
         height = 64;
         tiles = t;
@@ -133,5 +138,5 @@ public class Map {
         }
         
         currentChunk = chunks[0][0];
-    }
+    }*/
 }

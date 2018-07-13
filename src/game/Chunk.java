@@ -9,6 +9,12 @@ public class Chunk {
     public int chunkWidth;   //Number of Tiles in Map Horizontally
     public int chunkHeight;  //Number of Tiles in Map Vertically
     public Entity[][] entities;
+    public Game g;
+    
+    public void passGame(Game g){
+        this.g=g;
+    }
+    
     public Chunk(int chunkWidth, int chunkHeight){
         this.chunkWidth = chunkWidth;
         this.chunkHeight = chunkHeight;
@@ -46,11 +52,22 @@ public class Chunk {
                 && e.getYPOS() + yDif < entities.length
                 && e.getXPOS() + xDif >= 0
                 && e.getYPOS() + yDif >= 0){
+            
+                //If the tile attempted is empty.
                 if (entities[e.getYPOS()+yDif][e.getXPOS()+xDif] == null) {
                     entities[e.getYPOS()][e.getXPOS()] = null;
                     entities[e.getYPOS()+yDif][e.getXPOS()+xDif] = e;
                     e.setXPOS(e.getXPOS()+xDif);
                     e.setYPOS(e.getYPOS()+yDif);
+                } else {
+                    System.out.println(Enemy.class.isInstance(e));
+                    System.out.println(Enemy.class.equals(e));
+                    System.out.println(Player.class.equals(entities[e.getYPOS()+yDif][e.getXPOS()+xDif]));
+                    if (g != null && Enemy.class.isInstance(e) &&
+                            Player.class.isInstance(entities[e.getYPOS()+yDif][e.getXPOS()+xDif])){
+                                                                                                                                                System.out.println(e.getXPOS() + " " + e.getYPOS() + " " + entities[e.getYPOS()+yDif][e.getXPOS()+xDif].getXPOS() + " " + entities[e.getYPOS()+yDif][e.getXPOS()+xDif].getYPOS());
+                        g.startFight(e, entities[e.getYPOS()+yDif][e.getXPOS()+xDif]);
+                    }
                 }
         } 
     }

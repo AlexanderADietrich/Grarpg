@@ -3,7 +3,7 @@ package game;
 import java.io.File;
 
 public class Commands {
-    private Game game;
+    public Game game;
     public Commands(Game g){
         this.game = g;
     }
@@ -22,6 +22,7 @@ public class Commands {
         command = command.trim();
         command = wrap(command, cLength);
         
+        //Make a setting for WASD
         if (command.startsWith("n")){
             parsePlayerCommand("go up", p);
             return;

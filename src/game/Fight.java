@@ -5,13 +5,19 @@ package game;
  * @author voice
  */
 public class Fight {
-    private Entity[] entities;
+    public Entity[] entities;
     private Game g;
-    public Fight(Game g){this.g=g;}
     private String[] parseThis;
     double damage = 0;
     String reason = "";
     String target = "";
+    
+    public Fight(Game g){this.g=g;}
+    
+    public void start(Entity[] entities){
+        this.entities = entities;
+    }
+    
     
     /*
     Iterate over entities
@@ -24,9 +30,18 @@ public class Fight {
                 
     */
     public void doTick(){
+        Boolean[] turns = new Boolean[entities.length];
+        for (int i = 0; i < turns.length; i++) turns[i] = false;
+        turns[0] = true;
         for (int i = 0; i < entities.length; i++){
+            for (Boolean b : turns) System.out.print(b + " ");
+            System.out.println();
+            if (!turns[i]) continue;
+            
+            //Current Entity "attacks"
             parseThis = entities[i].doFightTick().trim().split(" ");
-            if (parseThis.length < 2) break;
+            
+            if (parseThis.length < 2) continue;
             if (parseThis.length == 2){
                 damage = (double) Integer.parseInt(parseThis[0]);
                 reason = parseThis[1];
@@ -41,11 +56,16 @@ public class Fight {
             for (Entity e : entities){
                 if (e.getName().equals(target)){
                     e.setHP(e.getHP()-damage);
-                    g.textOutput.append("damaged for " + damage + " " + reason);
+                    g.textOutput.append("damaged for " + damage + " " + reason + "\n");
                     succeeded = true;
                 }
             }
             if (!succeeded) g.textOutput.append("Missed!");
+            
+            //Pass the turn around.
+            if (i == entities.length-1) turns[0] = true;
+            else turns[i+1] = true;
+            turns[i] = false;
         }
     }
 }
