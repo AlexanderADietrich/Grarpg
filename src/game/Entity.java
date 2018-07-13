@@ -13,7 +13,7 @@ public class Entity {
     private String name;
     
     public String doFightTick(){
-        return "1 DEFAULTDAMAGECAUSE NAME";
+        return "1 DEFAULTDAMAGECAUSE";
         /*
         Current plan is that during a fight, names should be printed
         at the start (possibly reprinted onclick of sprite?) and that the player
@@ -21,6 +21,7 @@ public class Entity {
         name should attack a random entity within the fight container. 
         */
     }
+    
     public void doTick(){
         
     }

@@ -3,7 +3,7 @@ package game;
 import java.io.File;
 
 public class Commands {
-    private Game game;
+    public Game game;
     public Commands(Game g){
         this.game = g;
     }
@@ -22,6 +22,7 @@ public class Commands {
         command = command.trim();
         command = wrap(command, cLength);
         //Fast Movement
+        //Make a setting for WASD
         if (command.length() == 2){
             if (command.startsWith("n")){
                 parsePlayerCommand("go up", p);
@@ -114,7 +115,7 @@ public class Commands {
                 game.textOutput.append("Save Successful");
             else
                 game.textOutput.append("Save Failed");
-        }
+        } 
         
         //Loads the Game, Type file name after Load
         if (command.startsWith("Load")){

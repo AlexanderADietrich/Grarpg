@@ -13,12 +13,13 @@ import java.util.HashMap;
 public class Game extends Applet implements Runnable{
     private long                    framerate = 34;
     private Commands                commandHandler = new Commands(this);
+    private CombatCommands          combatCommandHandler = new CombatCommands(this);
     public  HashMap<String, Image>  images;
     private Image                   image;
     private Image                   basicTile;
     private Graphics                graphicsBuffer;
     public URL                      mainURL;
-    public Map                      m = new Map();
+    public Map                      m = new Map(this); 
     private TextField               textInput = new TextField("", 10);
     public TextArea                 textOutput = new TextArea(10, TextArea.SCROLLBARS_VERTICAL_ONLY);
     private Font                    mainFont = new Font(Font.MONOSPACED, 10, 15);
@@ -45,9 +46,15 @@ public class Game extends Applet implements Runnable{
         public void actionPerformed(ActionEvent e) {
             textInput.setText(" ");
             System.out.println(e.getActionCommand());
-            commandHandler.parsePlayerCommand(e.getActionCommand(), p);
+            if (!fighting) commandHandler.parsePlayerCommand(e.getActionCommand(), p);
+            else combatCommandHandler.parsePlayerCommand(e.getActionCommand(), p);
         }
     };
+    
+    public void startFight(Entity e, Entity e2){
+        fight.start(new Entity[]{e, e2});
+        fighting = true;
+    }
     
     //Tick any timers/ AI's.
     public void doTick(){
@@ -180,18 +187,23 @@ public class Game extends Applet implements Runnable{
         }
         
         //Sets background.
-        mainGraphics.setColor(Color.green);
-        mainGraphics.fillRect(0, 0, this.getWidth(), this.getHeight());
         mainGraphics.setColor(Color.black);
-        mainGraphics.setFont(new Font("TimesRoman", Font.PLAIN, 20)); //Find better Font
-        mainGraphics.drawString("Placeholder start screen Replace with gif \nor animaton at some point.",0 ,this.getHeight()/10 );
+        mainGraphics.fillRect(0, 0, this.getWidth(), this.getHeight());
+        if(!started){
+            mainGraphics.setColor(Color.green);
+            mainGraphics.fillRect(0, 0, this.getWidth(), this.getHeight());
+            mainGraphics.setColor(Color.black);
+            mainGraphics.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 20)); //Find better Font
+            mainGraphics.drawString("Placeholder start screen Replace with gif \nor animaton at some point.",0 ,this.getHeight()/10 );
+        }
         
         //Sets the area that the map generates. 
         areaHeight = this.getHeight();
         areaWidth = this.getHeight();
         
-        if (!mapActive && started){
-            //Main rendering of the map. TODO: Make based on Chunks.
+        if (!mapActive && started && !fighting){
+            //Main rendering of the current section of map.
+
             for (int b = 0; b < m.currentChunk.tiles.length; b++) {
                 for (int c = 0; c < m.currentChunk.tiles[b].length; c++) {
                     mainGraphics.drawImage(images.get(m.currentChunk.tiles[b][c].imagePath),
@@ -211,7 +223,27 @@ public class Game extends Applet implements Runnable{
                     }
                 }
             }
-        } else if (mapActive){
+        } 
+
+        //Render fight graphics.
+        else if (fighting){
+                mainGraphics.drawImage(images.get(fight.entities[0].getImagePath()),
+                                    areaWidth / 4 + 1,
+                                    areaHeight / 4 + 1,
+                                    areaWidth / 2 + 2, 
+                                    areaHeight / 2 + 2,
+                                    this);
+                mainGraphics.drawImage(images.get(fight.entities[1].getImagePath()),
+                                    2* areaWidth / 4 + 1,
+                                    2* areaHeight / 4 + 1,
+                                    areaWidth / 2 + 2, 
+                                    areaHeight / 2 + 2,
+                                    this);
+                        //x, y, width, height, observer
+                
+        }
+        //Renders entire map.
+        else if (mapActive){
             for (int b = 0; b < m.tiles.length; b++){
                 for (int c = 0; c < m.tiles[b].length; c++){
                     mainGraphics.drawImage(images.get(m.tiles[b][c].imagePath), 
