@@ -26,6 +26,7 @@ public final class Save {
      */
     public static boolean saveFile(String text, String map){
         // finds an empty save file
+        map = map.substring(0, map.length()-2);
         int count = 0;
         boolean testFile = false;
         while (!testFile){
@@ -67,17 +68,19 @@ public final class Save {
      * @param game Used to output loaded information to the game
      * @return True if load was successful, False if not.
      */
-    public static boolean loadFile(File save, Game game){
+    public static Map loadFile(File save, Game game){
         game.running = true;
         String section = "";
-        int y = 1; // for counting rows in map
+        String mapString = "";
+        Map loadedMap = null;
+        int y = 0; // for counting rows in map
         //Load file into Scanner
         Scanner loader = null;
         try {
             loader = new Scanner(save);
         } catch (FileNotFoundException ex) {
             Logger.getLogger(Save.class.getName()).log(Level.SEVERE, null, ex);
-            return false;
+            return loadedMap;
         }
         //Put Loaded Data into Game
         while (loader.hasNextLine()){
@@ -86,32 +89,13 @@ public final class Save {
             }
             if (section.equals("#TEXT"))
                 game.textOutput.append(loader.nextLine()+ "\n");
-            if (section.equals("#MAP")){
-                System.out.println("");
-                String row = loader.nextLine();
-                for (int x = 0; x < row.length() ; x++){
-                    switch (row.charAt(x)) {
-                        case '_':
-                            game.m.tiles[x][y] = new Tile ("images/defaultTile.png", x, y);
-                            System.out.print("_");
-                            break;
-                        case 'm':
-                            game.m.tiles[x][y] = new MountainTile ("images/mountainTile.png", x, y);
-                            System.out.print("m");
-                            break;
-                        case 'w':
-                            game.m.tiles[x][y] = new WaterTile ("images/waterTile.png", x, y);
-                            System.out.print("w");
-                            break;
-                        default:
-                            break;
-                    }
-                }
-            }
+            if (section.equals("#MAP"))
+                mapString = mapString + loader.nextLine() +"\n";
         }
+        //System.out.println(mapString.length());
+        loadedMap = new Map(mapString);
         
-        System.out.println(Arrays.toString(game.m.tiles));
-        loader.close();
-        return true;
+    loader.close();
+    return loadedMap;    
     }
 }

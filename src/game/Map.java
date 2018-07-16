@@ -129,23 +129,53 @@ public class Map {
         }
     }
     
-    /*public Map(Tile[][] t){
+    public Map(String s){
         width = 64;
         height = 64;
-        tiles = t;
+        int a = 0;
+        int b = 0;
+        tiles = new Tile[width][height];
+        for (int i = 0; i < s.length(); i++){
+            if (b == 64) break;
+            char c = s.charAt(i);
+            //System.out.println(a + "     " +b);
+            switch (c) {
+                case '_':
+                    tiles[a][b] = new Tile ("images/defaultTile.png", a, b);
+                    //System.out.print("_");
+                     a++;
+                    break;
+                case 'm':
+                    tiles[a][b] = new MountainTile ("images/mountainTile.png", a, b);
+                    //System.out.print("m");
+                    a++;
+                    break;
+                case 'w':
+                    tiles[a][b] = new WaterTile ("images/waterTile.png", a, b);
+                    //System.out.print("w");
+                    a++;
+                    break;
+                case '\n': 
+                    a=0;
+                    b++;
+                    break;
+                default:
+                    break;
+            }
+        }
         chunks = new Chunk[8][8];
         Tile[][] chunkTiles = new Tile[8][8];
         for (int i = 0; i < 8; i++){
-            for (int b = 0; b < 8; b++){
+            for (int j = 0; j < 8; j++){
                 for (int y = 0; y < 8; y++){
                     for (int x = 0; x < 8; x++){
-                        chunkTiles[y][x] = tiles[((i*8)+y)][((b*8)+x)];
+                        chunkTiles[y][x] = tiles[((i*8)+y)][((j*8)+x)];
                     }
                 }
-                chunks[i][b] = new Chunk(chunkTiles);
+                chunks[i][j] = new Chunk(chunkTiles);
             }
         }
-        
         currentChunk = chunks[0][0];
-    }*/
+        
+    }
 }
