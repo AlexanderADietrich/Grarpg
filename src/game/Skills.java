@@ -18,6 +18,9 @@ public class Skills {
         //Add Default Skills. All other skills will have to be learned.
         this.addSkill("attack", 1);
         this.addSkill("go", 1);
+        this.addSkill("swim", 0);
+        this.addSkill("climb", 0);
+        this.addSkill("BLOCKED", 0);
         this.e=e;
     }
     public void addSkill(String skill, Integer level){

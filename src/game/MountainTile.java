@@ -10,8 +10,8 @@ package game;
  * @author voice
  */
 public class MountainTile extends Tile{
-    public String skillTraverse = "climb";
     public MountainTile(String s, int x, int y){
         super(s, x, y);
+        skillTraverse = "climb";
     }
 }

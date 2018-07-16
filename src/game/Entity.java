@@ -12,6 +12,21 @@ public class Entity {
     private double hp;
     private String name;
     
+    @Override
+    public boolean equals(Object e){
+        if (e.getClass().isInstance(this)){
+            Entity b = (Entity) e;
+            if (b.getXPOS() == this.getXPOS()){
+                if (b.getYPOS() == this.getYPOS()){
+                    if (b.name.equals(this.name)){
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+    
     public String doFightTick(){
         return "1 DEFAULTDAMAGECAUSE";
         /*

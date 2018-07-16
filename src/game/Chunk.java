@@ -55,14 +55,26 @@ public class Chunk {
             
                 //If the tile attempted is empty.
                 if (entities[e.getYPOS()+yDif][e.getXPOS()+xDif] == null) {
+                    //If the entity is a Player type, and does not have the skill, break.
+                    if (Player.class.isInstance(e)){
+                        Player p = (Player) e;
+                        if (p.skillChecker.getSkillLevel(tiles[p.getYPOS()+yDif][p.getXPOS()+xDif].skillTraverse) > 0){}
+                        else return;
+                    }
+                    
+                    
                     entities[e.getYPOS()][e.getXPOS()] = null;
                     entities[e.getYPOS()+yDif][e.getXPOS()+xDif] = e;
                     e.setXPOS(e.getXPOS()+xDif);
                     e.setYPOS(e.getYPOS()+yDif);
                 } else {
+                    
+                    /*
                     System.out.println(Enemy.class.isInstance(e));
                     System.out.println(Enemy.class.equals(e));
                     System.out.println(Player.class.equals(entities[e.getYPOS()+yDif][e.getXPOS()+xDif]));
+                    */
+                    
                     if (g != null && Enemy.class.isInstance(e) &&
                             Player.class.isInstance(entities[e.getYPOS()+yDif][e.getXPOS()+xDif])){
                                                                                                                                                 System.out.println(e.getXPOS() + " " + e.getYPOS() + " " + entities[e.getYPOS()+yDif][e.getXPOS()+xDif].getXPOS() + " " + entities[e.getYPOS()+yDif][e.getXPOS()+xDif].getYPOS());
