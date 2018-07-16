@@ -1,6 +1,7 @@
 package game;
 
 import java.io.File;
+import java.util.Arrays;
 
 public class Commands {
     public Game game;
@@ -121,13 +122,17 @@ public class Commands {
         if (command.startsWith("Load")){
             command = command.substring(5, command.length()-1) + ".txt";
             File f = new File(new File("").getAbsoluteFile() + "\\" + command);
-            if (Save.loadFile(f, game)){
+            Map temp = Save.loadFile(f, game);
+            if (temp != null){
                 game.textOutput.append("Load Successful\n");
+                game.m = temp;
             }else
                 game.textOutput.append("Load Failed\n");
+            
+            System.out.println(Arrays.toString(game.m.tiles));
         } 
         
-        //Starts Gmae form Main Menu TODO: Pause game untill started
+        //Starts Game form Main Menu
         if (command.startsWith("Start Game")){
             game.running = true;
             game.textOutput.append("Who are you?\n");
