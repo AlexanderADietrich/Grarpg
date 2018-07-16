@@ -24,6 +24,14 @@ public class Map {
     
     public Map(Game g){
         this.g=g;
+    }
+    
+    public Map(Game g, boolean b){
+        this.g=g;
+        this.generate();
+    }
+    
+    public void generate(){
         width = 64;
         height = 64;
         tiles = new Tile[64][64];
@@ -55,6 +63,7 @@ public class Map {
         currentChunk = chunks[0][0];
         currentChunk.passGame(g);
     }
+    
     public void generateMountain(Tile[][] input, int locX, int locY){
         Tile[][] mountainBounds = new Tile[24][24];
         for (int i = 0; i < 24; i++){

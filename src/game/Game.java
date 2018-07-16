@@ -19,7 +19,7 @@ public class Game extends Applet implements Runnable{
     private Image                   basicTile;
     private Graphics                graphicsBuffer;
     public URL                      mainURL;
-    public Map                      m = new Map(this); 
+    public Map                      m = new Map(this, true); 
     private TextField               textInput = new TextField("", 10);
     public TextArea                 textOutput = new TextArea(10, TextArea.SCROLLBARS_VERTICAL_ONLY);
     private Font                    mainFont = new Font(Font.MONOSPACED, 10, 15);

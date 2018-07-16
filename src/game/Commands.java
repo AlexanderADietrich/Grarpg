@@ -61,43 +61,91 @@ public class Commands {
             && p.skillChecker.getSkillLevel("go") > 0){
                 command = command.substring(3, command.length());
                 if (command.startsWith("right")){
+                    
+                    //Switches Chunks
                     if (game.p.getXPOS() + 1 > 7 && game.m.chunkX < 7){
-                        game.m.currentChunk = game.m.chunks[game.m.chunkX+1][game.m.chunkY];
+                        //if tile on other chunk can be traversed
+                        if (p.skillChecker.getSkillLevel(
+                                game.m.chunks[game.m.chunkY][game.m.chunkX+1].tiles[p.getYPOS()][0].skillTraverse) > 0){}
+                        else return;
+                        
+                        //Remove Player
+                        game.m.currentChunk.entities[p.getYPOS()][p.getXPOS()] = null;
+                        
+                        //Re-add Player
+                        game.m.currentChunk = game.m.chunks[game.m.chunkY][game.m.chunkX+1];
                         game.m.currentChunk.entities[p.getYPOS()][0] = p;
                         game.m.chunkX++;
                         p.setXPOS(0);
                         return;
                     }
+                    
                     game.m.currentChunk.updateLoc(p, 1, 0);
                 } 
                 else if (command.startsWith("left")){
+                    
+                    //Switches Chunks
                     if (game.p.getXPOS() - 1 < 0 && game.m.chunkX > 0){
+                        //if tile on other chunk can be traversed
+                        if (p.skillChecker.getSkillLevel(
+                                game.m.chunks[game.m.chunkY][game.m.chunkX-1].tiles[p.getYPOS()][7].skillTraverse) > 0){}
+                        else return;
+                        
+                        //Remove Player
+                        game.m.currentChunk.entities[p.getYPOS()][p.getXPOS()] = null;
+                        
+                        //Re-add Player
                         game.m.currentChunk = game.m.chunks[game.m.chunkY][game.m.chunkX-1];
                         game.m.currentChunk.entities[p.getYPOS()][7] = p;
                         game.m.chunkX--;
                         p.setXPOS(7);
                         return;
                     }
+                    
                     game.m.currentChunk.updateLoc(p, -1, 0);
                 } 
                 else if (command.startsWith("down")){
+                    
+                    //Switches Chunks
                     if (game.p.getYPOS() + 1 > 7 && game.m.chunkY < 7){
+                        //if tile on other chunk can be traversed
+                        if (p.skillChecker.getSkillLevel(
+                                game.m.chunks[game.m.chunkY+1][game.m.chunkX].tiles[0][p.getXPOS()].skillTraverse) > 0){}
+                        else return;
+                        
+                        //Remove Player
+                        game.m.currentChunk.entities[p.getYPOS()][p.getXPOS()] = null;
+                        
+                        //Re-add Player
                         game.m.currentChunk = game.m.chunks[game.m.chunkY+1][game.m.chunkX];
                         game.m.currentChunk.entities[0][p.getXPOS()] = p;
                         game.m.chunkY++;
                         p.setYPOS(0);
                         return;
                     }
+                    
                     game.m.currentChunk.updateLoc(p, 0, 1);
                 } 
                 else if (command.startsWith("up")){
+                    
+                    //Switches Chunks
                     if (game.p.getYPOS() - 1 < 0 && game.m.chunkY > 0){
-                        game.m.currentChunk = game.m.chunks[game.m.chunkX][game.m.chunkY-1];
+                        //if tile on other chunk can be traversed
+                        if (p.skillChecker.getSkillLevel(
+                                game.m.chunks[game.m.chunkY-1][game.m.chunkX].tiles[7][p.getXPOS()].skillTraverse) > 0){}
+                        else return;
+                        
+                        //Remove Player
+                        game.m.currentChunk.entities[p.getYPOS()][p.getXPOS()] = null;
+                        
+                        //Re-add Player
+                        game.m.currentChunk = game.m.chunks[game.m.chunkY-1][game.m.chunkX];
                         game.m.currentChunk.entities[7][p.getXPOS()] = p;
                         game.m.chunkY--;
                         p.setYPOS(7);
                         return;
                     }
+                    
                     game.m.currentChunk.updateLoc(p, 0, -1);
                 }
         }
