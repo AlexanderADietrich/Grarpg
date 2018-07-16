@@ -129,7 +129,7 @@ public class Commands {
         
         //Starts Gmae form Main Menu TODO: Pause game untill started
         if (command.startsWith("Start Game")){
-            game.started = true;
+            game.running = true;
             game.textOutput.append("Who are you?\n");
         }
     }

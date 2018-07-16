@@ -31,7 +31,7 @@ public class Game extends Applet implements Runnable{
     public String                   worldMap = "";
     public Fight                    fight = new Fight(this);
     public boolean                  fighting = false;
-    public boolean                  started = false;
+    public boolean                  running = false;
     
     
     public int areaWidth;  //Width of Map Area (pixels).
@@ -58,11 +58,13 @@ public class Game extends Applet implements Runnable{
     
     //Tick any timers/ AI's.
     public void doTick(){
-        if (fighting) fight.doTick();
-        else{
-            for(Entity[] elist : m.currentChunk.entities){
-                for(Entity e : elist){
-                    if (e != null) e.doTick();
+        if (running){
+            if (fighting) fight.doTick();
+            else{
+                for(Entity[] elist : m.currentChunk.entities){
+                    for(Entity e : elist){
+                        if (e != null) e.doTick();
+                    }
                 }
             }
         }
@@ -189,7 +191,7 @@ public class Game extends Applet implements Runnable{
         //Sets background.
         mainGraphics.setColor(Color.black);
         mainGraphics.fillRect(0, 0, this.getWidth(), this.getHeight());
-        if(!started){
+        if(!running){
             mainGraphics.setColor(Color.green);
             mainGraphics.fillRect(0, 0, this.getWidth(), this.getHeight());
             mainGraphics.setColor(Color.black);
@@ -201,7 +203,7 @@ public class Game extends Applet implements Runnable{
         areaHeight = this.getHeight();
         areaWidth = this.getHeight();
         
-        if (!mapActive && started && !fighting){
+        if (!mapActive && running && !fighting){
             //Main rendering of the current section of map.
 
             for (int b = 0; b < m.currentChunk.tiles.length; b++) {
