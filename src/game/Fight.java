@@ -37,9 +37,16 @@ public class Fight {
             if (!turn)
                 if (i == 0) continue;
             
+            //Check for death
+            if (entities[i].getHP() <= 0){
+                System.out.println("DEAD");
+                g.m.currentChunk.entities[entities[i].getYPOS()][entities[i].getXPOS()] = null;
+                g.fighting = false;
+            }
+            
+            
             //Current Entity "attacks"
             parseThis = entities[i].doFightTick().trim().split(" ");
-            System.out.println(parseThis.length);
             
             if (parseThis.length < 2) continue;
             if (parseThis.length == 2){
