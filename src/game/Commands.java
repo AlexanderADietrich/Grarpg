@@ -173,11 +173,11 @@ public class Commands {
             Map temp = Save.loadFile(f, game);
             if (temp != null){
                 game.textOutput.append("Load Successful\n");
-                game.m = temp;
+                
+                //Re-Initiate the Game
+                game.reinit(temp);
             }else
                 game.textOutput.append("Load Failed\n");
-            
-            System.out.println(Arrays.toString(game.m.tiles));
         } 
         
         //Starts Game form Main Menu

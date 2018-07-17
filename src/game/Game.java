@@ -63,6 +63,7 @@ public class Game extends Applet implements Runnable{
             else{
                 for(Entity[] elist : m.currentChunk.entities){
                     for(Entity e : elist){
+                        if (e != null && Enemy.class.isInstance(e)) System.out.println(e.getXPOS() + "" + e.getYPOS());
                         if (e != null) e.doTick();
                     }
                 }
@@ -108,7 +109,16 @@ public class Game extends Applet implements Runnable{
         add(textInput);
         add(textOutput);
     }
-     
+    
+    public void reinit(Map m){
+        this.m.currentChunk=null;
+        this.m=null;
+        this.m=m;
+        m.currentChunk.entities[0][0] = new Player(0, 0, "", "images/GoodGuy.png");
+        m.currentChunk.entities[7][7] = new Enemy (7, 7, "BadGuy", 10, p, "images/BadGuy.png", m.currentChunk);
+        running = true;
+    }
+    
     public void start(){
         Thread thread = new Thread(this);
         thread.start();

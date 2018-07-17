@@ -69,7 +69,6 @@ public final class Save {
      * @return True if load was successful, False if not.
      */
     public static Map loadFile(File save, Game game){
-        game.running = true;
         String section = "";
         String mapString = "";
         Map loadedMap = null;
@@ -93,7 +92,7 @@ public final class Save {
                 mapString = mapString + loader.nextLine() +"\n";
         }
         //System.out.println(mapString.length());
-        loadedMap = new Map(mapString);
+        loadedMap = new Map(mapString, game);
         
     loader.close();
     return loadedMap;    

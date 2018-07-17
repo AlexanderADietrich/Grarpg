@@ -129,35 +129,47 @@ public class Map {
         }
     }
     
-    public Map(String s){
+    public Map(String s, Game g){
+        this.g=g;
+        
         width = 64;
         height = 64;
         int a = 0;
         int b = 0;
         tiles = new Tile[width][height];
+        
+        //First character is newline, last is not found. TODO:fix
+        s = s.substring(1, s.length()-1) + "_\n";
+        
+        String[] list = s.split("\\n");
+        for (String ss : list){
+            System.out.println(ss.length());
+        }
+        
         for (int i = 0; i < s.length(); i++){
-            if (b == 64) break;
-            char c = s.charAt(i);
-            //System.out.println(a + "     " +b);
+            if (a == 64) break;
+            String c = s.charAt(i) + "";
+            System.out.println(a + " " + b + " " + c.intern());
             switch (c) {
-                case '_':
-                    tiles[a][b] = new Tile ("images/defaultTile.png", a, b);
+                case "_":
+                    tiles[a][b] = new Tile("images/defaultTile.png", a, b);
                     //System.out.print("_");
-                     a++;
-                    break;
-                case 'm':
-                    tiles[a][b] = new MountainTile ("images/mountainTile.png", a, b);
-                    //System.out.print("m");
-                    a++;
-                    break;
-                case 'w':
-                    tiles[a][b] = new WaterTile ("images/waterTile.png", a, b);
-                    //System.out.print("w");
-                    a++;
-                    break;
-                case '\n': 
-                    a=0;
                     b++;
+                    break;
+                case "m":
+                    tiles[a][b] = new MountainTile("images/mountainTile.png", a, b);
+                    //System.out.print("m");
+                    b++;
+                    break;
+                case "w":
+                    tiles[a][b] = new WaterTile("images/waterTile.png", a, b);
+                    //System.out.print("w");
+                    b++;
+                    break;
+                case "\n": 
+                    System.out.println("HGERE");
+                    a++;
+                    b=0;
                     break;
                 default:
                     break;
@@ -169,6 +181,7 @@ public class Map {
             for (int j = 0; j < 8; j++){
                 for (int y = 0; y < 8; y++){
                     for (int x = 0; x < 8; x++){
+                        //if (tiles[((i*8)+y)][((j*8)+x)] == null ) System.out.println((i*8)+y + " " + (j*8)+x + " null");
                         chunkTiles[y][x] = tiles[((i*8)+y)][((j*8)+x)];
                     }
                 }
@@ -176,6 +189,7 @@ public class Map {
             }
         }
         currentChunk = chunks[0][0];
+        currentChunk.passGame(g);
         
     }
 }

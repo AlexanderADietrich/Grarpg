@@ -37,6 +37,7 @@ public class Chunk {
         for (int i = 0; i < tiles.length; i++){
             for (int b = 0; b < tiles[0].length; b++){
                 this.tiles[i][b] = tiles[i][b];
+                if (tiles[i][b] == null) System.out.println("null " + i + " " + b);
                 System.out.print(tiles[i][b].imagePath.substring(6, 9));
             }
             System.out.println();
@@ -69,16 +70,18 @@ public class Chunk {
                     e.setYPOS(e.getYPOS()+yDif);
                 } else {
                     
-                    /*
+                    
                     System.out.println(Enemy.class.isInstance(e));
-                    System.out.println(Enemy.class.equals(e));
-                    System.out.println(Player.class.equals(entities[e.getYPOS()+yDif][e.getXPOS()+xDif]));
-                    */
+                    System.out.println(Player.class.isInstance(entities[e.getYPOS()+yDif][e.getXPOS()+xDif]));
+                    
                     
                     if (g != null && Enemy.class.isInstance(e) &&
                             Player.class.isInstance(entities[e.getYPOS()+yDif][e.getXPOS()+xDif])){
-                                                                                                                                                System.out.println(e.getXPOS() + " " + e.getYPOS() + " " + entities[e.getYPOS()+yDif][e.getXPOS()+xDif].getXPOS() + " " + entities[e.getYPOS()+yDif][e.getXPOS()+xDif].getYPOS());
+                        System.out.println(e.getXPOS() + " " + e.getYPOS() 
+                                + " " + entities[e.getYPOS()+yDif][e.getXPOS()+xDif].getXPOS() 
+                                + " " + entities[e.getYPOS()+yDif][e.getXPOS()+xDif].getYPOS());
                         g.startFight(e, entities[e.getYPOS()+yDif][e.getXPOS()+xDif]);
+                        
                     }
                 }
         } 
