@@ -114,6 +114,23 @@ public class Game extends Applet implements Runnable{
         this.m.currentChunk=null;
         this.m=null;
         this.m=m;
+        
+        worldMap = "";
+        for (Tile[] tlist : m.tiles){
+            for (Tile t : tlist){
+                if (t.imagePath.substring(7, 8).equals("d")){
+                    System.out.print("_");
+                    worldMap = worldMap + "_";
+                }
+                else {
+                    System.out.print(t.imagePath.substring(7, 8));
+                    worldMap = worldMap + t.imagePath.substring(7, 8);
+                }
+            }
+            System.out.println();
+            worldMap = worldMap + "\n";
+        }
+        
         m.currentChunk.entities[0][0] = new Player(0, 0, "", "images/GoodGuy.png");
         m.currentChunk.entities[7][7] = new Enemy (7, 7, "BadGuy", 10, p, "images/BadGuy.png", m.currentChunk);
         running = true;
