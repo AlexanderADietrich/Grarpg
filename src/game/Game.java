@@ -59,6 +59,7 @@ public class Game extends Applet implements Runnable{
     //Tick any timers/ AI's.
     public void doTick(){
         if (running){
+            p.skillChecker.doSkillTick();
             if (fighting) fight.doTick();
             else{
                 for(Entity[] elist : m.currentChunk.entities){
@@ -194,13 +195,9 @@ public class Game extends Applet implements Runnable{
         }
     }
     
-    private int currentTick = 0;
     
     public void paint(Graphics mainGraphics){
-        if (currentTick == 5){
-            doTick();
-            currentTick = 0;
-        }
+        doTick();
         //"Draws" the basic tile. Necessary to get its width/height for scaling.
         if (images == null){ 
             mainGraphics.drawImage(basicTile, 
@@ -293,6 +290,5 @@ public class Game extends Applet implements Runnable{
         
         //Final line necessary for rendering.
         super.paint(mainGraphics);
-        currentTick++;
     }
 }

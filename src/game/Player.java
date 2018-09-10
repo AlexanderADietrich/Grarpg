@@ -14,6 +14,7 @@ public class Player extends Entity{
         this.setName(name);
         this.setHP(100);
         this.setImagePath(address);
+        inventory.put("SwimBottle", new OneUseItem(100, "swim", 10, 60));
     }
     
     public String doFightTick(){

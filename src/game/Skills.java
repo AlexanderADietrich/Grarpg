@@ -1,6 +1,7 @@
 package game;
 
 import java.util.HashMap;
+import java.util.Iterator;
 
 /**
  *
@@ -13,6 +14,12 @@ import java.util.HashMap;
     */
 public class Skills {
     private HashMap<String, Integer> skills = new HashMap<>();
+    private HashMap<String, Integer> buffs = new HashMap<>();
+    private HashMap<Timer,  Integer> timers = new HashMap<>();
+    Iterator                         timeIter;
+    Timer                            cTimeIter;
+    int                              cTimerCTime;
+    
     private Entity e;
     public Skills(Entity e){
         //Add Default Skills. All other skills will have to be learned.
@@ -23,10 +30,43 @@ public class Skills {
         this.addSkill("BLOCKED", 0);
         this.e=e;
     }
+    public void addBuff(String skill, int amount, int timer){
+        if (buffs.containsKey(skill)){
+            buffs.put(skill, buffs.get(skill) + amount);
+        }
+        timers.put(new Timer(skill, timer), amount);
+        buffs.put(skill, amount);
+    }
+    public void doSkillTick(){
+          timeIter = timers.keySet().iterator();
+          while (timeIter.hasNext()){
+              cTimeIter = (Timer) timeIter.next();
+              cTimerCTime = (int) ((System.currentTimeMillis() - cTimeIter.timeCreated)/1000);
+              System.out.println("POTION + " + (cTimeIter.timer - cTimerCTime));
+              if (cTimeIter.timer - cTimerCTime <= 0){
+                  System.out.println("REMOVED");
+                  buffs.put(cTimeIter.skill, buffs.get(cTimeIter.skill) - timers.get(cTimeIter));
+                  timers.remove(cTimeIter);
+              }
+          }
+    }
     public void addSkill(String skill, Integer level){
         skills.put(skill, level);
     }
     public int getSkillLevel(String skill){
-        return skills.get(skill);
+        try { return skills.get(skill) + buffs.get(skill);
+        } catch (Exception ex){
+            return skills.get(skill);
+        }
+    }
+    //Subtract from buff when Timer runs out. 
+    private static class Timer{
+        public Long timeCreated = System.currentTimeMillis();
+        public String skill;
+        public int timer;
+        public Timer(String skill, int timer){
+            this.skill = skill;
+            this.timer = timer;
+        }
     }
 }

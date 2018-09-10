@@ -44,9 +44,19 @@ public class Commands {
         }
         game.textOutput.append(command);
         
+        
+        if (command.startsWith("Use")){
+            Item item = p.inventory.get(command.substring(4, command.length()-1));
+            OneUseItem oneuse;
+            if (item != null){
+                if(OneUseItem.class.isInstance(item)) {
+                    oneuse = (OneUseItem) item;
+                    p.skillChecker.addBuff(oneuse.buff, oneuse.amountBuff, oneuse.time);
+                }
+            }
+        }
         if (command.startsWith("I'm")){
-                game.p = new Player(game.activeXPOS, game.activeYPOS, 
-                command.substring(4, command.length()), "images/GoodGuy.png");
+                game.p.setName(command.substring(4, command.length()));
                 game.textOutput.append("You're now \n" + 
                 command.substring(4, command.length()) + "\n");
         }
