@@ -32,6 +32,7 @@ public class Game extends Applet implements Runnable{
     public Fight                    fight = new Fight(this);
     public boolean                  fighting = false;
     public boolean                  running = false;
+    public Dungeon                  testDungeon = new Dungeon(this);
     
     
     public int areaWidth;  //Width of Map Area (pixels).
