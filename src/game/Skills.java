@@ -28,7 +28,7 @@ public class Skills {
         this.addSkill("swim", 0);
         this.addSkill("climb", 0);
         this.addSkill("BLOCKED", 0);
-        this.addSkill("NO-SKILL", -1);
+        this.addSkill("NO-SKILL", 1);
         this.e=e;
     }
     public void addBuff(String skill, int amount, int timer){

@@ -43,12 +43,14 @@ public class Map {
             }
         }
         chunks = new Chunk[8][8];
-        for (int i = 0; i < 10; i++){
-            generateMountain(tiles, rand.nextInt(width-24), rand.nextInt(height-24));
-        }
+        
         for (int i = 0; i < 6; i++){
             generateOcean(tiles, rand.nextInt(width-48), rand.nextInt(height-48));
         }
+        for (int i = 0; i < 10; i++){
+            generateMountain(tiles, rand.nextInt(width-24), rand.nextInt(height-24));
+        }
+        
         
         Tile[][] chunkTiles = new Tile[8][8];
         for (int i = 0; i < 8; i++){
@@ -96,9 +98,47 @@ public class Map {
         }
         for (int i = 0; i < 24; i++){
             for (int b = 0; b < 24; b++){
-                if (input[i+locX][b+locY] != null && input[i+locX][b+locY].imagePath.startsWith("images/default")) input[b+locX][i+locY] = mountainBounds[b][i];
+                if (input[i+locY][b+locX] != null && input[i+locY][b+locX].imagePath.startsWith("images/default")) input[i+locY][b+locX] = mountainBounds[i][b];
             }
         }
+        
+        //On outer mountain tile generate one Dungeon Entrance
+        
+        r = rand.nextInt(4);
+        for (int i = 0; i < 24; i++){
+            for (int b = 0; b < 24; b++){
+                //Scan Nearby Tiles for a mix of Default and Mountain
+                int d = 0;
+                int m = 0;
+                
+                try {
+                if (input[i+locY+1][b+locX] != null && input[i+locY+1][b+locX].imagePath.startsWith("images/default"))
+                    d++;
+                if (input[i+locY-1][b+locX] != null && input[i+locY-1][b+locX].imagePath.startsWith("images/default"))
+                    d++;
+                if (input[i+locY][b+locX+1] != null && input[i+locY][b+locX+1].imagePath.startsWith("images/default"))
+                    d++;
+                if (input[i+locY][b+locX-1] != null && input[i+locY][b+locX-1].imagePath.startsWith("images/default"))
+                    d++;
+                if (input[i+locY+1][b+locX] != null && input[i+locY+1][b+locX].imagePath.startsWith("images/mountain"))
+                    m++;
+                if (input[i+locY-1][b+locX] != null && input[i+locY-1][b+locX].imagePath.startsWith("images/mountain"))
+                    m++;
+                if (input[i+locY][b+locX+1] != null && input[i+locY][b+locX+1].imagePath.startsWith("images/mountain"))
+                    m++;
+                if (input[i+locY][b+locX-1] != null && input[i+locY][b+locX-1].imagePath.startsWith("images/mountain"))
+                    m++;
+                } catch (Exception ex) {}
+                
+                //Places Entrance Tiles Once then Exits Function
+                if (d != 0 && m != 0){
+                    System.out.println("\nDING DING\n");
+                    input[i+locY][b+locX] = new EntranceTile(b+locX, i+locY, this, g);
+                    return;
+                }
+            }
+        }
+        
     }
     public void generateOcean(Tile[][] input, int locX, int locY){
         Tile[][] oceanBounds = new Tile[48][48];
@@ -126,7 +166,7 @@ public class Map {
         }
         for (int i = 0; i < 48; i++){
             for (int b = 0; b < 48; b++){
-                if (input[i+locX][b+locY] != null && input[i+locX][b+locY].imagePath.startsWith("images/default"))input[i+locX][b+locY] = oceanBounds[i][b];
+                if (input[i+locY][b+locX] != null && input[i+locY][b+locX].imagePath.startsWith("images/default"))input[i+locY][b+locX] = oceanBounds[i][b];
             }
         }
     }

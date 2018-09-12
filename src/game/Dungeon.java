@@ -103,8 +103,8 @@ public class Dungeon extends Map{
         
         //Make Dungeons Have Some Length
         while (Math.sqrt( Math.pow((initX-goalX), 2) + Math.pow(initY-goalY, 2)) < 24){
-            initX = (int) (r.nextDouble()*31);
-            initY = (int) (r.nextDouble()*31);
+            initX =     (int) (r.nextDouble()*31);
+            initY =     (int) (r.nextDouble()*31);
             goalX =     (int) (r.nextDouble()*31);
             goalY =     (int) (r.nextDouble()*31);
         }

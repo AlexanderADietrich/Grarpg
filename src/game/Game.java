@@ -44,7 +44,7 @@ public class Game extends Applet implements Runnable{
             m.ID = idCounter;
             maps[idCounter++] = m;
         } else {
-            System.out.println("EXPANDED ARRAY");
+            System.out.println("EXPAND ARRAY");
             Map[] newArray = new Map[maps.length*2];
             for (int i = 0; i < maps.length; i++){
                 newArray[i] = maps[i];
@@ -97,7 +97,6 @@ public class Game extends Applet implements Runnable{
     public void init(){
         m.currentChunk.entities[0][0] = p;
         m.currentChunk.entities[7][7] = e;
-        m.currentChunk.tiles[6][6] = new EntranceTile(6, 6, m, this);
         for (Tile[] tlist : m.tiles){
             for (Tile t : tlist){
                 if (t.imagePath.substring(7, 8).equals("d")){
@@ -133,8 +132,20 @@ public class Game extends Applet implements Runnable{
     
     public void enterDungeon(EntranceTile e){
         if (e.reverse.Map.ID < 0) addMap(e.reverse.Map);
+        
+        m.currentChunk.entities[p.getYPOS()][p.getXPOS()] = null;
+        
         this.m = maps[e.reverse.Map.ID];
-        m.currentChunk.entities[e.reverse.y % 8][e.reverse.x % 8] = new Player(e.reverse.x % 8, e.reverse.y % 8, "", "images/GoodGuy.png");
+        
+        m.currentChunk.entities[e.reverse.y % 8][e.reverse.x % 8] = p;
+        
+        System.out.println("TILE AT\t " + e.reverse.x + "," + e.reverse.y);
+        System.out.println("ENTER AT\t " + (e.reverse.x % 8) + "," + (e.reverse.y % 8));
+        System.out.println(e.reverse.x);
+        System.out.println(e.reverse.reverse.reverse.x);
+        
+        p.setXPOS(e.reverse.x % 8);
+        p.setYPOS(e.reverse.y % 8);
         p = (Player) m.currentChunk.entities[e.reverse.y % 8][e.reverse.x % 8];
     }
     
