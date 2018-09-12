@@ -22,6 +22,7 @@ public class Map {
     private Random          rand = new Random();
     private Game            g;
     
+    public Map(){}
     public Map(Game g){
         this.g=g;
     }

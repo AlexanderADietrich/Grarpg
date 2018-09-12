@@ -44,7 +44,18 @@ public class Commands {
         }
         game.textOutput.append(command);
         
-        
+        if (command.startsWith("PRINT")){//Debugging Tool
+            System.out.println("PLAYER:\t\t" + game.p.getXPOS() + "," + game.p.getYPOS());
+            for (Entity[] eList : game.m.currentChunk.entities){
+                for (Entity e : eList){
+                    if (Player.class.isInstance(e)) System.out.println("CHUNKPLAYER:\t" + e.getXPOS() + "," + e.getYPOS());
+                }
+            }
+            
+        }
+        if (command.startsWith("Enter Dungeon")){
+            game.enterDungeon(game.testDungeon.entranceX, game.testDungeon.entranceY);
+        }
         if (command.startsWith("Use")){
             Item item = p.inventory.get(command.substring(4, command.length()-1));
             OneUseItem oneuse;

@@ -28,6 +28,7 @@ public class Skills {
         this.addSkill("swim", 0);
         this.addSkill("climb", 0);
         this.addSkill("BLOCKED", 0);
+        this.addSkill("NO-SKILL", -1);
         this.e=e;
     }
     public void addBuff(String skill, int amount, int timer){
@@ -54,9 +55,15 @@ public class Skills {
         skills.put(skill, level);
     }
     public int getSkillLevel(String skill){
-        try { return skills.get(skill) + buffs.get(skill);
+        try { 
+            return skills.get(skill) + buffs.get(skill);
         } catch (Exception ex){
-            return skills.get(skill);
+            try {
+                return skills.get(skill);
+            } catch (Exception exx) {
+                exx.printStackTrace();
+                return 0;
+            }
         }
     }
     //Subtract from buff when Timer runs out. 

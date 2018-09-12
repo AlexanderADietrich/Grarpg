@@ -13,18 +13,20 @@ import java.util.Random;
  */
 public class Dungeon extends Map{
     public Random r = new Random();
+    public int entranceX;
+    public int entranceY;
+    
     
     public Dungeon(Game g) {
-        super(g);
         width = 32;
         height = 32;
         tiles = new Tile[32][32];
         for (int i = 0; i < 32; i++){
             for (int b = 0; b < 32; b++){
-                tiles[b][i] = new WallTile("images/wallTile.png", b, i);
+                tiles[i][b] = new WallTile("images/wallTile.png", b, i);
             }
         }
-        chunks = new Chunk[2][2];
+        chunks = new Chunk[4][4];
         
         
         
@@ -33,7 +35,7 @@ public class Dungeon extends Map{
         
         //Display
         
-        System.out.println("DUNGEON\n");
+        System.out.println("\nDUNGEON\n");
         
         for (int i = 0; i < tiles.length; i++){
             for (int b = 0; b < tiles[i].length; b++){
@@ -42,21 +44,33 @@ public class Dungeon extends Map{
             System.out.println();
         }
         
-        System.out.println("\nDUNGEON");
-        
+        System.out.println("\nDUNGEON\n");
+        boolean startChunk = false;
         Tile[][] chunkTiles = new Tile[8][8];
-        for (int i = 0; i < 2; i++){
-            for (int b = 0; b < 2; b++){
+        for (int i = 0; i < 4; i++){
+            for (int b = 0; b < 4; b++){
                 for (int y = 0; y < 8; y++){
                     for (int x = 0; x < 8; x++){
                         chunkTiles[y][x] = tiles[((i*8)+y)][((b*8)+x)];
+                        System.out.println("SHOULD BE\t (" + entranceX + "," + entranceY + ")");
+                        System.out.println("IS\t\t (" + ((b*8)+x) + "," + ((i*8)+y) + ")");
+                        if (((i*8)+y) == entranceY && ((b*8)+x) == entranceX){
+                            System.out.println("\n\n HERE \n\n");
+                            startChunk = true;
+                        }
                     }
                 }
                 chunks[i][b] = new Chunk(chunkTiles);
+                if (startChunk) {
+                    currentChunk = chunks[i][b];
+                    chunkX = b;
+                    chunkY = i;
+                    startChunk = false;
+                }
             }
         }
         
-        currentChunk = chunks[0][0];
+        
         currentChunk.passGame(g);
     }
     //TODO: Place Treasure at Treasure Location
@@ -65,7 +79,7 @@ public class Dungeon extends Map{
         int startX = (int) (r.nextDouble()*31);
         int startY = (int) (r.nextDouble()*31);
         while (true){
-            if (tiles[startX][startY].imagePath.equals("images/defaultTile.png")) break;
+            if (tiles[startY][startX].imagePath.equals("images/defaultTile.png")) break;
             startX = (int) (r.nextDouble()*31);
             startY = (int) (r.nextDouble()*31);
         }
@@ -82,25 +96,23 @@ public class Dungeon extends Map{
     }
     //TODO: Make and place "Entrance" and "Exit" Tiles.
     public void initialGeneration(){
-        int entranceX = (int) (r.nextDouble()*32);
-        int entranceY = (int) (r.nextDouble()*32);
-        int goalX = (int) (r.nextDouble()*32);
-        int goalY = (int) (r.nextDouble()*32);
+        int initX = (int) (r.nextDouble()*31);
+        int initY = (int) (r.nextDouble()*31);
+        int goalX =     (int) (r.nextDouble()*31);
+        int goalY =     (int) (r.nextDouble()*31);
         
         //Make Dungeons Have Some Length
-        while (Math.sqrt( Math.pow((entranceX-goalX), 2) + Math.pow(entranceY-goalY, 2)) < 24){
-            entranceX = (int) (r.nextDouble()*31);
-            entranceY = (int) (r.nextDouble()*31);
-            goalX = (int) (r.nextDouble()*31);
-            goalY = (int) (r.nextDouble()*31);
+        while (Math.sqrt( Math.pow((initX-goalX), 2) + Math.pow(initY-goalY, 2)) < 24){
+            initX = (int) (r.nextDouble()*31);
+            initY = (int) (r.nextDouble()*31);
+            goalX =     (int) (r.nextDouble()*31);
+            goalY =     (int) (r.nextDouble()*31);
         }
         
-        int currentX = entranceX;
-        int currentY = entranceY;
+        this.entranceX = initX;
+        this.entranceY = initY;
         
-        Boolean flipflop = true;
-        
-        generatePath(goalX, goalY, entranceX, entranceY);
+        generatePath(goalX, goalY, initX, initY);
     }
     
     public void generatePath(int goalX, int goalY, int startX, int startY){
@@ -112,29 +124,29 @@ public class Dungeon extends Map{
         while (true){
             System.out.println("goal\t" + goalX + " \t" + goalY);
             System.out.println("here\t" + currentX + " \t" + currentY);
-            tiles[currentX][currentY] = new Tile("images/defaultTile.png", currentX, currentY);
+            tiles[currentY][currentX] = new Tile("images/defaultTile.png", currentX, currentY);
             //Make a path randomly
             if (r.nextDouble() < 0.5){
                 //X
                 if (r.nextDouble() < 0.5){
                     //+
-                    if (r.nextDouble() < 0.5){
+                    if (r.nextDouble() < 0.5 && currentX < tiles[currentY].length-1){
                         currentX++;
                     }
                     //-
                     else {
-                        currentX--;
+                        if (currentX > 0) currentX--;
                     }
                 }
                 //Y
                 else {
                     //+
-                    if (r.nextDouble() < 0.5){
+                    if (r.nextDouble() < 0.5 && currentY < tiles.length-1){
                         currentY++;
                     }
                     //-
                     else {
-                        currentX++;
+                        if (currentY > 0) currentY--;
                     }
                 }
             } 

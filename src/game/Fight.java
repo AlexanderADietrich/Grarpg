@@ -51,7 +51,8 @@ public class Fight {
             if (parseThis.length < 2) continue;
             if (parseThis.length == 2){
                 System.out.println("HERE");
-                damage = (double) Integer.parseInt(parseThis[0]);
+                try { damage = (double) Integer.parseInt(parseThis[0]); }
+                catch (Exception ex) { continue; }
                 reason = parseThis[1];
                 if (i == 0) target = entities[1].getName();
                 else target = entities[i-1].getName();

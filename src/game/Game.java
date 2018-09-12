@@ -23,8 +23,6 @@ public class Game extends Applet implements Runnable{
     private TextField               textInput = new TextField("", 10);
     public TextArea                 textOutput = new TextArea(10, TextArea.SCROLLBARS_VERTICAL_ONLY);
     private Font                    mainFont = new Font(Font.MONOSPACED, 10, 15);
-    public int                      activeXPOS = 0;
-    public int                      activeYPOS = 0;
     public Player                   p = new Player(0, 0, "", "images/GoodGuy.png");
     public Enemy                    e = new Enemy (7, 7, "BadGuy", 10, p, "images/BadGuy.png", m.currentChunk);
     public boolean                  mapActive = false;
@@ -112,6 +110,14 @@ public class Game extends Applet implements Runnable{
         add(textOutput);
     }
     
+    public void enterDungeon(int entranceX, int entranceY){
+        this.m.currentChunk=null;
+        this.m=null;
+        this.m = testDungeon;
+        m.currentChunk.entities[testDungeon.entranceY % 8][testDungeon.entranceX % 8] = new Player(testDungeon.entranceX % 8, testDungeon.entranceY % 8, "", "images/GoodGuy.png");
+        p = (Player) m.currentChunk.entities[testDungeon.entranceY % 8][testDungeon.entranceX % 8];
+    }
+    
     public void reinit(Map m){
         this.m.currentChunk=null;
         this.m=null;
@@ -134,7 +140,9 @@ public class Game extends Applet implements Runnable{
         }
         
         m.currentChunk.entities[0][0] = new Player(0, 0, "", "images/GoodGuy.png");
+        p = (Player) m.currentChunk.entities[0][0];
         m.currentChunk.entities[7][7] = new Enemy (7, 7, "BadGuy", 10, p, "images/BadGuy.png", m.currentChunk);
+        e = (Enemy) m.currentChunk.entities[7][7];
         running = true;
     }
     
