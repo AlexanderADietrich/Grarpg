@@ -18,7 +18,8 @@ public class Launcher {
             "images/defaultTile.png",
             "images/waterTile.png",
             "images/mountainTile.png",
-            "images/wallTile.png"
+            "images/wallTile.png",
+            "images/entranceTile.png"
         };
         String s = "" + new File("").getAbsolutePath().replace('\\', '/') + "/src/";
         for (String path : imagePaths){

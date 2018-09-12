@@ -12,6 +12,7 @@ import java.util.Random;
  * @author voice
  */
 public class Map {
+    public int              ID = -1;
     public int              width;
     public int              height;
     public Tile[][]         tiles;

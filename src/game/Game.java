@@ -19,7 +19,10 @@ public class Game extends Applet implements Runnable{
     private Image                   basicTile;
     private Graphics                graphicsBuffer;
     public URL                      mainURL;
-    public Map                      m = new Map(this, true); 
+    public Map                      m = new Map(this, true);
+    public Map[]                    maps = new Map[1];
+    public int                      idCounter = 0;
+    
     private TextField               textInput = new TextField("", 10);
     public TextArea                 textOutput = new TextArea(10, TextArea.SCROLLBARS_VERTICAL_ONLY);
     private Font                    mainFont = new Font(Font.MONOSPACED, 10, 15);
@@ -35,6 +38,23 @@ public class Game extends Applet implements Runnable{
     
     public int areaWidth;  //Width of Map Area (pixels).
     public int areaHeight; //Height of Map Area (pixels).
+    
+    public void addMap(Map m){
+        if (idCounter < maps.length) {
+            m.ID = idCounter;
+            maps[idCounter++] = m;
+        } else {
+            System.out.println("EXPANDED ARRAY");
+            Map[] newArray = new Map[maps.length*2];
+            for (int i = 0; i < maps.length; i++){
+                newArray[i] = maps[i];
+            }
+            maps = newArray;
+            
+            m.ID = idCounter;
+            maps[idCounter++] = m;
+        }
+    }
     
     public void passImages(HashMap<String, Image> imageInput){
         images = imageInput;
@@ -77,6 +97,7 @@ public class Game extends Applet implements Runnable{
     public void init(){
         m.currentChunk.entities[0][0] = p;
         m.currentChunk.entities[7][7] = e;
+        m.currentChunk.tiles[6][6] = new EntranceTile(6, 6, m, this);
         for (Tile[] tlist : m.tiles){
             for (Tile t : tlist){
                 if (t.imagePath.substring(7, 8).equals("d")){
@@ -110,12 +131,11 @@ public class Game extends Applet implements Runnable{
         add(textOutput);
     }
     
-    public void enterDungeon(int entranceX, int entranceY){
-        this.m.currentChunk=null;
-        this.m=null;
-        this.m = testDungeon;
-        m.currentChunk.entities[testDungeon.entranceY % 8][testDungeon.entranceX % 8] = new Player(testDungeon.entranceX % 8, testDungeon.entranceY % 8, "", "images/GoodGuy.png");
-        p = (Player) m.currentChunk.entities[testDungeon.entranceY % 8][testDungeon.entranceX % 8];
+    public void enterDungeon(EntranceTile e){
+        if (e.reverse.Map.ID < 0) addMap(e.reverse.Map);
+        this.m = maps[e.reverse.Map.ID];
+        m.currentChunk.entities[e.reverse.y % 8][e.reverse.x % 8] = new Player(e.reverse.x % 8, e.reverse.y % 8, "", "images/GoodGuy.png");
+        p = (Player) m.currentChunk.entities[e.reverse.y % 8][e.reverse.x % 8];
     }
     
     public void reinit(Map m){

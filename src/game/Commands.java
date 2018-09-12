@@ -54,7 +54,8 @@ public class Commands {
             
         }
         if (command.startsWith("Enter Dungeon")){
-            game.enterDungeon(game.testDungeon.entranceX, game.testDungeon.entranceY);
+            if (EntranceTile.class.isInstance(game.m.currentChunk.tiles[game.p.getYPOS()][game.p.getXPOS()])) 
+                game.enterDungeon((EntranceTile) game.m.currentChunk.tiles[game.p.getYPOS()][game.p.getXPOS()]);
         }
         if (command.startsWith("Use")){
             Item item = p.inventory.get(command.substring(4, command.length()-1));
