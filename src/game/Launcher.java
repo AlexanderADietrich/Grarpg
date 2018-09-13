@@ -4,8 +4,6 @@ import java.awt.Image;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 
 public class Launcher {
@@ -19,7 +17,10 @@ public class Launcher {
             "images/waterTile.png",
             "images/mountainTile.png",
             "images/wallTile.png",
-            "images/entranceTile.png"
+            "images/entranceTile.png",
+            "images/treasureTile.png",
+            "images/blackTile.png",
+            "images/brickTile.png"
         };
         String s = "" + new File("").getAbsolutePath().replace('\\', '/') + "/src/";
         for (String path : imagePaths){

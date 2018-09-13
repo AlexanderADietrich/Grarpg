@@ -68,6 +68,20 @@ public class Map {
         currentChunk.passGame(g);
     }
     
+    public void update(){
+        Tile[][] chunkTiles = new Tile[8][8];
+        for (int i = 0; i < 8; i++){
+            for (int b = 0; b < 8; b++){
+                for (int y = 0; y < 8; y++){
+                    for (int x = 0; x < 8; x++){
+                        chunkTiles[y][x] = tiles[((i*8)+y)][((b*8)+x)];
+                    }
+                }
+                chunks[i][b] = new Chunk(chunkTiles);
+            }
+        }
+    }
+    
     public void generateMountain(Tile[][] input, int locX, int locY){
         Tile[][] mountainBounds = new Tile[24][24];
         for (int i = 0; i < 24; i++){

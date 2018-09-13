@@ -44,6 +44,28 @@ public class Commands {
         }
         game.textOutput.append(command);
         
+        if (command.startsWith("inventory")){
+            if (game.p.inventory.size() == 1){ 
+                game.textOutput.append(game.p.inventory.keySet().iterator().next() + "\n");
+                return;
+            }
+            
+            String retVal = "";
+            for (String s : game.p.inventory.keySet()){
+                retVal = retVal + s + ",\n";
+            }
+            game.textOutput.append(retVal);
+        }
+        if (command.startsWith("grab")){
+            for (Tile t : game.getPlayerAdjTiles()){
+                if (TreasureTile.class.isInstance(t)){
+                    TreasureTile copy = (TreasureTile) t;
+                    for (Item e : copy.items){
+                        game.p.inventory.put(game.nameGen.getName(e.buff), e);
+                    }
+                }
+            }
+        }
         if (command.startsWith("PRINT")){//Debugging Tool
             System.out.println("PLAYER:\t\t" + game.p.getXPOS() + "," + game.p.getYPOS());
             for (Entity[] eList : game.m.currentChunk.entities){
@@ -54,8 +76,8 @@ public class Commands {
             
         }
         if (command.startsWith("Enter Dungeon")){
-            if (EntranceTile.class.isInstance(game.m.currentChunk.tiles[game.p.getYPOS()][game.p.getXPOS()])) 
-                game.enterDungeon((EntranceTile) game.m.currentChunk.tiles[game.p.getYPOS()][game.p.getXPOS()]);
+            if (EntranceTile.class.isInstance(game.getPlayerTile())) 
+                game.switchMap((EntranceTile) game.getPlayerTile());
         }
         if (command.startsWith("Use")){
             Item item = p.inventory.get(command.substring(4, command.length()-1));

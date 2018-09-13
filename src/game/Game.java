@@ -34,10 +34,33 @@ public class Game extends Applet implements Runnable{
     public boolean                  fighting = false;
     public boolean                  running = false;
     public Dungeon                  testDungeon = new Dungeon(this);
+    public Namer                    nameGen = new Namer();
     
     
     public int areaWidth;  //Width of Map Area (pixels).
     public int areaHeight; //Height of Map Area (pixels).
+
+    
+    public Tile[] getPlayerAdjTiles(){
+        Tile[] tiles = new Tile[4];
+        int place = 0;
+        if (p.getXPOS() < 7) tiles[place++] = m.currentChunk.tiles[p.getYPOS()][p.getXPOS()+1];
+        if (p.getXPOS() > 1) tiles[place++] = m.currentChunk.tiles[p.getYPOS()][p.getXPOS()-1];
+        if (p.getYPOS() < 7) tiles[place++] = m.currentChunk.tiles[p.getYPOS()+1][p.getXPOS()];
+        if (p.getYPOS() > 1) tiles[place++] = m.currentChunk.tiles[p.getYPOS()-1][p.getXPOS()];
+        
+        if (place < 4){
+            Tile[] temp = new Tile[place];
+            System.arraycopy(tiles, 0, temp, 0, place);
+            tiles = temp;
+        }
+        
+        return tiles;
+    }
+    
+    public Tile getPlayerTile(){
+        return m.currentChunk.tiles[p.getYPOS()][p.getXPOS()];
+    }
     
     public void addMap(Map m){
         if (idCounter < maps.length) {
@@ -97,6 +120,7 @@ public class Game extends Applet implements Runnable{
     public void init(){
         m.currentChunk.entities[0][0] = p;
         m.currentChunk.entities[7][7] = e;
+        Building b = new Building(this, 8, 8, 32, 32);
         for (Tile[] tlist : m.tiles){
             for (Tile t : tlist){
                 if (t.imagePath.substring(7, 8).equals("d")){
@@ -130,7 +154,7 @@ public class Game extends Applet implements Runnable{
         add(textOutput);
     }
     
-    public void enterDungeon(EntranceTile e){
+    public void switchMap(EntranceTile e){
         if (e.reverse.Map.ID < 0) addMap(e.reverse.Map);
         
         m.currentChunk.entities[p.getYPOS()][p.getXPOS()] = null;
