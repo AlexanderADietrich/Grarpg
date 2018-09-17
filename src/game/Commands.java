@@ -108,7 +108,7 @@ public class Commands {
                 if (command.startsWith("right")){
                     
                     //Switches Chunks
-                    if (game.p.getXPOS() + 1 > 7 && game.m.chunkX < 7){
+                    if (game.p.getXPOS() + 1 > 7 && game.m.chunkX < game.m.width / 8){
                         //if tile on other chunk can be traversed
                         if (p.skillChecker.getSkillLevel(
                                 game.m.chunks[game.m.chunkY][game.m.chunkX+1].tiles[p.getYPOS()][0].skillTraverse) > 0){}
@@ -152,7 +152,7 @@ public class Commands {
                 else if (command.startsWith("down")){
                     
                     //Switches Chunks
-                    if (game.p.getYPOS() + 1 > 7 && game.m.chunkY < 7){
+                    if (game.p.getYPOS() + 1 > 7 && game.m.chunkY < game.m.height / 8){
                         //if tile on other chunk can be traversed
                         if (p.skillChecker.getSkillLevel(
                                 game.m.chunks[game.m.chunkY+1][game.m.chunkX].tiles[0][p.getXPOS()].skillTraverse) > 0){}

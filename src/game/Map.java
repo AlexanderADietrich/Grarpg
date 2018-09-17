@@ -65,6 +65,7 @@ public class Map {
                 chunks[i][b] = new Chunk(chunkTiles);
             }
         }
+        System.out.println("DONE SPLITTING MAP");
         
         currentChunk = chunks[0][0];
         currentChunk.passGame(g);

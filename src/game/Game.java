@@ -15,6 +15,7 @@ public class Game extends Applet implements Runnable{
     private Commands                commandHandler = new Commands(this);
     private CombatCommands          combatCommandHandler = new CombatCommands(this);
     public  HashMap<String, Image>  images;
+    public HashMap<String, Image>  resized = new HashMap<>();
     private Image                   image;
     private Image                   basicTile;
     private Graphics                graphicsBuffer;
@@ -114,13 +115,7 @@ public class Game extends Applet implements Runnable{
         }
     }
     
-    /*
-    Applet runs init, then start, then paint..
-    */
-    public void init(){
-        m.currentChunk.entities[0][0] = p;
-        m.currentChunk.entities[7][7] = e;
-        Building b = new Building(this, 8, 8, 32, 32);
+    public void mapToString(){
         for (Tile[] tlist : m.tiles){
             for (Tile t : tlist){
                 if (t.imagePath.substring(7, 8).equals("d")){
@@ -135,7 +130,15 @@ public class Game extends Applet implements Runnable{
             //System.out.println();
             worldMap = worldMap + "\n";
         }
-        //System.out.print("TEST MAP SAVE \n" + worldMap );
+    }
+    
+    /*
+    Applet runs init, then start, then paint..
+    */
+    public void init(){
+        m.currentChunk.entities[0][0] = p;
+        m.currentChunk.entities[7][7] = e;
+        Building b = new Building(this, 8, 8, 32, 32);
         setSize(584, 384);
         areaWidth = this.getHeight();
         areaHeight = this.getHeight();
@@ -336,12 +339,21 @@ public class Game extends Applet implements Runnable{
         else if (mapActive){
             for (int b = 0; b < m.tiles.length; b++){
                 for (int c = 0; c < m.tiles[b].length; c++){
-                    mainGraphics.drawImage(images.get(m.tiles[b][c].imagePath), 
+                    
+                    if (!resized.containsKey((areaWidth/m.tiles[0].length+2) + m.tiles[b][c].imagePath)) 
+                        resized.put((areaWidth/m.tiles[0].length+2) + m.tiles[b][c].imagePath,
+                            images.get(m.tiles[b][c].imagePath).getScaledInstance(areaWidth/m.tiles[0].length+2, areaWidth/m.tiles[0].length+2, Image.SCALE_FAST));
+                    mainGraphics.drawImage(resized.get((areaWidth/m.tiles[0].length+2) + m.tiles[b][c].imagePath),
+                        c*areaWidth/m.tiles[0].length-1,
+                        b*areaHeight/m.tiles[0].length-1,
+                        this);
+                    
+                    /*mainGraphics.drawImage(images.get(m.tiles[b][c].imagePath), 
                         c*areaWidth/m.tiles[0].length-1, 
                         b*areaHeight/m.tiles[0].length-1,
                         areaWidth/m.tiles[0].length+2, areaHeight/m.tiles[0].length+2,
                         new Color(0, 0, 50),
-                        this);
+                        this);*/
                 }
             }
         }
