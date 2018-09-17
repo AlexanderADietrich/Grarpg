@@ -35,7 +35,7 @@ public class Dungeon extends Map{
         
         //Display
         
-        System.out.println("DUNGEON\n");
+        /*System.out.println("DUNGEON\n");
         
         for (int i = 0; i < tiles.length; i++){
             for (int b = 0; b < tiles[i].length; b++){
@@ -44,7 +44,7 @@ public class Dungeon extends Map{
             System.out.println();
         }
         
-        System.out.println("\n\n");
+        System.out.println("\n\n");*/
         
         boolean startChunk = false;
         Tile[][] chunkTiles = new Tile[8][8];
@@ -121,8 +121,8 @@ public class Dungeon extends Map{
         Boolean flipflop = true;
         
         while (true){
-            System.out.println("goal\t" + goalX + " \t" + goalY);
-            System.out.println("here\t" + currentX + " \t" + currentY);
+            //System.out.println("goal\t" + goalX + " \t" + goalY);
+            //System.out.println("here\t" + currentX + " \t" + currentY);
             tiles[currentY][currentX] = new Tile("images/defaultTile.png", currentX, currentY);
             //Make a path randomly
             if (r.nextDouble() < 0.5){

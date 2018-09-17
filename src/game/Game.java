@@ -87,7 +87,7 @@ public class Game extends Applet implements Runnable{
         @Override
         public void actionPerformed(ActionEvent e) {
             textInput.setText(" ");
-            System.out.println(e.getActionCommand());
+            //System.out.println(e.getActionCommand());
             if (!fighting) commandHandler.parsePlayerCommand(e.getActionCommand(), p);
             else combatCommandHandler.parsePlayerCommand(e.getActionCommand(), p);
         }
@@ -106,7 +106,7 @@ public class Game extends Applet implements Runnable{
             else{
                 for(Entity[] elist : m.currentChunk.entities){
                     for(Entity e : elist){
-                        if (e != null && Enemy.class.isInstance(e)) System.out.println(e.getXPOS() + "" + e.getYPOS());
+                        //if (e != null && Enemy.class.isInstance(e)) System.out.println(e.getXPOS() + "" + e.getYPOS());
                         if (e != null) e.doTick();
                     }
                 }
@@ -124,15 +124,15 @@ public class Game extends Applet implements Runnable{
         for (Tile[] tlist : m.tiles){
             for (Tile t : tlist){
                 if (t.imagePath.substring(7, 8).equals("d")){
-                    System.out.print("_");
+                    //System.out.print("_");
                     worldMap = worldMap + "_";
                 }
                 else {
-                    System.out.print(t.imagePath.substring(7, 8));
+                    //System.out.print(t.imagePath.substring(7, 8));
                     worldMap = worldMap + t.imagePath.substring(7, 8);
                 }
             }
-            System.out.println();
+            //System.out.println();
             worldMap = worldMap + "\n";
         }
         //System.out.print("TEST MAP SAVE \n" + worldMap );
@@ -163,10 +163,10 @@ public class Game extends Applet implements Runnable{
         
         m.currentChunk.entities[e.reverse.y % 8][e.reverse.x % 8] = p;
         
-        System.out.println("TILE AT\t " + e.reverse.x + "," + e.reverse.y);
-        System.out.println("ENTER AT\t " + (e.reverse.x % 8) + "," + (e.reverse.y % 8));
-        System.out.println(e.reverse.x);
-        System.out.println(e.reverse.reverse.reverse.x);
+        //System.out.println("TILE AT\t " + e.reverse.x + "," + e.reverse.y);
+        //System.out.println("ENTER AT\t " + (e.reverse.x % 8) + "," + (e.reverse.y % 8));
+        //System.out.println(e.reverse.x);
+        //System.out.println(e.reverse.reverse.reverse.x);
         
         p.setXPOS(e.reverse.x % 8);
         p.setYPOS(e.reverse.y % 8);
@@ -182,15 +182,15 @@ public class Game extends Applet implements Runnable{
         for (Tile[] tlist : m.tiles){
             for (Tile t : tlist){
                 if (t.imagePath.substring(7, 8).equals("d")){
-                    System.out.print("_");
+                    //System.out.print("_");
                     worldMap = worldMap + "_";
                 }
                 else {
-                    System.out.print(t.imagePath.substring(7, 8));
+                    //System.out.print(t.imagePath.substring(7, 8));
                     worldMap = worldMap + t.imagePath.substring(7, 8);
                 }
             }
-            System.out.println();
+            //System.out.println();
             worldMap = worldMap + "\n";
         }
         
@@ -207,8 +207,8 @@ public class Game extends Applet implements Runnable{
         
         textOutput.append("Type \"Start Game\" in \nthe box above and \npress enter to start.\n");
         //Initialize Player and Enemy. TODO; Improve this.
-        if (m.currentChunk == null) System.out.println("Chunk");
-        if (p == null) System.out.println("Player");
+        //if (m.currentChunk == null) System.out.println("Chunk");
+        //if (p == null) System.out.println("Player");
         
         m.currentChunk.updateLoc(p, 0, 0);
         m.currentChunk.updateLoc(e, 0, 0);
