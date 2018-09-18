@@ -30,7 +30,7 @@ public class Map {
     
     public Map(Game g, boolean b){
         this.g=g;
-        this.generate(64, 64);
+        this.generate(32, 32);
     }
     
     public void generate(int width, int height){
@@ -39,7 +39,8 @@ public class Map {
         tiles = new Tile[width][height];
         for (int i = 0; i < width; i++){
             for (int b = 0; b < height; b++){
-                tiles[b][i] = new Tile("images/defaultTile.png", b, i);
+                if (rand.nextBoolean()) tiles[i][b] = new Tile("images/defaultTile.png", b, i);
+                else tiles[i][b] = new Tile("images/defaultTileR90.png", b, i);
             }
         }
         chunks = new Chunk[height / 8][width / 8];
@@ -73,8 +74,8 @@ public class Map {
     
     public void update(){
         Tile[][] chunkTiles = new Tile[8][8];
-        for (int i = 0; i < 8; i++){
-            for (int b = 0; b < 8; b++){
+        for (int i = 0; i < this.width/8; i++){
+            for (int b = 0; b < this.width/8; b++){
                 for (int y = 0; y < 8; y++){
                     for (int x = 0; x < 8; x++){
                         chunkTiles[y][x] = tiles[((i*8)+y)][((b*8)+x)];
@@ -86,47 +87,54 @@ public class Map {
     }
     
     public void generateMountain(Tile[][] input){
-        int locX = rand.nextInt((width*7)/8);
-        int locY = rand.nextInt((height*7)/8);
-        Tile[][] mountainBounds = new Tile[height / 8][width / 8];
-        for (int i = 0; i < height / 8; i++){
-            for (int b = 0; b < width / 8; b++){
-                mountainBounds[b][i] = new Tile("images/defaultTile.png", locX+b, locY+i);
+        int locX = rand.nextInt((width*3)/4);
+        int locY = rand.nextInt((height*3)/4);
+        Tile[][] mountainBounds = new Tile[height / 4][width / 4];
+        for (int i = 0; i < height / 4; i++){
+            for (int b = 0; b < width / 4; b++){
+                if (rand.nextBoolean()) mountainBounds[i][b] = new Tile("images/defaultTile.png", b, i);
+                else mountainBounds[i][b] = new Tile("images/defaultTileR90.png", b, i);
             }
         }
         
-        int ax = rand.nextInt(width     / 8);
-        int ay = rand.nextInt(height    / 8);
+        int ax = rand.nextInt(width     / 4);
+        int ay = rand.nextInt(height    / 4);
         int r = rand.nextInt(16);
         
         while (true){
             //System.out.println(ax + "" + ay);
-            if (ax >= width / 8 - 2 || ay >= height / 8 - 2 || ax < 2 || ay < 2) break;
+            if (ax >= width / 4 - 2 || ay >= height / 4 - 2 || ax < 2 || ay < 2) break;
             mountainBounds[ax][ay]      = new MountainTile("images/mountainTile.png", locX+ax, locY+ay);
-            mountainBounds[ax+1][ay]    = new MountainTile("images/mountainTile.png", locX+ax, locY+ay);
-            mountainBounds[ax+2][ay]    = new MountainTile("images/mountainTile.png", locX+ax, locY+ay);
-            mountainBounds[ax-1][ay]    = new MountainTile("images/mountainTile.png", locX+ax, locY+ay);
-            mountainBounds[ax-2][ay]    = new MountainTile("images/mountainTile.png", locX+ax, locY+ay);
-            mountainBounds[ax][ay+1]    = new MountainTile("images/mountainTile.png", locX+ax, locY+ay);
-            mountainBounds[ax][ay+2]    = new MountainTile("images/mountainTile.png", locX+ax, locY+ay);
-            mountainBounds[ax][ay-1]    = new MountainTile("images/mountainTile.png", locX+ax, locY+ay);
-            mountainBounds[ax][ay-2]    = new MountainTile("images/mountainTile.png", locX+ax, locY+ay);
+            mountainBounds[ax+1][ay]    = new MountainTile("images/mountainTile.png", locX+ax+1, locY+ay);
+            mountainBounds[ax+2][ay]    = new MountainTile("images/mountainTile.png", locX+ax+2, locY+ay);
+            mountainBounds[ax-1][ay]    = new MountainTile("images/mountainTile.png", locX+ax-1, locY+ay);
+            mountainBounds[ax-2][ay]    = new MountainTile("images/mountainTile.png", locX+ax-2, locY+ay);
+            mountainBounds[ax][ay+1]    = new MountainTile("images/mountainTile.png", locX+ax, locY+ay+1);
+            mountainBounds[ax][ay+2]    = new MountainTile("images/mountainTile.png", locX+ax, locY+ay+2);
+            mountainBounds[ax][ay-1]    = new MountainTile("images/mountainTile.png", locX+ax, locY+ay-1);
+            mountainBounds[ax][ay-2]    = new MountainTile("images/mountainTile.png", locX+ax, locY+ay-2);
+            
+            mountainBounds[ax+1][ay+1] = new MountainTile("images/mountainTile.png", locX+ax+1, locY+ay+1);
+            mountainBounds[ax-1][ay+1] = new MountainTile("images/mountainTile.png", locX+ax-1, locY+ay+1);
+            mountainBounds[ax-1][ay-1] = new MountainTile("images/mountainTile.png", locX+ax-1, locY+ay-1);
+            mountainBounds[ax+1][ay-1] = new MountainTile("images/mountainTile.png", locX+ax-1, locY+ay-1);
+                    
             r = rand.nextInt(16);
-            if (r <= 8) ax++;
-            if (r <= 7) ax-=2;
-            if (r <= 12) ay++;
-            if (r == 13) ay-=2;
+            if (r <= 3) ax++;
+            else if (r <= 7) ax--;
+            else if (r <= 11) ay++;
+            else if (r <= 15) ay--;
         }
-        for (int i = 0; i < height / 8; i++){
-            for (int b = 0; b < width / 8; b++){
+        for (int i = 0; i < height / 4; i++){
+            for (int b = 0; b < width / 4; b++){
                 if (input[i+locY][b+locX] != null && input[i+locY][b+locX].imagePath.startsWith("images/default")) input[i+locY][b+locX] = mountainBounds[i][b];
             }
         }
         
         //On outer mountain tile generate one Dungeon Entrance
         Boolean breaker = false;
-        for (int i = 0; i < width / 8; i++){
-            for (int b = 0; b < height / 8; b++){
+        for (int i = 0; i < width / 4; i++){
+            for (int b = 0; b < height / 4; b++){
                 //Scan Nearby Tiles for a mix of Default and Mountain
                 int d = 0;
                 int m = 0;
@@ -166,12 +174,13 @@ public class Map {
     }
     
     public void generateOcean(Tile[][] input){
-        int locX = rand.nextInt((width*6)/8);
-        int locY = rand.nextInt((height*6)/8);
+        int locX = rand.nextInt((width*3)/4);
+        int locY = rand.nextInt((height*3)/4);
         Tile[][] oceanBounds = new Tile[height / 4][width / 4];
         for (int i = 0; i < width / 4; i++){
             for (int b = 0; b < height / 4; b++){
-                oceanBounds[i][b] = new Tile("images/defaultTile.png", locX+i, locY+b);
+                if (rand.nextBoolean()) oceanBounds[i][b] = new Tile("images/defaultTile.png", b, i);
+                else oceanBounds[i][b] = new Tile("images/defaultTileR90.png", b, i);
             }
         }
         int ax = rand.nextInt(width / 4);
@@ -186,10 +195,10 @@ public class Map {
             oceanBounds[ax][ay+1] = new WaterTile("images/waterTile.png", locX+ax, locY+ay+1);
             oceanBounds[ax][ay-1] = new WaterTile("images/waterTile.png", locX+ax, locY+ay-1);
             r = rand.nextInt(16);
-            if (r <= 8) ax++;
-            if (r <= 5) ax-=3;
-            if (r <= 12) ay++;
-            if (r == 13) ay-=2;
+            if (r <= 3) ax+=2;
+            else if (r <= 7) ax-=2;
+            else if (r <= 11) ay++;
+            else if (r <= 15) ay--;
         }
         for (int i = 0; i < width / 4; i++){
             for (int b = 0; b < height / 4; b++){

@@ -58,7 +58,9 @@ public class Commands {
         }
         if (command.startsWith("grab")){
             for (Tile t : game.getPlayerAdjTiles()){
+                System.out.println(t.x + " " + t.y + " " + t.imagePath);
                 if (TreasureTile.class.isInstance(t)){
+                    System.out.println("true");
                     TreasureTile copy = (TreasureTile) t;
                     for (Item e : copy.items){
                         game.p.inventory.put(game.nameGen.getName(e.buff), e);
@@ -204,6 +206,7 @@ public class Commands {
         //Saves the Game. Latter add ability to specify file name.
         if (command.startsWith("Save")){
             //System.out.println(game.textOutput.getText())
+            game.mapToString();
             if (Save.saveFile(game.textOutput.getText(),game.worldMap))
                 game.textOutput.append("Save Successful");
             else

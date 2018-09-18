@@ -14,6 +14,7 @@ public class Launcher {
             "images/GoodGuy.png",
             "images/BadGuy.png",
             "images/defaultTile.png",
+            "images/defaultTileR90.png",
             "images/waterTile.png",
             "images/mountainTile.png",
             "images/wallTile.png",

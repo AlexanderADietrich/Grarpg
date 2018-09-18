@@ -138,7 +138,7 @@ public class Game extends Applet implements Runnable{
     public void init(){
         m.currentChunk.entities[0][0] = p;
         m.currentChunk.entities[7][7] = e;
-        Building b = new Building(this, 8, 8, 32, 32);
+        Building b = new Building(this, 8, 8, m.width/4, m.width/4);
         setSize(584, 384);
         areaWidth = this.getHeight();
         areaHeight = this.getHeight();
