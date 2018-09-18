@@ -17,6 +17,19 @@ public class Fight {
     
     public void start(Entity[] entities){
         this.entities = entities;
+        // Sorts entitys by their speed so the fastest entity goes first.
+        boolean sorted = false;
+        while (! sorted){
+            sorted = true;
+            for (int i = entities.length - 1; i > 0 ; i--){
+                if (entities[i].getStat(4) > entities[i-1].getStat(4)){
+                    Entity temp = entities[i];
+                    entities[i] = entities[i-1];
+                    entities[i-1] = temp;
+                    sorted = false;
+                }
+            }
+        }
     }
     
     
@@ -51,7 +64,7 @@ public class Fight {
             if (parseThis.length < 2) continue;
             if (parseThis.length == 2){
                 System.out.println("HERE");
-                try { damage = (double) Integer.parseInt(parseThis[0]); }
+                try { damage = (double) Integer.parseInt(parseThis[0]) + entities[i].getStat(0); }
                 catch (Exception ex) { continue; }
                 reason = parseThis[1];
                 if (i == 0) target = entities[1].getName();
@@ -64,7 +77,12 @@ public class Fight {
             Boolean succeeded = false;
             for (Entity e : entities){
                 if (e.getName().equals(target)){
-                    e.setHP(e.getHP()-damage);
+                    System.out.println("DAMAGE = " + damage);
+                    damage = damage - e.getStat(1);
+                    System.out.println("DAMAGE = " + damage);
+                    if (damage <= 0) damage = 1;
+                    System.out.println("DAMAGE = " + damage);
+                    e.setHP(e.getHP() - damage);
                     g.textOutput.append("damaged for " + damage + " " + reason + "\n");
                     succeeded = true;
                 }
