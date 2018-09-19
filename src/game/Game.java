@@ -340,6 +340,11 @@ public class Game extends Applet implements Runnable{
                             areaWidth / m.currentChunk.chunkWidth + 2, areaHeight / m.currentChunk.chunkHeight + 2,
                             new Color(0, 0, 50),//This line could be used for day/night
                             this);
+                }
+            }
+            //Ensures Entities are "top level"
+            for (int b = 0; b < m.currentChunk.tiles.length; b++) {
+                for (int c = 0; c < m.currentChunk.tiles[b].length; c++) {
                     if (m.currentChunk.entities[b][c] != null) {
                         mainGraphics.drawImage(images.get(m.currentChunk.entities[b][c].getImagePath()),
                                     c * areaWidth / m.currentChunk.chunkWidth - 1,
