@@ -70,7 +70,7 @@ public class Fight {
                 if (i == 0) target = entities[1].getName();
                 else target = entities[i-1].getName();
             } else {
-                damage = (double) Integer.parseInt(parseThis[0]);
+                damage = (double) Integer.parseInt(parseThis[0]) + entities[i].getStat(0);
                 reason = parseThis[1];
                 target = parseThis[2];
             }
@@ -78,7 +78,7 @@ public class Fight {
             for (Entity e : entities){
                 if (e.getName().equals(target)){
                     System.out.println("DAMAGE = " + damage);
-                    damage = damage - e.getStat(1);
+                    damage -= e.getStat(1);
                     System.out.println("DAMAGE = " + damage);
                     if (damage <= 0) damage = 1;
                     System.out.println("DAMAGE = " + damage);

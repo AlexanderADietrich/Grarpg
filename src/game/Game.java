@@ -3,6 +3,8 @@ import java.applet.Applet;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.net.URL;
 import java.util.HashMap;
 //TEST COMMENT PLEASE WORK
@@ -11,22 +13,41 @@ import java.util.HashMap;
  * @author voice
  */
 public class Game extends Applet implements Runnable{
-    private long                    framerate = 34;
-    private Commands                commandHandler = new Commands(this);
-    private CombatCommands          combatCommandHandler = new CombatCommands(this);
+    public long                    framerate = 34;
+    public Commands                commandHandler = new Commands(this);
+    public CombatCommands          combatCommandHandler = new CombatCommands(this);
     public  HashMap<String, Image>  images;
     public HashMap<String, Image>  resized = new HashMap<>();
-    private Image                   image;
-    private Image                   basicTile;
-    private Graphics                graphicsBuffer;
+    public Image                   image;
+    public Image                   basicTile;
+    public Graphics                graphicsBuffer;
     public URL                      mainURL;
     public Map                      m = new Map(this, true);
     public Map[]                    maps = new Map[1];
     public int                      idCounter = 0;
     
-    private TextField               textInput = new TextField("", 10);
+    public TextField               textInput = new TextField("", 10);
     public TextArea                 textOutput = new TextArea(10, TextArea.SCROLLBARS_VERTICAL_ONLY);
-    private Font                    mainFont = new Font(Font.MONOSPACED, 10, 15);
+    public KeyListener              k = new KeyListener() {
+        @Override
+        public void keyTyped(KeyEvent e) {
+            //Do Nothing
+        }
+
+        @Override
+        public void keyPressed(KeyEvent e) {
+            System.out.println("pressed g ");
+            System.out.println(e.getExtendedKeyCode());
+            keyHandler.handleKey(e.getExtendedKeyCode());
+        }
+
+        @Override
+        public void keyReleased(KeyEvent e) {
+            //Do Nothing
+        }
+    };
+    
+    public Font                    mainFont = new Font(Font.MONOSPACED, 10, 15);
     public Player                   p = new Player(0, 0, "", "images/GoodGuy.png");
     public Enemy                    e = new Enemy (7, 7, "BadGuy", 10, p, "images/BadGuy.png", m.currentChunk);
     public boolean                  mapActive = false;
@@ -37,10 +58,21 @@ public class Game extends Applet implements Runnable{
     public Dungeon                  testDungeon = new Dungeon(this);
     public Namer                    nameGen = new Namer();
     
+    public boolean                  useKeys = true;
+    public KeyHandler               keyHandler = new KeyHandler(this);
+    
     
     public int areaWidth;  //Width of Map Area (pixels).
     public int areaHeight; //Height of Map Area (pixels).
 
+    
+    public void switchInput(){
+        System.out.println(useKeys + "SWITCH");
+        useKeys = !useKeys;
+        textInput.setEditable(useKeys);
+        textOutput.setEditable(useKeys);
+        textInput.setText("");
+    }
     
     public Tile[] getPlayerAdjTiles(){
         Tile[] tiles = new Tile[4];
@@ -84,7 +116,7 @@ public class Game extends Applet implements Runnable{
         images = imageInput;
     }
     
-    private ActionListener  textInputListener = new ActionListener() {
+    public ActionListener  textInputListener = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
             textInput.setText(" ");
@@ -102,6 +134,7 @@ public class Game extends Applet implements Runnable{
     //Tick any timers/ AI's.
     public void doTick(){
         if (running){
+            keyHandler.doTick();
             p.skillChecker.doSkillTick();
             if (fighting) fight.doTick();
             else{
@@ -147,6 +180,8 @@ public class Game extends Applet implements Runnable{
         //Setup input box.
         textInput.addActionListener(textInputListener);
         textInput.setFont(mainFont);
+        textInput.addKeyListener(k);
+        textInput.setFocusTraversalKeysEnabled(false);
         
         //Setup output box.
         textOutput.setEditable(false);
@@ -225,8 +260,8 @@ public class Game extends Applet implements Runnable{
         }
     }
     
-    private int prevWid     = this.getWidth();
-    private int prevHeight  = this.getHeight();
+    public int prevWid     = this.getWidth();
+    public int prevHeight  = this.getHeight();
     
     //Double Buffer. If something graphically bugs, try here.
     ///*

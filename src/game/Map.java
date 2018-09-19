@@ -30,7 +30,7 @@ public class Map {
     
     public Map(Game g, boolean b){
         this.g=g;
-        this.generate(32, 32);
+        this.generate(128, 128);
     }
     
     public void generate(int width, int height){
@@ -45,12 +45,12 @@ public class Map {
         }
         chunks = new Chunk[height / 8][width / 8];
         
-        for (int i = 0; i < 6; i++){
-            System.out.println(i+"/6");
+        for (int i = 0; i < this.width/8; i++){
+            System.out.println((i+1)+"/" +((this.width/8)));
             generateOcean(tiles);
         }
-        for (int i = 0; i < 10; i++){
-            System.out.println(i+"/10");
+        for (int i = 0; i < this.width/4; i++){
+            System.out.println((i+1)+"/"+((this.width/4)));
             generateMountain(tiles);
         }
         
@@ -89,6 +89,7 @@ public class Map {
     public void generateMountain(Tile[][] input){
         int locX = rand.nextInt((width*3)/4);
         int locY = rand.nextInt((height*3)/4);
+        System.out.println(locX + "locX " + locY + "locY ");
         Tile[][] mountainBounds = new Tile[height / 4][width / 4];
         for (int i = 0; i < height / 4; i++){
             for (int b = 0; b < width / 4; b++){
