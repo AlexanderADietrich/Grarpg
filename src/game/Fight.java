@@ -60,12 +60,13 @@ public class Fight {
             
             //Current Entity "attacks"
             parseThis = entities[i].doFightTick().trim().split(" ");
+            if (parseThis != null && parseThis.length >= 2) System.out.println(parseThis[1]);
             
             if (parseThis.length < 2) continue;
             if (parseThis.length == 2){
-                //System.out.println("HERE");
                 try { damage = (double) Integer.parseInt(parseThis[0]) + entities[i].getStat(0); }
                 catch (Exception ex) { continue; }
+                parseThis[1] = parseThis[1].replace("/", " ");
                 reason = parseThis[1];
                 if (i == 0) target = entities[1].getName();
                 else target = entities[i-1].getName();
@@ -83,7 +84,8 @@ public class Fight {
                     if (damage <= 0) damage = 1;
                     //System.out.println("DAMAGE = " + damage);
                     e.setHP(e.getHP() - damage);
-                    g.textOutput.append("damaged for " + damage + " " + reason + "\n");
+                    
+                    g.textOutput.append(g.commandHandler.wrap(("damaged for " + damage + " " + reason), ("damaged for " + damage + " " + reason).length()));
                     succeeded = true;
                 }
             }

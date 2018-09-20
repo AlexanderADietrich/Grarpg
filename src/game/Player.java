@@ -21,6 +21,9 @@ public class Player extends Entity{
     public String doFightTick(){
         String temp = previousFightCommand;
         previousFightCommand = "";
+        if ("The Toledo Avocado".equals(temp)){
+            return "1000000 as/The/Toledo/Avocado/Obliterates/Your/Soul";
+        }
         return temp;
     }
 }
