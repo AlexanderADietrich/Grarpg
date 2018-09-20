@@ -13,8 +13,9 @@ public class Enemy extends Entity{
     public void doTick(){
         ai.nextMove();
     }
+
     public Enemy (int x, int y, String name, double hp, Entity t, String path, Chunk c){
-        ai = new AI(t, this, c);
+        ai = new ImprovedAI(t, this, c);
         this.setXPOS(x);
         this.setYPOS(y);
         this.setHP(hp);

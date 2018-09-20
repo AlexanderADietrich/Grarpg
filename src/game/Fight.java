@@ -52,8 +52,8 @@ public class Fight {
             
             //Check for death
             if (entities[i].getHP() <= 0){
-                System.out.println("DEAD");
-                g.m.currentChunk.entities[entities[i].getYPOS()][entities[i].getXPOS()] = null;
+                //System.out.println("DEAD");
+                g.m.currentChunk.removeEntity(entities[i].getXPOS(), entities[i].getYPOS());
                 g.fighting = false;
             }
             
@@ -63,7 +63,7 @@ public class Fight {
             
             if (parseThis.length < 2) continue;
             if (parseThis.length == 2){
-                System.out.println("HERE");
+                //System.out.println("HERE");
                 try { damage = (double) Integer.parseInt(parseThis[0]) + entities[i].getStat(0); }
                 catch (Exception ex) { continue; }
                 reason = parseThis[1];
@@ -77,11 +77,11 @@ public class Fight {
             Boolean succeeded = false;
             for (Entity e : entities){
                 if (e.getName().equals(target)){
-                    System.out.println("DAMAGE = " + damage);
+                    //System.out.println("DAMAGE = " + damage);
                     damage -= e.getStat(1);
-                    System.out.println("DAMAGE = " + damage);
+                    //System.out.println("DAMAGE = " + damage);
                     if (damage <= 0) damage = 1;
-                    System.out.println("DAMAGE = " + damage);
+                    //System.out.println("DAMAGE = " + damage);
                     e.setHP(e.getHP() - damage);
                     g.textOutput.append("damaged for " + damage + " " + reason + "\n");
                     succeeded = true;

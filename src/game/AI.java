@@ -6,12 +6,20 @@ import java.util.Random;
  * @author Nathan Geddis
  * @created 4/21/2018 
  * @modified 4/21/2018
+ * @modified 9/20/2018
  */
 public class AI{
     public int count = 0; // used to keep track of moves and can be used so the enemy only moves every other or every third player move. 
-    private Chunk currentChunk;
-    private Entity Target;
-    private Entity Body;
+    
+    //Player Makes Sounds that Influence Some AI's
+    public int sound = 0;
+    public int incomingSound = 0;
+    
+    public int XDIST;
+    public int YDIST;
+    public Chunk currentChunk;
+    public Entity Target;
+    public Entity Body;
     Random rand = new Random();
     
     public AI(Entity t, Entity b, Chunk c){
@@ -41,35 +49,57 @@ public class AI{
     makes a move
     */
     public void nextMove(){
+        XDIST = Target.getXPOS()-Body.getXPOS();
+        YDIST = Target.getYPOS()-Body.getYPOS();
         //System.out.println("Count: " + count);
-        //random movement for six turns (five first run)
-        if (count < 5)
+        if (count < 5){
+            //System.out.println("WANDERING");
             moveRand();
+        }
         //aggressive movement for six turns
-        else if (5 <= count && count <= 10){         
-            int XDIST = Target.getXPOS()-Body.getXPOS();
-            int YDIST = Target.getYPOS()-Body.getYPOS();
-            if (Math.abs(XDIST) > Math.abs(YDIST)){
-                if (XDIST > 0)
-                    moveRight();
-                else
-                    moveLeft();
+        else if (count >= 5 && count <= 10 ){
+            if (sound >= 10){
+                //System.out.println("ATTACKING");
+                attack();
             }
-            else if (Math.abs(XDIST) < Math.abs(YDIST)){
-                if (YDIST > 0)
-                    moveDown();
-                else 
-                    moveUp();
+            if (XDIST < 6 && YDIST < 6){
+                //System.out.println("HEARING \t" + sound);
+                sound += incomingSound;
+                incomingSound = 0;
+            } else {
+                incomingSound = 0;
             }
-            else
-                moveRand();
         }else{
+            //System.out.println("WANDERING AGAIN");
             count = -1;
             moveRand();
         }
-        count ++;
+        count++;
     }
     
+    public void attack(){
+        if (Math.abs(XDIST) > Math.abs(YDIST)){
+                    if (XDIST > 0)
+                        moveRight();
+                    else
+                        moveLeft();
+                }
+        else if (Math.abs(XDIST) < Math.abs(YDIST)){
+            if (YDIST > 0)
+                moveDown();
+            else 
+                moveUp();
+        } else {
+            if (YDIST > 0)
+                moveDown();
+            else if (YDIST < 0)
+                moveUp();
+            else if (XDIST > 0)
+                moveRight();
+            else if (XDIST < 0)
+                moveLeft();
+        }
+    }
     public void moveRight(){
         currentChunk.updateLoc(Body, 1, 0);
         //System.out.println("R   "+ Body.getXPOS() + "   " + Body.getYPOS());

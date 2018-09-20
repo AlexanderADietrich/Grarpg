@@ -21,11 +21,12 @@ public class Launcher {
             "images/entranceTile.png",
             "images/treasureTile.png",
             "images/blackTile.png",
-            "images/brickTile.png"
+            "images/brickTile.png",
+            "images/deafCreep.png"
         };
         String s = "" + new File("").getAbsolutePath().replace('\\', '/') + "/src/";
         for (String path : imagePaths){
-            System.out.println(s + path);
+            //System.out.println(s + path);
         }
         HashMap<String, Image> images = new HashMap<>();
         for (String path : imagePaths){

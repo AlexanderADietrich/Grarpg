@@ -7,13 +7,14 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.net.URL;
 import java.util.HashMap;
+import java.util.Iterator;
 //TEST COMMENT PLEASE WORK
 /**
  *
  * @author voice
  */
 public class Game extends Applet implements Runnable{
-    public long                    framerate = 34;
+    public long                    framerate = 15;
     public Commands                commandHandler = new Commands(this);
     public CombatCommands          combatCommandHandler = new CombatCommands(this);
     public  HashMap<String, Image>  images;
@@ -36,8 +37,8 @@ public class Game extends Applet implements Runnable{
 
         @Override
         public void keyPressed(KeyEvent e) {
-            System.out.println("pressed g ");
-            System.out.println(e.getExtendedKeyCode());
+            //System.out.println("pressed g ");
+            //System.out.println(e.getExtendedKeyCode());
             keyHandler.handleKey(e.getExtendedKeyCode());
         }
 
@@ -64,10 +65,30 @@ public class Game extends Applet implements Runnable{
     
     public int areaWidth;  //Width of Map Area (pixels).
     public int areaHeight; //Height of Map Area (pixels).
-
+    
+    
+    /*
+    TODO: 
+    Add a HashSet to Chunks for High-Speed but inaccurate access for blanket
+    statement type functions such as these.
+    */
+    public Enemy tempE;
+    public void makeSound(int s){
+        Iterator i = m.currentChunk.fastEntities.iterator();
+        Entity e;                
+        while (i.hasNext()){                    
+            e = (Entity) i.next();
+            if (Enemy.class.isInstance(e)){
+                tempE = (Enemy) e;
+                //Doubles Sound While Using WASD
+                if (useKeys == false) tempE.getAi().incomingSound+=s;
+                tempE.getAi().incomingSound += s;
+            }
+        }
+    }
     
     public void switchInput(){
-        System.out.println(useKeys + "SWITCH");
+        //System.out.println(useKeys + "SWITCH");
         useKeys = !useKeys;
         textInput.setEditable(useKeys);
         textOutput.setEditable(useKeys);
@@ -100,7 +121,7 @@ public class Game extends Applet implements Runnable{
             m.ID = idCounter;
             maps[idCounter++] = m;
         } else {
-            System.out.println("EXPAND ARRAY");
+            //System.out.println("EXPAND ARRAY");
             Map[] newArray = new Map[maps.length*2];
             for (int i = 0; i < maps.length; i++){
                 newArray[i] = maps[i];
@@ -138,11 +159,18 @@ public class Game extends Applet implements Runnable{
             p.skillChecker.doSkillTick();
             if (fighting) fight.doTick();
             else{
-                for(Entity[] elist : m.currentChunk.entities){
-                    for(Entity e : elist){
-                        //if (e != null && Enemy.class.isInstance(e)) System.out.println(e.getXPOS() + "" + e.getYPOS());
-                        if (e != null) e.doTick();
-                    }
+                Iterator i = m.currentChunk.fastEntities.iterator();
+                
+                //Avoid Concurrent Mod Exception
+                Entity[] temparray = new Entity[m.currentChunk.fastEntities.size()];
+                int sentinel = 0;
+                while (i.hasNext()){
+                    temparray[sentinel++] = (Entity) i.next();
+                }
+                
+                for (Entity e : temparray){
+                    //if (e != null && Enemy.class.isInstance(e)) //System.out.println(e.getXPOS() + "" + e.getYPOS());
+                    if (e != null) e.doTick();
                 }
             }
         }
@@ -169,9 +197,14 @@ public class Game extends Applet implements Runnable{
     Applet runs init, then start, then paint..
     */
     public void init(){
-        m.currentChunk.entities[0][0] = p;
-        m.currentChunk.entities[7][7] = e;
+        m.currentChunk.passGame(this);
+        m.currentChunk.addEntity(p, 0, 0);
+        m.currentChunk.addEntity(e, 7, 7);
+        m.chunks[0][1].addEntity(new BlindCreep(3, 3, "CREEPO", 1, p, "images/deafCreep.png", m.chunks[0][1]), 3, 3);
+        
+        //TODO: MOVE TO BETTER LOCATION, LIKE MAP
         Building b = new Building(this, 8, 8, m.width/4, m.width/4);
+        
         setSize(584, 384);
         areaWidth = this.getHeight();
         areaHeight = this.getHeight();
@@ -190,25 +223,26 @@ public class Game extends Applet implements Runnable{
         //Add both to the applet.
         add(textInput);
         add(textOutput);
+        
     }
     
     public void switchMap(EntranceTile e){
         if (e.reverse.Map.ID < 0) addMap(e.reverse.Map);
         
-        m.currentChunk.entities[p.getYPOS()][p.getXPOS()] = null;
+        //Remove From Current Map
+        m.currentChunk.removeEntity(p.getXPOS(), p.getYPOS());
         
         this.m = maps[e.reverse.Map.ID];
         
-        m.currentChunk.entities[e.reverse.y % 8][e.reverse.x % 8] = p;
+        //Add To Map That Was Switched To
+        m.currentChunk.addEntity(p, e.reverse.x % 8, e.reverse.y % 8);
         
         //System.out.println("TILE AT\t " + e.reverse.x + "," + e.reverse.y);
         //System.out.println("ENTER AT\t " + (e.reverse.x % 8) + "," + (e.reverse.y % 8));
         //System.out.println(e.reverse.x);
         //System.out.println(e.reverse.reverse.reverse.x);
-        
-        p.setXPOS(e.reverse.x % 8);
-        p.setYPOS(e.reverse.y % 8);
-        p = (Player) m.currentChunk.entities[e.reverse.y % 8][e.reverse.x % 8];
+
+        //p = (Player) m.currentChunk.entities[e.reverse.y % 8][e.reverse.x % 8];
     }
     
     public void reinit(Map m){
@@ -232,9 +266,9 @@ public class Game extends Applet implements Runnable{
             worldMap = worldMap + "\n";
         }
         
-        m.currentChunk.entities[0][0] = new Player(0, 0, "", "images/GoodGuy.png");
+        m.currentChunk.addEntity(new Player(0, 0, "", "images/GoodGuy.png"), 0, 0);
         p = (Player) m.currentChunk.entities[0][0];
-        m.currentChunk.entities[7][7] = new Enemy (7, 7, "BadGuy", 10, p, "images/BadGuy.png", m.currentChunk);
+        m.currentChunk.addEntity(new Enemy (7, 7, "BadGuy", 10, p, "images/BadGuy.png", m.currentChunk), 7, 7);
         e = (Enemy) m.currentChunk.entities[7][7];
         running = true;
     }
@@ -245,8 +279,8 @@ public class Game extends Applet implements Runnable{
         
         textOutput.append("Type \"Start Game\" in \nthe box above and \npress enter to start.\n");
         //Initialize Player and Enemy. TODO; Improve this.
-        //if (m.currentChunk == null) System.out.println("Chunk");
-        //if (p == null) System.out.println("Player");
+        //if (m.currentChunk == null) //System.out.println("Chunk");
+        //if (p == null) //System.out.println("Player");
         
         m.currentChunk.updateLoc(p, 0, 0);
         m.currentChunk.updateLoc(e, 0, 0);
@@ -297,9 +331,25 @@ public class Game extends Applet implements Runnable{
         }
     }
     
-    
+    long currentTime;
+    long prevTime = System.currentTimeMillis();
     public void paint(Graphics mainGraphics){
-        doTick();
+        //System.out.println("BIG\t" + m.chunkX + "\t" + m.chunkY + (m.chunks[m.chunkY][m.chunkX].g == null));
+        
+        
+        //SECTION: TICK CONTROL~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        
+        currentTime = System.currentTimeMillis();
+        if ((((currentTime-prevTime)/1000.0)*24) > 1){
+            //(milliseconds)/1000ms/s = seconds*24ticks/second
+            for (int i = 0; i < (int) (((currentTime-prevTime)/1000.0)*24); i++){
+                doTick();
+            }
+            prevTime = System.currentTimeMillis();
+        }
+        
+        //SECTION: PREPARATORY~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        
         //"Draws" the basic tile. Necessary to get its width/height for scaling.
         if (images == null){ 
             mainGraphics.drawImage(basicTile, 
@@ -328,6 +378,9 @@ public class Game extends Applet implements Runnable{
         //Sets the area that the map generates. 
         areaHeight = this.getHeight();
         areaWidth = this.getHeight();
+        
+        
+        //SECTION: MAIN RENDERING~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         
         if (!mapActive && running && !fighting){
             //Main rendering of the current section of map.

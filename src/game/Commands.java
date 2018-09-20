@@ -1,13 +1,45 @@
 package game;
 
 import java.io.File;
-import java.util.Arrays;
+import java.util.Iterator;
 
 public class Commands {
     public Game game;
     public Commands(Game g){
         this.game = g;
     }
+    
+    public void switchChunk(int inpx, int inpy, Entity e){
+        //Remove Entity
+        game.m.currentChunk.removeEntity(e.getXPOS(), e.getYPOS());
+
+        //Switch Chunks
+        game.m.currentChunk = game.m.chunks[game.m.chunkY+inpy][game.m.chunkX+inpx];
+        game.m.chunkX+=inpx;
+        game.m.chunkY+=inpy;
+        game.m.currentChunk.passGame(game);
+        //System.out.println("IS IT NULL? " + (game == null));
+        
+
+        //Re-Add Entity
+        if (inpx > 0){
+            game.m.currentChunk.addEntity(e, 0, e.getYPOS());
+            e.setXPOS(0);
+        }
+        else if (inpx < 0){
+            game.m.currentChunk.addEntity(e, 7, e.getYPOS());
+            e.setXPOS(7);
+        }
+        else if (inpy > 0){
+            game.m.currentChunk.addEntity(e, e.getXPOS(), 0);
+            e.setYPOS(0);
+        }
+        else if (inpy < 0){
+            game.m.currentChunk.addEntity(e, e.getXPOS(), 7);
+            e.setYPOS(7);
+        }
+    }
+    
     public String wrap(String command, Integer cLength){
         int cPos;
         int wrap = (game.textOutput.getWidth()-1) / 10;
@@ -58,9 +90,9 @@ public class Commands {
         }
         if (command.startsWith("grab")){
             for (Tile t : game.getPlayerAdjTiles()){
-                System.out.println(t.x + " " + t.y + " " + t.imagePath);
+                //System.out.println(t.x + " " + t.y + " " + t.imagePath);
                 if (TreasureTile.class.isInstance(t)){
-                    System.out.println("true");
+                    //System.out.println("true");
                     TreasureTile copy = (TreasureTile) t;
                     for (Item e : copy.items){
                         game.p.inventory.put(game.nameGen.getName(e.buff), e);
@@ -69,13 +101,13 @@ public class Commands {
             }
         }
         if (command.startsWith("PRINT")){//Debugging Tool
-            System.out.println("PLAYER:\t\t" + game.p.getXPOS() + "," + game.p.getYPOS());
-            for (Entity[] eList : game.m.currentChunk.entities){
-                for (Entity e : eList){
-                    if (Player.class.isInstance(e)) System.out.println("CHUNKPLAYER:\t" + e.getXPOS() + "," + e.getYPOS());
-                }
+            //System.out.println("PLAYER:\t\t" + game.p.getXPOS() + "," + game.p.getYPOS());
+            Iterator i = game.m.currentChunk.fastEntities.iterator();
+            Entity e;                
+            while (i.hasNext()){                    
+                e = (Entity) i.next();
+                //if (Player.class.isInstance(e)) //System.out.println("CHUNKPLAYER:\t" + e.getXPOS() + "," + e.getYPOS());
             }
-            
         }
         if (command.startsWith("Enter Dungeon")){
             if (EntranceTile.class.isInstance(game.getPlayerTile())) 
@@ -107,6 +139,7 @@ public class Commands {
         if (command.startsWith("go") 
             && p.skillChecker.getSkillLevel("go") > 0){
                 command = command.substring(3, command.length());
+                game.makeSound(2);
                 if (command.startsWith("right")){
                     
                     //Switches Chunks
@@ -115,15 +148,8 @@ public class Commands {
                         if (p.skillChecker.getSkillLevel(
                                 game.m.chunks[game.m.chunkY][game.m.chunkX+1].tiles[p.getYPOS()][0].skillTraverse) > 0){}
                         else return;
+                        switchChunk(1, 0, p);
                         
-                        //Remove Player
-                        game.m.currentChunk.entities[p.getYPOS()][p.getXPOS()] = null;
-                        
-                        //Re-add Player
-                        game.m.currentChunk = game.m.chunks[game.m.chunkY][game.m.chunkX+1];
-                        game.m.currentChunk.entities[p.getYPOS()][0] = p;
-                        game.m.chunkX++;
-                        p.setXPOS(0);
                         return;
                     }
                     
@@ -138,14 +164,7 @@ public class Commands {
                                 game.m.chunks[game.m.chunkY][game.m.chunkX-1].tiles[p.getYPOS()][7].skillTraverse) > 0){}
                         else return;
                         
-                        //Remove Player
-                        game.m.currentChunk.entities[p.getYPOS()][p.getXPOS()] = null;
-                        
-                        //Re-add Player
-                        game.m.currentChunk = game.m.chunks[game.m.chunkY][game.m.chunkX-1];
-                        game.m.currentChunk.entities[p.getYPOS()][7] = p;
-                        game.m.chunkX--;
-                        p.setXPOS(7);
+                        switchChunk(-1, 0, p);
                         return;
                     }
                     
@@ -160,14 +179,7 @@ public class Commands {
                                 game.m.chunks[game.m.chunkY+1][game.m.chunkX].tiles[0][p.getXPOS()].skillTraverse) > 0){}
                         else return;
                         
-                        //Remove Player
-                        game.m.currentChunk.entities[p.getYPOS()][p.getXPOS()] = null;
-                        
-                        //Re-add Player
-                        game.m.currentChunk = game.m.chunks[game.m.chunkY+1][game.m.chunkX];
-                        game.m.currentChunk.entities[0][p.getXPOS()] = p;
-                        game.m.chunkY++;
-                        p.setYPOS(0);
+                        switchChunk(0, 1, p);
                         return;
                     }
                     
@@ -182,14 +194,7 @@ public class Commands {
                                 game.m.chunks[game.m.chunkY-1][game.m.chunkX].tiles[7][p.getXPOS()].skillTraverse) > 0){}
                         else return;
                         
-                        //Remove Player
-                        game.m.currentChunk.entities[p.getYPOS()][p.getXPOS()] = null;
-                        
-                        //Re-add Player
-                        game.m.currentChunk = game.m.chunks[game.m.chunkY-1][game.m.chunkX];
-                        game.m.currentChunk.entities[7][p.getXPOS()] = p;
-                        game.m.chunkY--;
-                        p.setYPOS(7);
+                        switchChunk(0, -1, p);
                         return;
                     }
                     

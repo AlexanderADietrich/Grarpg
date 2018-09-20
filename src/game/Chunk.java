@@ -1,5 +1,7 @@
 package game;
 
+import java.util.HashSet;
+
 /**
  *
  * @author voice
@@ -9,9 +11,31 @@ public class Chunk {
     public int chunkWidth;   //Number of Tiles in Map Horizontally
     public int chunkHeight;  //Number of Tiles in Map Vertically
     public Entity[][] entities;
+    public HashSet<Entity> fastEntities = new HashSet<>();
     public Game g;
     
+    public boolean addEntity(Entity e, int x, int y){
+        if (x < 0 || x >= entities[0].length || y < 0 || y >= entities.length || entities[y][x] != null) return false;
+        entities[y][x] = e;
+        e.setXPOS(x);
+        e.setYPOS(y);
+        fastEntities.add(e);
+        //System.out.println(fastEntities.size() + " " + e.getImagePath());
+        return true;
+    }
+    
+    public boolean removeEntity(int x, int y){
+        if (entities[y][x] != null){
+            fastEntities.remove(entities[y][x]);
+            entities[y][x] = null;
+            return true;
+        }else{
+            return false;
+        }
+    }
+    
     public void passGame(Game g){
+        //System.out.println("WAS PASSED GAME");
         this.g=g;
     }
     
@@ -37,7 +61,7 @@ public class Chunk {
         for (int i = 0; i < tiles.length; i++){
             for (int b = 0; b < tiles[0].length; b++){
                 this.tiles[i][b] = tiles[i][b];
-                //if (tiles[i][b] == null) System.out.println("null " + i + " " + b);
+                //if (tiles[i][b] == null) //System.out.println("null " + i + " " + b);
                 //System.out.print(tiles[i][b].imagePath.substring(6, 9));
             }
             //System.out.println();
@@ -63,19 +87,19 @@ public class Chunk {
                         else return;
                     }
                     
-                    
-                    entities[e.getYPOS()][e.getXPOS()] = null;
-                    entities[e.getYPOS()+yDif][e.getXPOS()+xDif] = e;
-                    e.setXPOS(e.getXPOS()+xDif);
-                    e.setYPOS(e.getYPOS()+yDif);
+                    removeEntity(e.getXPOS(), e.getYPOS());
+                    addEntity(e, e.getXPOS()+xDif, e.getYPOS()+yDif);
                 } else {
                     
                     
                     //System.out.println(Enemy.class.isInstance(e));
                     //System.out.println(Player.class.isInstance(entities[e.getYPOS()+yDif][e.getXPOS()+xDif]));
                     
+                    //System.out.println(Enemy.class.isAssignableFrom(e.getClass()));
+                    //System.out.println(g != null);
+                    //System.out.println(Player.class.isInstance(entities[e.getYPOS()+yDif][e.getXPOS()+xDif]));
                     
-                    if (g != null && Enemy.class.isInstance(e) &&
+                    if (g != null && (Enemy.class.isAssignableFrom(e.getClass())) &&
                             Player.class.isInstance(entities[e.getYPOS()+yDif][e.getXPOS()+xDif])){
                         //System.out.println(e.getXPOS() + " " + e.getYPOS()  + " " + entities[e.getYPOS()+yDif][e.getXPOS()+xDif].getXPOS() + " " + entities[e.getYPOS()+yDif][e.getXPOS()+xDif].getYPOS());
                         g.startFight(e, entities[e.getYPOS()+yDif][e.getXPOS()+xDif]);

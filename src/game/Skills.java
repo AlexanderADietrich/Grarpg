@@ -39,17 +39,17 @@ public class Skills {
         buffs.put(skill, amount);
     }
     public void doSkillTick(){
-          timeIter = timers.keySet().iterator();
-          while (timeIter.hasNext()){
-              cTimeIter = (Timer) timeIter.next();
-              cTimerCTime = (int) ((System.currentTimeMillis() - cTimeIter.timeCreated)/1000);
-              System.out.println("POTION + " + (cTimeIter.timer - cTimerCTime));
-              if (cTimeIter.timer - cTimerCTime <= 0){
-                  System.out.println("REMOVED");
-                  buffs.put(cTimeIter.skill, buffs.get(cTimeIter.skill) - timers.get(cTimeIter));
-                  timers.remove(cTimeIter);
-              }
-          }
+        timeIter = timers.keySet().iterator();
+        while (timeIter.hasNext()){
+            cTimeIter = (Timer) timeIter.next();
+            cTimerCTime = (int) ((System.currentTimeMillis() - cTimeIter.timeCreated)/1000);
+            //System.out.println("POTION + " + (cTimeIter.timer - cTimerCTime));
+            if (cTimeIter.timer - cTimerCTime <= 0){
+                //System.out.println("REMOVED");
+                buffs.put(cTimeIter.skill, buffs.get(cTimeIter.skill) - timers.get(cTimeIter));
+                timers.remove(cTimeIter);
+            }
+        }
     }
     public void addSkill(String skill, Integer level){
         skills.put(skill, level);

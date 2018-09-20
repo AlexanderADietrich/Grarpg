@@ -5,6 +5,7 @@
  */
 package game;
 
+import java.util.HashSet;
 import java.util.Random;
 
 /**
@@ -46,11 +47,11 @@ public class Map {
         chunks = new Chunk[height / 8][width / 8];
         
         for (int i = 0; i < this.width/8; i++){
-            System.out.println((i+1)+"/" +((this.width/8)));
+            //System.out.println((i+1)+"/" +((this.width/8)));
             generateOcean(tiles);
         }
         for (int i = 0; i < this.width/4; i++){
-            System.out.println((i+1)+"/"+((this.width/4)));
+            //System.out.println((i+1)+"/"+((this.width/4)));
             generateMountain(tiles);
         }
         
@@ -66,12 +67,14 @@ public class Map {
                 chunks[i][b] = new Chunk(chunkTiles);
             }
         }
-        System.out.println("DONE SPLITTING MAP");
+        //System.out.println("DONE SPLITTING MAP");
         
         currentChunk = chunks[0][0];
         currentChunk.passGame(g);
     }
     
+    Entity[][] temp;
+    HashSet<Entity> temp2;
     public void update(){
         Tile[][] chunkTiles = new Tile[8][8];
         for (int i = 0; i < this.width/8; i++){
@@ -81,7 +84,7 @@ public class Map {
                         chunkTiles[y][x] = tiles[((i*8)+y)][((b*8)+x)];
                     }
                 }
-                chunks[i][b] = new Chunk(chunkTiles);
+                System.arraycopy(chunkTiles, 0, chunks[i][b].tiles, 0, chunkTiles.length);
             }
         }
     }
@@ -89,7 +92,7 @@ public class Map {
     public void generateMountain(Tile[][] input){
         int locX = rand.nextInt((width*3)/4);
         int locY = rand.nextInt((height*3)/4);
-        System.out.println(locX + "locX " + locY + "locY ");
+        //System.out.println(locX + "locX " + locY + "locY ");
         Tile[][] mountainBounds = new Tile[height / 4][width / 4];
         for (int i = 0; i < height / 4; i++){
             for (int b = 0; b < width / 4; b++){
@@ -164,14 +167,14 @@ public class Map {
                 if (d != 0 && m != 0){
                     //System.out.println("\nDING DING\n");
                     input[i+locY][b+locX] = new EntranceTile(b+locX, i+locY, this, g, new Dungeon(g));
-                    System.out.println("\n\nFound");
+                    //System.out.println("\n\nFound");
                     breaker = true;
                     break;
                 }
             }
             if (breaker) break;
         }
-        System.out.println(breaker);
+        //System.out.println(breaker);
     }
     
     public void generateOcean(Tile[][] input){
@@ -260,7 +263,7 @@ public class Map {
             for (int j = 0; j < 8; j++){
                 for (int y = 0; y < 8; y++){
                     for (int x = 0; x < 8; x++){
-                        //if (tiles[((i*8)+y)][((j*8)+x)] == null ) System.out.println((i*8)+y + " " + (j*8)+x + " null");
+                        //if (tiles[((i*8)+y)][((j*8)+x)] == null ) //System.out.println((i*8)+y + " " + (j*8)+x + " null");
                         chunkTiles[y][x] = tiles[((i*8)+y)][((j*8)+x)];
                     }
                 }
