@@ -17,6 +17,7 @@ public class ImprovedAI extends AI{
             sound += incomingSound;
             incomingSound = 0;
         } else {
+            if (incomingSound > 0) sound++;
             incomingSound = 0;
         }
         

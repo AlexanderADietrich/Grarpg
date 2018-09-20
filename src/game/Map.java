@@ -84,7 +84,11 @@ public class Map {
                         chunkTiles[y][x] = tiles[((i*8)+y)][((b*8)+x)];
                     }
                 }
-                System.arraycopy(chunkTiles, 0, chunks[i][b].tiles, 0, chunkTiles.length);
+                for (int a = 0; a < 8; a++){
+                    for (int r = 0; r < 8; r++){
+                        chunks[i][b].tiles[a][r] = chunkTiles[a][r];
+                    }
+                }
             }
         }
     }
