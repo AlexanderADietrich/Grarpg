@@ -154,6 +154,7 @@ public class Game extends Applet implements Runnable{
     
     //Tick any timers/ AI's.
     public void doTick(){
+        System.out.println("running = "+running);
         if (running){
             keyHandler.doTick();
             p.skillChecker.doSkillTick();
@@ -282,8 +283,8 @@ public class Game extends Applet implements Runnable{
         //if (m.currentChunk == null) //System.out.println("Chunk");
         //if (p == null) //System.out.println("Player");
         
-        m.currentChunk.updateLoc(p, 0, 0);
-        m.currentChunk.updateLoc(e, 0, 0);
+        m.currentChunk.finalizeMove(p, 0, 0);
+        m.currentChunk.finalizeMove(e, 0, 0);
     }
     
      // For the thread above.
@@ -333,6 +334,8 @@ public class Game extends Applet implements Runnable{
     
     long currentTime;
     long prevTime = System.currentTimeMillis();
+    Entity etemp;
+    double ttemp;
     public void paint(Graphics mainGraphics){
         //System.out.println("BIG\t" + m.chunkX + "\t" + m.chunkY + (m.chunks[m.chunkY][m.chunkX].g == null));
         
@@ -399,10 +402,23 @@ public class Game extends Applet implements Runnable{
             for (int b = 0; b < m.currentChunk.tiles.length; b++) {
                 for (int c = 0; c < m.currentChunk.tiles[b].length; c++) {
                     if (m.currentChunk.entities[b][c] != null) {
-                        mainGraphics.drawImage(images.get(m.currentChunk.entities[b][c].getImagePath()),
-                                    c * areaWidth / m.currentChunk.chunkWidth - 1,
-                                    b * areaHeight / m.currentChunk.chunkHeight - 1,
-                                    areaWidth / m.currentChunk.chunkWidth + 2, areaHeight / m.currentChunk.chunkHeight + 2,
+                        etemp = m.currentChunk.entities[b][c];
+                        ttemp = etemp.timer.check();
+                        if (ttemp == -1.0){
+                            System.out.println("DONE ANIMATING");
+                            m.currentChunk.finalizeMove(etemp, etemp.timer.dx, etemp.timer.dy);
+                            ttemp = 1;
+                        }
+                        
+                        mainGraphics.drawImage(images.get(etemp.getImagePath()),
+                                    (c * areaWidth / m.currentChunk.chunkWidth - 1)     
+                                            //percentage of animation done in direction * width of a tile
+                                            +(int)((ttemp*etemp.timer.dx)*(areaWidth/m.currentChunk.chunkWidth)),
+                                    (b * areaHeight / m.currentChunk.chunkHeight - 1)   
+                                            //percentage of animation done in direction * width of a tile
+                                            +(int)((ttemp*etemp.timer.dy)*(areaHeight/m.currentChunk.chunkWidth)),
+                                    areaWidth / m.currentChunk.chunkWidth + 2,
+                                    areaHeight / m.currentChunk.chunkHeight + 2,
                                     //new Color(0, 0, 50),//This line could be used for day/night
                                     this);
                         

@@ -101,12 +101,12 @@ public class Commands {
             }
         }
         if (command.startsWith("PRINT")){//Debugging Tool
-            //System.out.println("PLAYER:\t\t" + game.p.getXPOS() + "," + game.p.getYPOS());
+            System.out.println("PLAYER:\t\t" + game.p.getXPOS() + "," + game.p.getYPOS());
             Iterator i = game.m.currentChunk.fastEntities.iterator();
             Entity e;                
             while (i.hasNext()){                    
                 e = (Entity) i.next();
-                //if (Player.class.isInstance(e)) //System.out.println("CHUNKPLAYER:\t" + e.getXPOS() + "," + e.getYPOS());
+                if (Player.class.isInstance(e)) System.out.println("CHUNKPLAYER:\t" + e.getXPOS() + "," + e.getYPOS());
             }
         }
         if (command.startsWith("Enter Dungeon")){
@@ -153,7 +153,7 @@ public class Commands {
                         return;
                     }
                     
-                    game.m.currentChunk.updateLoc(p, 1, 0);
+                    game.m.currentChunk.updateLoc(p, 1, 0, 250);
                 } 
                 else if (command.startsWith("left")){
                     
@@ -168,7 +168,7 @@ public class Commands {
                         return;
                     }
                     
-                    game.m.currentChunk.updateLoc(p, -1, 0);
+                    game.m.currentChunk.updateLoc(p, -1, 0, 250);
                 } 
                 else if (command.startsWith("down")){
                     
@@ -183,7 +183,7 @@ public class Commands {
                         return;
                     }
                     
-                    game.m.currentChunk.updateLoc(p, 0, 1);
+                    game.m.currentChunk.updateLoc(p, 0, 1, 250);
                 } 
                 else if (command.startsWith("up")){
                     
@@ -198,7 +198,7 @@ public class Commands {
                         return;
                     }
                     
-                    game.m.currentChunk.updateLoc(p, 0, -1);
+                    game.m.currentChunk.updateLoc(p, 0, -1, 250);
                 }
         }
         

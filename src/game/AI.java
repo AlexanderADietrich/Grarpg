@@ -101,19 +101,19 @@ public class AI{
         }
     }
     public void moveRight(){
-        currentChunk.updateLoc(Body, 1, 0);
+        currentChunk.updateLoc(Body, 1, 0, 250);
         //System.out.println("R   "+ Body.getXPOS() + "   " + Body.getYPOS());
     }
     public void moveLeft(){
-        currentChunk.updateLoc(Body, -1, 0);
+        currentChunk.updateLoc(Body, -1, 0, 250);
         //System.out.println("L   "+ Body.getXPOS() + "   " + Body.getYPOS());
     }
     public void moveDown(){
-        currentChunk.updateLoc(Body, 0, 1);
+        currentChunk.updateLoc(Body, 0, 1, 250);
         //System.out.println("D   "+ Body.getXPOS() + "   " + Body.getYPOS());
     }
     public void moveUp(){
-        currentChunk.updateLoc(Body, 0, -1);
+        currentChunk.updateLoc(Body, 0, -1, 250);
         //System.out.println("U   "+ Body.getXPOS() + "   " + Body.getYPOS());
     }
     public void moveRand(){

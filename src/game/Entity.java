@@ -8,11 +8,62 @@ package game;
  */
 public class Entity {
     private int xPOS;
-    private int yPOS;
+    private int yPOS; 
     private double hp; // could be put in stats if changed to int. Not sure why it is double
     // Index 0 = Strength, Index 1 = Defence, Index 2 = Intelligence, Index 3 = Discipline, Index 4 = Speed
     private int[] stats = new int[4];
     private String name;
+    
+    
+    
+    /* TIMER:
+    movement/animation controller:
+        currentMax              =0 not animating
+        currentMax              >0 animating
+        amount between tiles    = (double) (time left/max time)
+        time left               = currentMax - (current time - initTime)
+        time left as percent    = (currentTime - initTime)/currentMax
+            as the maximum for (currentTime - initTime) due to the if stat-
+            ement on the fourth line of check() is equal to currentMax.
+    */
+    public class Timer{
+        public Timer(){}
+        public boolean moving = false;
+        public long initTime = System.currentTimeMillis();  //ms
+        public long currentTime;                            //ms
+        public double currentMax = 0;                       //ms
+        public int dx = 0;
+        public int dy = 0;
+        /*
+        returns 0 if not animating, returns -1.0 if done animating, >0 else
+        */
+        public double check(){ 
+            //System.out.println("CURRENTMAX\t"+currentMax);
+            //if (currentMax > 0) System.out.println("retVal    \t"+(1.0-((currentTime - initTime)/currentMax)));
+            
+            if (currentMax == 0) return 0;
+            
+            currentTime = System.currentTimeMillis();
+            //System.out.println("LIFETIME  \t" + (currentTime - initTime));
+            if (currentTime - initTime > currentMax){
+                //if the timer has run out then reset/move*
+                moving = false;
+                currentMax = 0;
+                return -1.0; //used to communicate "finish movement"
+            }
+
+            return ((currentTime - initTime)/currentMax);
+        }
+    }
+    public Timer timer = new Timer();
+    
+    public void setAni(int currentMax, int dx, int dy){
+        timer.moving        = true;
+        timer.dx            = dx;
+        timer.dy            = dy;
+        timer.initTime      = System.currentTimeMillis();
+        timer.currentMax    = currentMax;
+    }
     
     @Override
     public boolean equals(Object e){
@@ -50,7 +101,7 @@ public class Entity {
         this.imagePath = imagePath;
     }
     private String imagePath;
-
+    
     public int getXPOS() {
         return xPOS;
     }

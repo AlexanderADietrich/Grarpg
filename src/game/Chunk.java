@@ -71,41 +71,65 @@ public class Chunk {
         chunkHeight = tiles.length;
     }
     
-    // Communication Entity <-> Chunk.
-    public void updateLoc(Entity e, int xDif, int yDif){
+    /*
+    To be used after finishing a movement animation. Rechecks to make sure
+    another entity has not completed an animation before it.
+    */
+    public void finalizeMove(Entity e, int xDif, int yDif){
+        
         if (e.getXPOS() + xDif < entities[0].length
-                && e.getYPOS() + yDif < entities.length
-                && e.getXPOS() + xDif >= 0
-                && e.getYPOS() + yDif >= 0){
-            
-                //If the tile attempted is empty.
-                if (entities[e.getYPOS()+yDif][e.getXPOS()+xDif] == null) {
-                    //If the entity is a Player type, and does not have the skill, break.
-                    if (Player.class.isInstance(e)){
-                        Player p = (Player) e;
-                        if (p.skillChecker.getSkillLevel(tiles[p.getYPOS()+yDif][p.getXPOS()+xDif].skillTraverse) > 0){}
-                        else return;
-                    }
-                    
-                    removeEntity(e.getXPOS(), e.getYPOS());
-                    addEntity(e, e.getXPOS()+xDif, e.getYPOS()+yDif);
-                } else {
-                    
-                    
-                    //System.out.println(Enemy.class.isInstance(e));
-                    //System.out.println(Player.class.isInstance(entities[e.getYPOS()+yDif][e.getXPOS()+xDif]));
-                    
-                    //System.out.println(Enemy.class.isAssignableFrom(e.getClass()));
-                    //System.out.println(g != null);
-                    //System.out.println(Player.class.isInstance(entities[e.getYPOS()+yDif][e.getXPOS()+xDif]));
-                    
-                    if (g != null && (Enemy.class.isAssignableFrom(e.getClass())) &&
-                            Player.class.isInstance(entities[e.getYPOS()+yDif][e.getXPOS()+xDif])){
-                        //System.out.println(e.getXPOS() + " " + e.getYPOS()  + " " + entities[e.getYPOS()+yDif][e.getXPOS()+xDif].getXPOS() + " " + entities[e.getYPOS()+yDif][e.getXPOS()+xDif].getYPOS());
-                        g.startFight(e, entities[e.getYPOS()+yDif][e.getXPOS()+xDif]);
-                        
-                    }
+            && e.getYPOS() + yDif < entities.length
+            && e.getXPOS() + xDif >= 0
+            && e.getYPOS() + yDif >= 0){
+
+            //If the tile attempted is empty.
+            if (entities[e.getYPOS()+yDif][e.getXPOS()+xDif] == null) {
+                //If the entity is a Player type, and does not have the skill, break.
+                if (Player.class.isInstance(e)){
+                    Player p = (Player) e;
+                    if (p.skillChecker.getSkillLevel(tiles[p.getYPOS()+yDif][p.getXPOS()+xDif].skillTraverse) > 0){}
+                    else return;
                 }
+                removeEntity(e.getXPOS(), e.getYPOS());
+                addEntity(e, e.getXPOS()+xDif, e.getYPOS()+yDif);
+            }        
+        }    
+    }
+    // Communication Entity <-> Chunk.
+    public void updateLoc(Entity e, int xDif, int yDif, int ms){
+        if (e.timer.moving) return;
+        if (e.getXPOS() + xDif < entities[0].length
+            && e.getYPOS() + yDif < entities.length
+            && e.getXPOS() + xDif >= 0
+            && e.getYPOS() + yDif >= 0){
+
+            //If the tile attempted is empty.
+            if (entities[e.getYPOS()+yDif][e.getXPOS()+xDif] == null) {
+                //If the entity is a Player type, and does not have the skill, break.
+                if (Player.class.isInstance(e)){
+                    Player p = (Player) e;
+                    if (p.skillChecker.getSkillLevel(tiles[p.getYPOS()+yDif][p.getXPOS()+xDif].skillTraverse) > 0){}
+                    else return;
+                }
+
+                e.setAni(ms, xDif, yDif);
+            } else {
+
+
+                //System.out.println(Enemy.class.isInstance(e));
+                //System.out.println(Player.class.isInstance(entities[e.getYPOS()+yDif][e.getXPOS()+xDif]));
+
+                //System.out.println(Enemy.class.isAssignableFrom(e.getClass()));
+                //System.out.println(g != null);
+                //System.out.println(Player.class.isInstance(entities[e.getYPOS()+yDif][e.getXPOS()+xDif]));
+
+                if (g != null && (Enemy.class.isAssignableFrom(e.getClass())) &&
+                        Player.class.isInstance(entities[e.getYPOS()+yDif][e.getXPOS()+xDif])){
+                    //System.out.println(e.getXPOS() + " " + e.getYPOS()  + " " + entities[e.getYPOS()+yDif][e.getXPOS()+xDif].getXPOS() + " " + entities[e.getYPOS()+yDif][e.getXPOS()+xDif].getYPOS());
+                    g.startFight(e, entities[e.getYPOS()+yDif][e.getXPOS()+xDif]);
+
+                }
+            }
         } 
     }
 }
