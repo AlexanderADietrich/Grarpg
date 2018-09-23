@@ -128,7 +128,7 @@ public class Commands {
                 game.p.setName(command.substring(4, command.length()));
                 game.textOutput.append("You're now \n" + 
                 command.substring(4, command.length()) + "\n");
-        }
+        } 
         if (command.startsWith("Map")){ 
             game.mapActive = !game.mapActive;  
         }
@@ -154,7 +154,7 @@ public class Commands {
                         return;
                     }
                     
-                    game.m.currentChunk.updateLoc(p, 1, 0, 250);
+                    game.m.currentChunk.updateLoc(p, 1, 0, 250-(p.getStat(4)*5));
                 } 
                 else if (command.startsWith("left")){
                     
@@ -169,7 +169,7 @@ public class Commands {
                         return;
                     }
                     
-                    game.m.currentChunk.updateLoc(p, -1, 0, 250);
+                    game.m.currentChunk.updateLoc(p, -1, 0, 250-(p.getStat(4)*5));
                 } 
                 else if (command.startsWith("down")){
                     
@@ -184,7 +184,7 @@ public class Commands {
                         return;
                     }
                     
-                    game.m.currentChunk.updateLoc(p, 0, 1, 250);
+                    game.m.currentChunk.updateLoc(p, 0, 1, 250-(p.getStat(4)*5));
                 } 
                 else if (command.startsWith("up")){
                     
@@ -199,7 +199,7 @@ public class Commands {
                         return;
                     }
                     
-                    game.m.currentChunk.updateLoc(p, 0, -1, 250);
+                    game.m.currentChunk.updateLoc(p, 0, -1, 250-(p.getStat(4)*5));
                 }
         }
         

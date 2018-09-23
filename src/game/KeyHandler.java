@@ -20,7 +20,7 @@ public class KeyHandler {
     
     //Execute a command
     public void doTick(){
-        System.out.println("KEY" + current);
+        //System.out.println("KEY" + current);
         if (commands.size() == 0) return;
         
         current = commands.poll();
