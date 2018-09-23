@@ -154,7 +154,7 @@ public class Game extends Applet implements Runnable{
     
     //Tick any timers/ AI's.
     public void doTick(){
-        System.out.println("running = "+running);
+        //System.out.println("running = "+running);
         if (running){
             keyHandler.doTick();
             p.skillChecker.doSkillTick();
@@ -405,7 +405,7 @@ public class Game extends Applet implements Runnable{
                         etemp = m.currentChunk.entities[b][c];
                         ttemp = etemp.timer.check();
                         if (ttemp == -1.0){
-                            System.out.println("DONE ANIMATING");
+                            //System.out.println("DONE ANIMATING");
                             m.currentChunk.finalizeMove(etemp, etemp.timer.dx, etemp.timer.dy);
                             ttemp = 1;
                         }
