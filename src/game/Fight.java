@@ -64,14 +64,14 @@ public class Fight {
             
             if (parseThis.length < 2) continue;
             if (parseThis.length == 2){
-                try { damage = (double) Integer.parseInt(parseThis[0]) + entities[i].getStat(0); }
+                try { damage = (double) Integer.parseInt(parseThis[0]); }
                 catch (Exception ex) { continue; }
                 parseThis[1] = parseThis[1].replace("/", " ");
                 reason = parseThis[1];
                 if (i == 0) target = entities[1].getName();
                 else target = entities[i-1].getName();
             } else {
-                damage = (double) Integer.parseInt(parseThis[0]) + entities[i].getStat(0);
+                damage = (double) Integer.parseInt(parseThis[0]);
                 reason = parseThis[1];
                 target = parseThis[2];
             }
