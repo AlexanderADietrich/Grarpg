@@ -488,7 +488,7 @@ public class Game extends Applet implements Runnable{
         
         
         
-        //test can be deleted
+        //test can be deleted skdgln
         
         //Final line necessary for rendering.
         super.paint(mainGraphics);
