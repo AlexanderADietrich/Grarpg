@@ -486,6 +486,10 @@ public class Game extends Applet implements Runnable{
         textInput.setLocation(areaWidth, 0);
         textInput.setSize(this.getWidth()-areaWidth, 25);
         
+        
+        
+        //test can be deleted
+        
         //Final line necessary for rendering.
         super.paint(mainGraphics);
     }
