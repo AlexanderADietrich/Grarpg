@@ -31,8 +31,7 @@ public class Fight {
             }
         }
     }
-    
-    
+      
     /*
     Iterate over entities
         For each entity get its fight command, composed of:

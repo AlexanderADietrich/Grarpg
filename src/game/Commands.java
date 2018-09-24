@@ -77,13 +77,14 @@ public class Commands {
         game.textOutput.append(command);
         
         if (command.startsWith("inventory")){
-            if (game.p.inventory.size() == 1){ 
-                game.textOutput.append(game.p.inventory.keySet().iterator().next() + "\n");
+            game.paused = !game.paused;
+            if (game.p.inventory.getiSize() == 1){ 
+                game.textOutput.append(game.p.inventory.getInventory().keySet().iterator().next() + "\n");
                 return;
             }
             
             String retVal = "";
-            for (String s : game.p.inventory.keySet()){
+            for (String s : game.p.inventory.getInventory().keySet()){
                 retVal = retVal + s + ",\n";
             }
             game.textOutput.append(retVal);
@@ -95,7 +96,7 @@ public class Commands {
                     //System.out.println("true");
                     TreasureTile copy = (TreasureTile) t;
                     for (Item e : copy.items){
-                        game.p.inventory.put(game.nameGen.getName(e.buff), e);
+                        game.p.inventory.getInventory().put(game.nameGen.getName(e.buff), e);
                     }
                 }
             }
@@ -114,7 +115,7 @@ public class Commands {
                 game.switchMap((EntranceTile) game.getPlayerTile());
         }
         if (command.startsWith("Use")){
-            Item item = p.inventory.get(command.substring(4, command.length()-1));
+            Item item = p.inventory.getInventory().get(command.substring(4, command.length()-1));
             OneUseItem oneuse;
             if (item != null){
                 if(OneUseItem.class.isInstance(item)) {

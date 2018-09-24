@@ -49,18 +49,20 @@ public class Game extends Applet implements Runnable{
     };
     
     public Font                    mainFont = new Font(Font.MONOSPACED, 10, 15);
-    public Player                   p = new Player(0, 0, "", "images/GoodGuy.png");
-    public Enemy                    e = new Enemy (7, 7, "BadGuy", 10, p, "images/BadGuy.png", m.currentChunk);
+    public Player                   p;
+    public Enemy                    e;
     public boolean                  mapActive = false;
     public String                   worldMap = "";
     public Fight                    fight = new Fight(this);
     public boolean                  fighting = false;
     public boolean                  running = false;
+    public boolean                  paused = false;
     public Dungeon                  testDungeon = new Dungeon(this);
     public Namer                    nameGen = new Namer();
-    
     public boolean                  useKeys = true;
     public KeyHandler               keyHandler = new KeyHandler(this);
+    public Button[]                 inventoryButtons = new Button[16];
+    
     
     
     public int areaWidth;  //Width of Map Area (pixels).
@@ -198,11 +200,6 @@ public class Game extends Applet implements Runnable{
     Applet runs init, then start, then paint..
     */
     public void init(){
-        m.currentChunk.passGame(this);
-        m.currentChunk.addEntity(p, 0, 0);
-        m.currentChunk.addEntity(e, 7, 7);
-        m.chunks[0][1].addEntity(new BlindCreep(3, 3, "CREEPO", 1, p, "images/deafCreep.png", m.chunks[0][1]), 3, 3);
-        
         //TODO: MOVE TO BETTER LOCATION, LIKE MAP
         Building b = new Building(this, 8, 8, m.width/4, m.width/4);
         
@@ -225,6 +222,12 @@ public class Game extends Applet implements Runnable{
         add(textInput);
         add(textOutput);
         
+        m.currentChunk.passGame(this);
+        p = new Player(0, 0, "", "images/GoodGuy.png", 36, this);
+        m.currentChunk.addEntity(p, 0, 0);
+        e = new Enemy (7, 7, "BadGuy", 10, p, "images/BadGuy.png", m.currentChunk);
+        m.currentChunk.addEntity(e, 7, 7);
+        m.chunks[0][1].addEntity(new BlindCreep(3, 3, "CREEPO", 1, p, "images/deafCreep.png", m.chunks[0][1]), 3, 3);
     }
     
     public void switchMap(EntranceTile e){
@@ -267,7 +270,7 @@ public class Game extends Applet implements Runnable{
             worldMap = worldMap + "\n";
         }
         
-        m.currentChunk.addEntity(new Player(0, 0, "", "images/GoodGuy.png"), 0, 0);
+        m.currentChunk.addEntity(new Player(0, 0, "", "images/GoodGuy.png", 32, this), 0, 0);
         p = (Player) m.currentChunk.entities[0][0];
         m.currentChunk.addEntity(new Enemy (7, 7, "BadGuy", 10, p, "images/BadGuy.png", m.currentChunk), 7, 7);
         e = (Enemy) m.currentChunk.entities[7][7];
@@ -385,7 +388,7 @@ public class Game extends Applet implements Runnable{
         
         //SECTION: MAIN RENDERING~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         
-        if (!mapActive && running && !fighting){
+        if (!mapActive && running && !fighting && !paused){
             //Main rendering of the current section of map.
 
             for (int b = 0; b < m.currentChunk.tiles.length; b++) {
@@ -466,12 +469,27 @@ public class Game extends Applet implements Runnable{
                 }
             }
         }
-        
+        else if (paused){
+            setLayout(new GridLayout(6, 6, 5, 5));
+            mainGraphics.setColor(Color.red);
+            mainGraphics.fillRect(0, 0, this.getWidth(), this.getHeight());
+            Button[] temp = p.inventory.getiButtons();
+            for (Button b: temp){             
+                add(b);
+                //System.out.println("X " + b.getX() + " Y " + b.getY() +
+                //" H " + b.getHeight() + " W " + b.getWidth());
+                //System.out.println("BUTTON");
+            }
+        }        
         //Main player interface.
         textOutput.setLocation(areaWidth, 26);
         textOutput.setSize(this.getWidth()-areaWidth, this.getHeight()-25);
         textInput.setLocation(areaWidth, 0);
         textInput.setSize(this.getWidth()-areaWidth, 25);
+        
+        
+        
+        //test can be deleted skdgln
         
         //Final line necessary for rendering.
         super.paint(mainGraphics);
