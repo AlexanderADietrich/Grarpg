@@ -28,7 +28,7 @@ public class Game extends Applet implements Runnable{
     public int                      idCounter = 0;
     
     public TextField               textInput = new TextField("", 10);
-    public TextArea                 textOutput = new TextArea(10, TextArea.SCROLLBARS_VERTICAL_ONLY);
+    public TextArea                 textOutput = new TextArea("", 10, 10, TextArea.SCROLLBARS_NONE);
     public KeyListener              k = new KeyListener() {
         @Override
         public void keyTyped(KeyEvent e) {
@@ -217,6 +217,7 @@ public class Game extends Applet implements Runnable{
         //Setup output box.
         textOutput.setEditable(false);
         textOutput.setFont(mainFont);
+        textOutput.setFocusable(false);
         
         //Add both to the applet.
         add(textInput);
@@ -334,20 +335,20 @@ public class Game extends Applet implements Runnable{
             ex.printStackTrace();
         }
     }
-    
+    Button[] btemplist;
     public void swapInventoryState(){
         //setLayout(new GridLayout(6, 6, 5, 5)); unnecessary
         if (inventory){
             inventory = false;
-            Button[] temp = p.inventory.getiButtons();
-            for (Button b: temp){     
+            btemplist = p.inventory.getiButtons();
+            for (Button b: btemplist){     
                 remove(b);
             }
         }
         else {
             inventory = true;
-            Button[] temp = p.inventory.getiButtons();
-            for (Button b: temp){     
+            btemplist = p.inventory.getiButtons();
+            for (Button b: btemplist){     
                 b.setFocusable(false);
                 add(b);
                 //System.out.println("X " + b.getX() + " Y " + b.getY() +
