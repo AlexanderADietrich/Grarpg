@@ -47,7 +47,7 @@ public class Game extends Applet implements Runnable{
         }
     };
     
-    public Font                    mainFont = new Font(Font.MONOSPACED, 10, 15);
+    public Font                     mainFont = new Font(Font.MONOSPACED, 10, 15);
     public Player                   p;
     public Enemy                    e;
     public boolean                  mapActive = false;
@@ -60,7 +60,7 @@ public class Game extends Applet implements Runnable{
     public Namer                    nameGen = new Namer();
     public boolean                  useKeys = true;
     public KeyHandler               keyHandler = new KeyHandler(this);
-    public Button[]                 inventoryButtons = new Button[16];
+    //public Button[]                 inventoryButtons = new Button[16];
     
     
     
@@ -223,7 +223,7 @@ public class Game extends Applet implements Runnable{
         add(textOutput);
         
         m.currentChunk.passGame(this);
-        p = new Player(0, 0, "", "images/GoodGuy.png", 36, this);
+        p = new Player(0, 0, "", "images/GoodGuy.png", 49, this);
         m.currentChunk.addEntity(p, 0, 0);
         e = new Enemy (7, 7, "BadGuy", 10, p, "images/BadGuy.png", m.currentChunk);
         m.currentChunk.addEntity(e, 7, 7);

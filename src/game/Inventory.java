@@ -27,7 +27,7 @@ public class Inventory {
         this.g = g;
         this.iButtons = new Button[iSize];
         for (int i = 0; i < iButtons.length; i++){
-            if (row > (int) Math.sqrt(iSize)) row++;
+            if (i >= (int) Math.sqrt(iSize)*(row+1) ) row++;
             this.iButtons[i] = new Button("Test");
             this.iButtons[i].setBackground(Color.gray);
             this.iButtons[i].setForeground(Color.green);
@@ -40,7 +40,7 @@ public class Inventory {
             System.out.println(columns);
             System.out.println(g.areaWidth);
             System.out.println(g.areaHeight);
-            
+            //this.iButtons[i]
             this.iButtons[i].setBounds(
                     (i - (columns * row) ) * (g.areaWidth / columns),
                     row * g.areaHeight / columns ,
