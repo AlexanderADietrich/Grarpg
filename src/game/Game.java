@@ -1,4 +1,4 @@
-package game; //TEST
+package game; 
 import java.applet.Applet;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -8,7 +8,6 @@ import java.awt.event.KeyListener;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Iterator;
-//TEST COMMENT PLEASE WORK
 /**
  *
  * @author voice
@@ -501,10 +500,6 @@ public class Game extends Applet implements Runnable{
         textOutput.setSize(this.getWidth()-areaWidth, this.getHeight()-25);
         textInput.setLocation(areaWidth, 0);
         textInput.setSize(this.getWidth()-areaWidth, 25);
-        
-        
-        
-        //test can be deleted skdgln
         
         //Final line necessary for rendering.
         super.paint(mainGraphics);
