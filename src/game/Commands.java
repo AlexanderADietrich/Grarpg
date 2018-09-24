@@ -77,7 +77,7 @@ public class Commands {
         game.textOutput.append(command);
         
         if (command.startsWith("inventory")){
-            game.paused = !game.paused;
+            game.swapInventoryState();
             if (game.p.inventory.getiSize() == 1){ 
                 game.textOutput.append(game.p.inventory.getInventory().keySet().iterator().next() + "\n");
                 return;

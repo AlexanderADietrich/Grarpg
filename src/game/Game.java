@@ -56,7 +56,7 @@ public class Game extends Applet implements Runnable{
     public Fight                    fight = new Fight(this);
     public boolean                  fighting = false;
     public boolean                  running = false;
-    public boolean                  paused = false;
+    public boolean                  inventory = false;
     public Dungeon                  testDungeon = new Dungeon(this);
     public Namer                    nameGen = new Namer();
     public boolean                  useKeys = true;
@@ -335,6 +335,28 @@ public class Game extends Applet implements Runnable{
         }
     }
     
+    public void swapInventoryState(){
+        //setLayout(new GridLayout(6, 6, 5, 5)); unnecessary
+        if (inventory){
+            inventory = false;
+            Button[] temp = p.inventory.getiButtons();
+            for (Button b: temp){     
+                remove(b);
+            }
+        }
+        else {
+            inventory = true;
+            Button[] temp = p.inventory.getiButtons();
+            for (Button b: temp){     
+                b.setFocusable(false);
+                add(b);
+                //System.out.println("X " + b.getX() + " Y " + b.getY() +
+                //" H " + b.getHeight() + " W " + b.getWidth());
+                //System.out.println("BUTTON");
+            }
+        }
+    }
+    
     long currentTime;
     long prevTime = System.currentTimeMillis();
     Entity etemp;
@@ -388,7 +410,7 @@ public class Game extends Applet implements Runnable{
         
         //SECTION: MAIN RENDERING~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         
-        if (!mapActive && running && !fighting && !paused){
+        if (!mapActive && running && !fighting && !inventory){
             //Main rendering of the current section of map.
 
             for (int b = 0; b < m.currentChunk.tiles.length; b++) {
@@ -469,17 +491,9 @@ public class Game extends Applet implements Runnable{
                 }
             }
         }
-        else if (paused){
-            setLayout(new GridLayout(6, 6, 5, 5));
+        else if (inventory){
             mainGraphics.setColor(Color.red);
             mainGraphics.fillRect(0, 0, this.getWidth(), this.getHeight());
-            Button[] temp = p.inventory.getiButtons();
-            for (Button b: temp){             
-                add(b);
-                //System.out.println("X " + b.getX() + " Y " + b.getY() +
-                //" H " + b.getHeight() + " W " + b.getWidth());
-                //System.out.println("BUTTON");
-            }
         }        
         //Main player interface.
         textOutput.setLocation(areaWidth, 26);
