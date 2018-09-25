@@ -311,11 +311,13 @@ public class Game extends Applet implements Runnable{
             graphicsBuffer = image.getGraphics();
         }
         //If the applet has been resized, then recreate the buffer.
+        //As of 9/24/18, also update the inventory's size parameters.
         if (this.getWidth() != prevWid || this.getHeight() != prevHeight){
             image = createImage(this.getSize().width, this.getSize().height);
             graphicsBuffer = image.getGraphics();
             prevWid = this.getWidth();
             prevHeight = this.getHeight();
+            p.inventory.updateInventory();
         }
         //Render the buffer.
         graphicsBuffer.setColor(getBackground());
@@ -346,6 +348,7 @@ public class Game extends Applet implements Runnable{
         }
         else {
             inventory = true;
+            p.inventory.updateInventory();
             btemplist = p.inventory.getiButtons();
             for (Button b: btemplist){     
                 b.setFocusable(false);

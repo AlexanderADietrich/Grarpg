@@ -32,20 +32,31 @@ public class Inventory {
             this.iButtons[i].setBackground(Color.gray);
             this.iButtons[i].setForeground(Color.green);
             
-            System.out.println("test " + (i - (columns * row) ) * (g.areaWidth / columns));
+            /*System.out.println("test " + (i - (columns * row) ) * (g.areaWidth / columns));
             System.out.println(row * g.areaHeight / columns);
             System.out.println(g.areaWidth / columns);
             System.out.println(g.areaHeight / columns);
             System.out.println(iSize);
             System.out.println(columns);
             System.out.println(g.areaWidth);
-            System.out.println(g.areaHeight);
-            //this.iButtons[i]
+            System.out.println(g.areaHeight);*/
             this.iButtons[i].setBounds(
-                    (i - (columns * row) ) * (g.areaWidth / columns),
-                    row * g.areaHeight / columns ,
-                    g.areaWidth / columns ,
-                    g.areaHeight / columns);
+                    (i - (columns * row) ) * (g.areaWidth / columns) +1,
+                    row * g.areaHeight / columns +1,
+                    2+(g.areaWidth / columns) ,
+                    2+(g.areaHeight / columns));
+        }
+    }
+    
+    public void updateInventory(){
+        row = 0;
+        for (int i = 0; i < iButtons.length; i++){
+            if (i >= (int) Math.sqrt(iSize)*(row+1) ) row++;
+            this.iButtons[i].setBounds(
+                    (i - (columns * row) ) * (g.areaWidth / columns) +1,
+                    row * g.areaHeight / columns +1,
+                    2+(g.areaWidth / columns) ,
+                    2+(g.areaHeight / columns));
         }
     }
     
