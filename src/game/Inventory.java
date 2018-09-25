@@ -46,6 +46,10 @@ public class Inventory {
                     2+(g.areaWidth / columns) ,
                     2+(g.areaHeight / columns));
         }
+        int count = 0;
+        for (String s : inventory.keySet()){
+            iButtons[count++].setName(s);
+        }
     }
     
     public void updateInventory(){
@@ -57,6 +61,13 @@ public class Inventory {
                     row * g.areaHeight / columns +1,
                     2+(g.areaWidth / columns) ,
                     2+(g.areaHeight / columns));
+            
+        }
+        int count = 0;
+        for (String s : inventory.keySet()){
+            System.out.println(s + " KeySet");
+            iButtons[count++].setLabel(s);
+            
         }
     }
     
