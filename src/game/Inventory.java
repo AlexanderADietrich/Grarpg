@@ -7,6 +7,8 @@ package game;
 
 import java.awt.Button;
 import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.HashMap;
 
 /**
@@ -20,6 +22,17 @@ public class Inventory {
     private int row = 0;
     private int columns;
     private Game g;
+    
+    private class InventoryActionListener implements ActionListener{
+        private String label;
+        public InventoryActionListener(String label){
+            this.label=label;
+        }
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            g.textOutput.append(label);
+        }
+    }
     
     public Inventory(int size, Game g){
         this.iSize = size;
@@ -48,6 +61,7 @@ public class Inventory {
         }
         int count = 0;
         for (String s : inventory.keySet()){
+            iButtons[count].addActionListener(new InventoryActionListener(s));
             iButtons[count++].setName(s);
         }
     }
@@ -65,9 +79,8 @@ public class Inventory {
         }
         int count = 0;
         for (String s : inventory.keySet()){
-            System.out.println(s + " KeySet");
+            iButtons[count].addActionListener(new InventoryActionListener(s));
             iButtons[count++].setLabel(s);
-            
         }
     }
     
