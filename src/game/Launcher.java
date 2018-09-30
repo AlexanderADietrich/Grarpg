@@ -22,7 +22,8 @@ public class Launcher {
             "images/treasureTile.png",
             "images/blackTile.png",
             "images/brickTile.png",
-            "images/deafCreep.png"
+            "images/deafCreep.png",
+            "images/TEST_GIF.gif"
         };
         String s = "" + new File("").getAbsolutePath().replace('\\', '/') + "/src/";
         for (String path : imagePaths){

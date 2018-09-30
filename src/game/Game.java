@@ -223,7 +223,7 @@ public class Game extends Applet implements Runnable{
         add(textOutput);
         
         m.currentChunk.passGame(this);
-        p = new Player(0, 0, "", "images/GoodGuy.png", 49, this);
+        p = new Player(0, 0, "", "images/TEST_GIF.gif", 49, this);
         m.currentChunk.addEntity(p, 0, 0);
         e = new Enemy (7, 7, "BadGuy", 10, p, "images/BadGuy.png", m.currentChunk);
         m.currentChunk.addEntity(e, 7, 7);
