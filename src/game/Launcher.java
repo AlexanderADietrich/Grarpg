@@ -16,6 +16,8 @@ public class Launcher {
             "images/defaultTile.png",
             "images/defaultTileR90.png",
             "images/waterTile.png",
+            "images/waterTileF1.5.png",
+            "images/waterTileF2.png",
             "images/mountainTile.png",
             "images/wallTile.png",
             "images/entranceTile.png",

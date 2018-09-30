@@ -379,6 +379,7 @@ public class Game extends Applet implements Runnable{
     long prevTime = System.currentTimeMillis();
     Entity etemp;
     double ttemp;
+    AnimatedTile attemp;
     public void paint(Graphics mainGraphics){
         //System.out.println("BIG\t" + m.chunkX + "\t" + m.chunkY + (m.chunks[m.chunkY][m.chunkX].g == null));
         
@@ -439,6 +440,11 @@ public class Game extends Applet implements Runnable{
                             areaWidth / m.currentChunk.chunkWidth + 2, areaHeight / m.currentChunk.chunkHeight + 2,
                             new Color(0, 0, 50),//This line could be used for day/night
                             this);
+                    
+                    if (AnimatedTile.class.isInstance(m.currentChunk.tiles[b][c])){
+                        attemp = (AnimatedTile) m.currentChunk.tiles[b][c];
+                        attemp.doTick();
+                    }
                 }
             }
             //Ensures Entities are "top level"
@@ -499,7 +505,10 @@ public class Game extends Applet implements Runnable{
                         c*areaWidth/m.tiles[0].length-1,
                         b*areaHeight/m.tiles[0].length-1,
                         this);
-                    
+                    if (AnimatedTile.class.isInstance(m.tiles[b][c]) && Math.random() < 0.5){
+                        attemp = (AnimatedTile) m.tiles[b][c];
+                        attemp.doTick();
+                    }
                     /*mainGraphics.drawImage(images.get(m.tiles[b][c].imagePath), 
                         c*areaWidth/m.tiles[0].length-1, 
                         b*areaHeight/m.tiles[0].length-1,
