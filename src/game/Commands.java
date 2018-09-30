@@ -53,10 +53,10 @@ public class Commands {
     public void parsePlayerCommand(String command, Player p){
         int cLength = command.length();
         command = command.trim();
-        command = wrap(command, cLength);
+        
         //Fast Movement
         //Make a setting for WASD
-        if (command.length() == 2){
+        if (command.length() == 1){
             if (command.startsWith("n")){
                 parsePlayerCommand("go up", p);
                 return;
@@ -74,7 +74,12 @@ public class Commands {
                 return;
             }
         }
-        game.textOutput.append(command);
+        if (command.startsWith("equip") && command.length() < 6){
+            parsePlayerCommand("Equipped: ", p);
+            return;
+        }
+        
+        game.textOutput.append(wrap(command, cLength));
         
         if (command.startsWith("inventory")){
             game.swapInventoryState();
@@ -96,7 +101,7 @@ public class Commands {
                     //System.out.println("true");
                     TreasureTile copy = (TreasureTile) t;
                     for (Item e : copy.items){
-                        game.p.inventory.getInventory().put(game.nameGen.getName(e.buff), e);
+                        game.p.inventory.getInventory().put(e.name, e);
                     }
                 }
             }
@@ -113,6 +118,31 @@ public class Commands {
         if (command.startsWith("Enter Dungeon")){
             if (EntranceTile.class.isInstance(game.getPlayerTile())) 
                 game.switchMap((EntranceTile) game.getPlayerTile());
+        }
+        if (command.startsWith("Equipped:")){
+            for (Item e : p.inventory.getInventory().values()){
+                if (EquipItem.class.isInstance(e)){
+                    if (((EquipItem) e).equipped){
+                        game.textOutput.append(wrap("\t" + e.name + ",\n", cLength));
+                    }
+                }
+            }
+        }
+        if (command.startsWith("equip")){
+            Item item = p.inventory.getInventory().get(command.substring(6, command.length()));
+            EquipItem eqitem;
+            if (item != null){
+                if (EquipItem.class.isInstance(item)){
+                    eqitem = (EquipItem) item;
+                    if (eqitem.equipped == false) {
+                        for (int i = 0; i < 5; i++){
+                            p.getDamageTypes()[i] += eqitem.buffs[i];
+                        }
+                        eqitem.equipped=true;
+                    }
+                }
+            }
+            return;
         }
         if (command.startsWith("Use")){
             Item item = p.inventory.getInventory().get(command.substring(4, command.length()-1));

@@ -10,6 +10,7 @@ package game;
  * @author voice
  */
 public class DeafAI extends AI{
+    public boolean heard = false;
     
     public DeafAI(Entity t, Entity b, Chunk c) {
         super(t, b, c);
@@ -22,6 +23,7 @@ public class DeafAI extends AI{
         sound += incomingSound;
         incomingSound = 0;
         if (sound > 10){ //Attack If Has Heard Target
+            heard = true;
             attack();
         }
         else if (count == 20){ //Move Randomly Very Rarely
@@ -30,6 +32,26 @@ public class DeafAI extends AI{
         }
         else
             count++;
+    }
+    @Override
+    public void moveRight(){
+        if (!heard) currentChunk.updateLoc(Body, 1, 0, 500);
+        else currentChunk.updateLoc(Body, 1, 0, 50);
+    }
+    @Override
+    public void moveLeft(){
+        if (!heard) currentChunk.updateLoc(Body, -1, 0, 500);
+        else currentChunk.updateLoc(Body, -1, 0, 50);
+    }
+    @Override
+    public void moveDown(){
+        if (!heard) currentChunk.updateLoc(Body, 0, 1, 500);
+        else currentChunk.updateLoc(Body, 0, 1, 50);
+    }
+    @Override
+    public void moveUp(){
+        if (!heard) currentChunk.updateLoc(Body, 0, -1, 500);
+        else currentChunk.updateLoc(Body, 0, -1, 50);
     }
     
 }

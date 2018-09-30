@@ -21,16 +21,28 @@ public class Inventory {
     private int iSize; // # should be perfect square
     private int row = 0;
     private int columns;
+    private boolean clicked = false;
     private Game g;
     
     private class InventoryActionListener implements ActionListener{
         private String label;
-        public InventoryActionListener(String label){
-            this.label=label;
+        private Item i;
+        public InventoryActionListener(String label, Item i){
+            this.label = label;
+            this.i = i;
         }
         @Override
         public void actionPerformed(ActionEvent e) {
-            g.textOutput.append(label);
+            clicked = !clicked;
+            System.out.println(clicked);
+            //if (clicked){
+            g.textOutput.append(label + "\n");
+            if (i instanceof OneUseItem){
+                g.textOutput.append("Type commamd \"Use " + label + "\" \nto use this item." + "\n");
+            }
+            if (i instanceof EquipItem){
+                g.textOutput.append("Type commamd \"Equip " + label + "\" \nto equip this item." + "\n");
+            }
         }
     }
     
@@ -61,7 +73,7 @@ public class Inventory {
         }
         int count = 0;
         for (String s : inventory.keySet()){
-            iButtons[count].addActionListener(new InventoryActionListener(s));
+            iButtons[count].addActionListener(new InventoryActionListener(s, inventory.get(s)));
             iButtons[count++].setName(s);
         }
     }
@@ -79,7 +91,15 @@ public class Inventory {
         }
         int count = 0;
         for (String s : inventory.keySet()){
-            iButtons[count].addActionListener(new InventoryActionListener(s));
+            if (iButtons[count].getActionListeners().length == 0 ){
+                iButtons[count].addActionListener(new InventoryActionListener(s, inventory.get(s)));
+            } else {
+                for (ActionListener a : iButtons[count].getActionListeners()){
+                    iButtons[count].removeActionListener(a);
+                }
+                iButtons[count].addActionListener(new InventoryActionListener(s, inventory.get(s)));
+            }      
+            
             iButtons[count++].setLabel(s);
         }
     }
