@@ -13,7 +13,7 @@ import java.util.HashMap;
 
 /**
  *
- * @author natha
+ * @author Nathan Geddis
  */
 public class Inventory {
     private HashMap<String, Item> inventory = new HashMap<>();
