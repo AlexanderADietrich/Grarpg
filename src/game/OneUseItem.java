@@ -11,8 +11,8 @@ package game;
  */
 public class OneUseItem extends Item{
     public int time;
-    public OneUseItem(int gp, String buff, int amountBuff, int time) {
-        super(gp, buff, amountBuff);
+    public OneUseItem(int gp, String buff, int amountBuff, int time, String name) {
+        super(gp, buff, amountBuff, name);
         this.time=time;
     }
 }

@@ -10,8 +10,18 @@ public class Entity {
     private int xPOS;
     private int yPOS; 
     private double hp; // could be put in stats if changed to int. Not sure why it is double
+    
     // Index 0 = Strength, Index 1 = Defence, Index 2 = Intelligence, Index 3 = Discipline, Index 4 = Speed
     private int[] stats = new int[4];
+    
+    /*
+    Damage Types for Weapons, 
+    
+    index 0 = blunt, index 1 = shield (not damage, yet useful for armor),
+    index 2 = magic, index 3 = chi/special, index 4 = ranged/bladed
+    */
+    private int[] damageTypes = new int[5];
+    
     private String name;
     
     
@@ -170,6 +180,21 @@ public class Entity {
     */
     public void setStat(int index, int stat){
         this.stats[index] = stat;
+    }
+    
+    public int getDamage(int index){
+        if (index < 5){
+            return damageTypes[index];
+        }
+        return -1;
+    }
+    
+    public int[] getDamageTypes() {
+        return damageTypes;
+    }
+
+    public void setDamageTypes(int[] damagetypes) {
+        this.damageTypes = damagetypes;
     }
     
     /*

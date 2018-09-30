@@ -18,7 +18,7 @@ public class TreasureTile extends Tile{
     public void generateTreasure(int level){
         items = new Item[level];
         for (int i = 0; i < items.length; i++){
-            items[i] = new OneUseItem(1000, "climb", 1, 10);
+            items[i] = new OneUseItem(1000, "climb", 1, 10, "ClimbPotion");
         }
     }
     

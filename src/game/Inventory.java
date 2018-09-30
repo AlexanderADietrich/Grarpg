@@ -21,6 +21,7 @@ public class Inventory {
     private int iSize; // # should be perfect square
     private int row = 0;
     private int columns;
+    private boolean clicked = false;
     private Game g;
     
     private class InventoryActionListener implements ActionListener{
@@ -30,6 +31,7 @@ public class Inventory {
         }
         @Override
         public void actionPerformed(ActionEvent e) {
+            clicked = !clicked;
             g.textOutput.append(label);
         }
     }

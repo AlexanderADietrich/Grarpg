@@ -16,20 +16,29 @@ public class Player extends Entity{
         this.setHP(100);
         this.setImagePath(address);
         this.setStats(new int[] {5,5,5,5,5});
+        
         inventory = new Inventory(iSize, g);
-        this.inventory.addInventory("SwimBottle", new OneUseItem(100, "swim", 10, 60));
+        this.inventory.addInventory("SwimBottle", new OneUseItem(100, "swim", 10, 60, "SwimBottle"));
+        this.inventory.addInventory("SWORD OF TOLEDO", new EquipItem(new int[] {2, 1, 0, 0, 3}, "SWORD OF TOLEDO"));
+        
     }
     int stemp;
     public Random r = new Random();
     public String doFightTick(){
         String temp = previousFightCommand;
         previousFightCommand = "";
+        if (temp != "") System.out.println(temp);
         if ("The Toledo Avocado".equals(temp)){
             return "1000000 as/The/Toledo/Avocado/Obliterates/Their/Soul";
         } 
+        if ("slash".equals(temp)){
+            stemp = this.getDamage(4);
+            if (this.getDamage(4) > 0){
+                return (stemp+this.getStat(0)) + " as/your/blade/dances/through/sinew";
+            }
+        }
         if ("hit".equals(temp)) {
             stemp = this.getStat(0);
-            System.out.println(stemp);
             if (stemp > 14) 
                 if (r.nextBoolean())
                     return (stemp+1) + " as/thunder/becomes/jealous/of/your/punch";

@@ -38,6 +38,13 @@ public class Skills {
         timers.put(new Timer(skill, timer), amount);
         buffs.put(skill, amount);
     }
+    public void addBuff(String skill, int amount){
+        buffs.put(skill, amount);
+    }
+    public void removeBuff(String skill, int amount){
+        buffs.put(skill, buffs.get(skill)-amount);
+    }
+    
     public void doSkillTick(){
         timeIter = timers.keySet().iterator();
         while (timeIter.hasNext()){
