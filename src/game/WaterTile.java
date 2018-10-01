@@ -9,9 +9,8 @@ package game;
  *
  * @author voice
  */
-public class WaterTile extends Tile{
-    public WaterTile(String s, int x, int y){
-        super(s,x,y);
-        skillTraverse = "swim";
+public class WaterTile extends AnimatedTile{
+    public WaterTile(String[] slist, int x, int y, int flop) {
+        super(slist, x, y, flop);
     }
 }

@@ -145,7 +145,7 @@ public class Commands {
             return;
         }
         if (command.startsWith("Use")){
-            Item item = p.inventory.getInventory().get(command.substring(4, command.length()-1));
+            Item item = p.inventory.getInventory().get(command.substring(4, command.length()));
             OneUseItem oneuse;
             if (item != null){
                 if(OneUseItem.class.isInstance(item)) {

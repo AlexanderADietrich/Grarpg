@@ -181,6 +181,7 @@ public class Map {
         //System.out.println(breaker);
     }
     
+    public String[] waterAnimation = new String[] {"images/waterTile.png", "images/waterTileF1.5.png", "images/waterTileF2.png","images/waterTileF1.5.png"};
     public void generateOcean(Tile[][] input){
         int locX = rand.nextInt((width*3)/4);
         int locY = rand.nextInt((height*3)/4);
@@ -197,11 +198,11 @@ public class Map {
         while (true){
             //System.out.println(ax + "" + ay);
             if (ax >= width / 4 - 1 || ay >= height / 4 - 1 || ax < 1 || ay < 1) break;
-            oceanBounds[ax][ay] = new WaterTile("images/waterTile.png", locX+ax, locY+ay);
-            oceanBounds[ax+1][ay] = new WaterTile("images/waterTile.png", locX+ax+1, locY+ay);
-            oceanBounds[ax-1][ay] = new WaterTile("images/waterTile.png", locX+ax-1, locY+ay);
-            oceanBounds[ax][ay+1] = new WaterTile("images/waterTile.png", locX+ax, locY+ay+1);
-            oceanBounds[ax][ay-1] = new WaterTile("images/waterTile.png", locX+ax, locY+ay-1);
+            oceanBounds[ax][ay] = new WaterTile(waterAnimation, locX+ax, locY+ay, 24);
+            oceanBounds[ax+1][ay] = new WaterTile(waterAnimation, locX+ax+1, locY+ay, 24);
+            oceanBounds[ax-1][ay] = new WaterTile(waterAnimation, locX+ax-1, locY+ay, 24);
+            oceanBounds[ax][ay+1] = new WaterTile(waterAnimation, locX+ax, locY+ay+1, 24);
+            oceanBounds[ax][ay-1] = new WaterTile(waterAnimation, locX+ax, locY+ay-1, 24);
             r = rand.nextInt(16);
             if (r <= 3) ax+=2;
             else if (r <= 7) ax-=2;
@@ -248,7 +249,7 @@ public class Map {
                     b++;
                     break;
                 case "w":
-                    tiles[a][b] = new WaterTile("images/waterTile.png", a, b);
+                    tiles[a][b] = tiles[a][b] = new WaterTile(waterAnimation, a, b, 24);
                     //System.out.print("w");
                     b++;
                     break;
