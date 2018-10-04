@@ -15,20 +15,20 @@ import java.util.Iterator;
  * @author voice
  */
 public class Game extends Applet implements Runnable{
-    public long                    framerate = 15;
-    public Commands                commandHandler = new Commands(this);
-    public CombatCommands          combatCommandHandler = new CombatCommands(this);
+    public long                     framerate = 15;
+    public Commands                 commandHandler = new Commands(this);
+    public CombatCommands           combatCommandHandler = new CombatCommands(this);
     public  HashMap<String, Image>  images;
-    public HashMap<String, Image>  resized = new HashMap<>();
-    public Image                   image;
-    public Image                   basicTile;
-    public Graphics                graphicsBuffer;
+    public HashMap<String, Image>   resized = new HashMap<>();
+    public Image                    image;
+    public Image                    basicTile;
+    public Graphics                 graphicsBuffer;
     public URL                      mainURL;
     public Map                      m = new Map(this, true);
     public Map[]                    maps = new Map[1];
     public int                      idCounter = 0;
     
-    public TextField               textInput = new TextField("", 10);
+    public TextField                textInput = new TextField("", 10);
     public TextArea                 textOutput = new TextArea("", 10, 10, TextArea.SCROLLBARS_NONE);
     public KeyListener              k = new KeyListener() {
         @Override
@@ -238,7 +238,7 @@ public class Game extends Applet implements Runnable{
         //this.addMouseMotionListener(mml);
         
         m.currentChunk.passGame(this);
-        p = new Player(0, 0, "", "images/TEST_GIF.gif", 49, this);
+        p = new Player(0, 0, "", "images/GoodGuy.png", 49, this);
         m.currentChunk.addEntity(p, 0, 0);
         e = new Enemy (7, 7, "BadGuy", 10, p, "images/BadGuy.png", m.currentChunk);
         m.currentChunk.addEntity(e, 7, 7);
@@ -477,15 +477,18 @@ public class Game extends Applet implements Runnable{
 
         //Render fight graphics.
         else if (fighting){
+                mainGraphics.setColor(Color.GREEN);
+                mainGraphics.fillRect(0, 2* areaHeight / 4 -20 + 1, (int) fight.entities[0].getHP(), 10);
                 mainGraphics.drawImage(images.get(fight.entities[0].getImagePath()),
-                                    areaWidth / 4 + 1,
-                                    areaHeight / 4 + 1,
+                                    0 + 1,
+                                    2* areaHeight / 4 + 1,
                                     areaWidth / 2 + 2, 
                                     areaHeight / 2 + 2,
                                     this);
+                mainGraphics.fillRect(2* areaWidth / 4 + 1, 0 + 1, (int) fight.entities[1].getHP(), 10);
                 mainGraphics.drawImage(images.get(fight.entities[1].getImagePath()),
                                     2* areaWidth / 4 + 1,
-                                    2* areaHeight / 4 + 1,
+                                    0 + 20 + 1,
                                     areaWidth / 2 + 2, 
                                     areaHeight / 2 + 2,
                                     this);

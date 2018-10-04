@@ -50,12 +50,58 @@ public class Commands {
         }
         return newString + (command.substring(cPos, command.length()) + "\n");
     }
+    
+    //0 = Str, 1 = Def, 2 = Int, 3 = Disc, 4 = Spd
+    public double[] statMods        = {0, 0, 0, 0, 0};
+    //0 = blunt, 1 = shield, 2 = magic, 3 = chi/special, 4 = ranged/bladed
+    public double[] damageTypeMods  = {0, 0, 0, 0, 0};
+    boolean mod = false;
+    int mtemp;
+    
     public void parsePlayerCommand(String command, Player p){
+        //Processing
         int cLength = command.length();
         command = command.trim();
         
-        //Fast Movement
-        //Make a setting for WASD
+        
+        /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 
+            In order to aid the goal of getting up to 1400 commands, make
+            command modifiers in order to recursively call 'advanced' 
+            commands as stat-modified versions of 'primary' commands
+        
+        TODO: Add Stamina so that Running has a disadvantage
+        */
+        if (command.startsWith("jog")){
+            statMods[4] = 1.5;
+            mod = true;
+            parsePlayerCommand("go " + command.substring(4), p);
+        }
+        if (command.startsWith("run")){
+            statMods[4] = 1.75;
+            mod = true;
+            parsePlayerCommand("go " + command.substring(4), p);
+        }
+        if (command.startsWith("dash")){
+            statMods[4] = 2;
+            mod = true;
+            parsePlayerCommand("go " + command.substring(5), p);
+        }
+        if (command.startsWith("rush")){
+            statMods[4] = 2.25;
+            mod = true;
+            parsePlayerCommand("go " + command.substring(5), p);
+        }
+        if (command.startsWith("sprint")){
+            statMods[4] = 2.5;
+            mod = true;
+            parsePlayerCommand("go " + command.substring(7), p);
+        }
+        
+        
+        
+        
+        //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        //Acronyms / Initialisms / Recursive Calls
         if (command.length() == 1){
             if (command.startsWith("n")){
                 parsePlayerCommand("go up", p);
@@ -81,6 +127,9 @@ public class Commands {
         
         game.textOutput.append(wrap(command, cLength));
         
+        
+        //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        //Main Commands
         if (command.startsWith("inventory")){
             game.swapInventoryState();
             if (game.p.inventory.getiSize() == 1){ 
@@ -114,6 +163,18 @@ public class Commands {
                 e = (Entity) i.next();
                 if (Player.class.isInstance(e)) System.out.println("CHUNKPLAYER:\t" + e.getXPOS() + "," + e.getYPOS());
             }
+            System.out.println();
+            System.out.println("STATS: ");
+            for (int g : game.p.getStats()){
+                System.out.print(g + " ");
+            }
+            System.out.println();
+            
+            System.out.println("DAMAGETYPES: ");
+            for (int g : game.p.getDamageTypes()){
+                System.out.print(g + " ");
+            }
+            System.out.println();
         }
         if (command.startsWith("Enter Dungeon")){
             if (EntranceTile.class.isInstance(game.getPlayerTile())) 
@@ -124,6 +185,23 @@ public class Commands {
                 if (EquipItem.class.isInstance(e)){
                     if (((EquipItem) e).equipped){
                         game.textOutput.append(wrap("\t" + e.name + ",\n", cLength));
+                    }
+                }
+            }
+        }
+        if (command.startsWith("unequip")){
+            Item item = p.inventory.getInventory().get(command.substring(8, command.length()));
+            EquipItem eqitem;
+            if (item != null){
+                if (EquipItem.class.isInstance(item)){
+                    eqitem = (EquipItem) item;
+                    if (eqitem.equipped == true){
+                        for (int i = 0; i < 5; i++){
+                            p.getDamageTypes()[i] -= eqitem.buffs[i];
+                        }
+                        eqitem.equipped = false;
+                    } else {
+                        game.textOutput.append(wrap("Not Equipped", 12));
                     }
                 }
             }
@@ -139,6 +217,8 @@ public class Commands {
                             p.getDamageTypes()[i] += eqitem.buffs[i];
                         }
                         eqitem.equipped=true;
+                    } else {
+                        game.textOutput.append(wrap("Already Equipped", 16));
                     }
                 }
             }
@@ -184,7 +264,16 @@ public class Commands {
                         return;
                     }
                     
-                    game.m.currentChunk.updateLoc(p, 1, 0, 250-(p.getStat(4)*5));
+                    if (mod){
+                        mtemp = 0;
+                        for (int i = 0; i < 5; i++){
+                            if (i == 4) mtemp += p.getStat(i)*statMods[i];
+                            statMods[i] = 0;
+                        }
+                        game.m.currentChunk.updateLoc(p, 1, 0, 250-(mtemp*5));
+                        mod = false;
+                    } else
+                        game.m.currentChunk.updateLoc(p, 1, 0, 250-(p.getStat(4)*5));
                 } 
                 else if (command.startsWith("left")){
                     
@@ -199,7 +288,16 @@ public class Commands {
                         return;
                     }
                     
-                    game.m.currentChunk.updateLoc(p, -1, 0, 250-(p.getStat(4)*5));
+                    if (mod){
+                        mtemp = 0;
+                        for (int i = 0; i < 5; i++){
+                            if (i == 4) mtemp += p.getStat(i)*statMods[i];
+                            statMods[i] = 0;
+                        }
+                        game.m.currentChunk.updateLoc(p, -1, 0, 250-(mtemp*5));
+                        mod = false;
+                    } else
+                        game.m.currentChunk.updateLoc(p, -1, 0, 250-(p.getStat(4)*5));
                 } 
                 else if (command.startsWith("down")){
                     
@@ -214,7 +312,16 @@ public class Commands {
                         return;
                     }
                     
-                    game.m.currentChunk.updateLoc(p, 0, 1, 250-(p.getStat(4)*5));
+                    if (mod){
+                        mtemp = 0;
+                        for (int i = 0; i < 5; i++){
+                            if (i == 4) mtemp += p.getStat(i)*statMods[i];
+                            statMods[i] = 0;
+                        }
+                        game.m.currentChunk.updateLoc(p, 0, 1, 250-(mtemp*5));
+                        mod = false;
+                    } else
+                        game.m.currentChunk.updateLoc(p, 0, 1, 250-(p.getStat(4)*5));
                 } 
                 else if (command.startsWith("up")){
                     
@@ -229,7 +336,16 @@ public class Commands {
                         return;
                     }
                     
-                    game.m.currentChunk.updateLoc(p, 0, -1, 250-(p.getStat(4)*5));
+                    if (mod){
+                        mtemp = 0;
+                        for (int i = 0; i < 5; i++){
+                            if (i == 4) mtemp += p.getStat(i)*statMods[i];
+                            statMods[i] = 0;
+                        }
+                        game.m.currentChunk.updateLoc(p, 0, -1, 250-(mtemp*5));
+                        mod = false;
+                    } else
+                        game.m.currentChunk.updateLoc(p, 0, -1, 250-(p.getStat(4)*5));
                 }
         }
         
