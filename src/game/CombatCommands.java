@@ -23,7 +23,7 @@ public class CombatCommands extends Commands{
         p.previousFightCommand = command;
         command = wrap(command, command.length());
         
-        g.textOutput.append(command);
+        g.append(command);
         //TODO: different ways to attack, then reformat and send to commands.
     }
     

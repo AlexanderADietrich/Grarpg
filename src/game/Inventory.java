@@ -36,12 +36,12 @@ public class Inventory {
             clicked = !clicked;
             System.out.println(clicked);
             //if (clicked){
-            g.textOutput.append(label + "\n");
+            g.append(label + "\n");
             if (i instanceof OneUseItem){
-                g.textOutput.append("Type commamd \"Use " + label + "\" \nto use this item." + "\n");
+                g.append("Type commamd \"Use " + label + "\" \nto use this item." + "\n");
             }
             if (i instanceof EquipItem){
-                g.textOutput.append("Type commamd \"Equip " + label + "\" \nto equip this item." + "\n");
+                g.append("Type commamd \"Equip " + label + "\" \nto equip this item." + "\n");
             }
         }
     }

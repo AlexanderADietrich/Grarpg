@@ -48,6 +48,15 @@ public class Game extends Applet implements Runnable{
             //Do Nothing
         }
     };
+    
+    public String toAppend;
+    public void append(String s){
+        if (toAppend == null || toAppend == "")
+            toAppend = s;
+        else{
+            toAppend += s;
+        }
+    }
     /*
     public MouseMotionListener      mml = new MouseMotionListener() {
         @Override
@@ -167,6 +176,7 @@ public class Game extends Applet implements Runnable{
         fighting = true;
     }
     
+
     //Tick any timers/ AI's.
     public void doTick(){
         //System.out.println("running = "+running);
@@ -383,9 +393,19 @@ public class Game extends Applet implements Runnable{
     public void paint(Graphics mainGraphics){
         //System.out.println("BIG\t" + m.chunkX + "\t" + m.chunkY + (m.chunks[m.chunkY][m.chunkX].g == null));
         
+        //Section: FLUID TEXT BOX~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        if (toAppend != null){
+            if (toAppend.length() > 0){
+                //Makes it possible to overload the output but very difficult.
+                for (int i = 0; i < 1+toAppend.length()/16; i++){
+                    textOutput.append("" + toAppend.charAt(0));
+                    toAppend = toAppend.substring(1);
+                }
+            }
+        }
         
         //SECTION: TICK CONTROL~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        
+
         currentTime = System.currentTimeMillis();
         if ((((currentTime-prevTime)/1000.0)*24) > 1){
             //(milliseconds)/1000ms/s = seconds*24ticks/second
@@ -507,13 +527,6 @@ public class Game extends Applet implements Runnable{
                         c*areaWidth/m.tiles[0].length-1,
                         b*areaHeight/m.tiles[0].length-1,
                         this);
-                    
-                    /*mainGraphics.drawImage(images.get(m.tiles[b][c].imagePath), 
-                        c*areaWidth/m.tiles[0].length-1, 
-                        b*areaHeight/m.tiles[0].length-1,
-                        areaWidth/m.tiles[0].length+2, areaHeight/m.tiles[0].length+2,
-                        new Color(0, 0, 50),
-                        this);*/
                 }
             }
         }

@@ -125,7 +125,7 @@ public class Commands {
             return;
         }
         
-        game.textOutput.append(wrap(command, cLength));
+        game.append(wrap(command, cLength));
         
         
         //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -133,7 +133,7 @@ public class Commands {
         if (command.startsWith("inventory")){
             game.swapInventoryState();
             if (game.p.inventory.getiSize() == 1){ 
-                game.textOutput.append(game.p.inventory.getInventory().keySet().iterator().next() + "\n");
+                game.append(game.p.inventory.getInventory().keySet().iterator().next() + "\n");
                 return;
             }
             
@@ -141,7 +141,7 @@ public class Commands {
             for (String s : game.p.inventory.getInventory().keySet()){
                 retVal = retVal + s + ",\n";
             }
-            game.textOutput.append(retVal);
+            game.append(retVal);
         }
         if (command.startsWith("grab")){
             for (Tile t : game.getPlayerAdjTiles()){
@@ -184,7 +184,7 @@ public class Commands {
             for (Item e : p.inventory.getInventory().values()){
                 if (EquipItem.class.isInstance(e)){
                     if (((EquipItem) e).equipped){
-                        game.textOutput.append(wrap("\t" + e.name + ",\n", cLength));
+                        game.append(wrap("\t" + e.name + ",\n", cLength));
                     }
                 }
             }
@@ -201,7 +201,7 @@ public class Commands {
                         }
                         eqitem.equipped = false;
                     } else {
-                        game.textOutput.append(wrap("Not Equipped", 12));
+                        game.append(wrap("Not Equipped", 12));
                     }
                 }
             }
@@ -218,7 +218,7 @@ public class Commands {
                         }
                         eqitem.equipped=true;
                     } else {
-                        game.textOutput.append(wrap("Already Equipped", 16));
+                        game.append(wrap("Already Equipped", 16));
                     }
                 }
             }
@@ -236,7 +236,7 @@ public class Commands {
         }
         if (command.startsWith("I'm")){
                 game.p.setName(command.substring(4, command.length()));
-                game.textOutput.append("You're now \n" + 
+                game.append("You're now \n" + 
                 command.substring(4, command.length()) + "\n");
         } 
         if (command.startsWith("Map")){ 
@@ -360,9 +360,9 @@ public class Commands {
             //System.out.println(game.textOutput.getText())
             game.mapToString();
             if (Save.saveFile(game.textOutput.getText(),game.worldMap))
-                game.textOutput.append("Save Successful");
+                game.append("Save Successful");
             else
-                game.textOutput.append("Save Failed");
+                game.append("Save Failed");
         } 
         
         //Loads the Game, Type file name after Load
@@ -371,18 +371,18 @@ public class Commands {
             File f = new File(new File("").getAbsoluteFile() + "\\" + command);
             Map temp = Save.loadFile(f, game);
             if (temp != null){
-                game.textOutput.append("Load Successful\n");
+                game.append("Load Successful\n");
                 
                 //Re-Initiate the Game
                 game.reinit(temp);
             }else
-                game.textOutput.append("Load Failed\n");
+                game.append("Load Failed\n");
         } 
         
         //Starts Game form Main Menu
         if (command.startsWith("Start Game")){
             game.running = true;
-            game.textOutput.append("Who are you?\n");
+            game.append("Who are you?\n");
         }
     }
 }

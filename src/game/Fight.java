@@ -43,6 +43,7 @@ public class Fight {
                 
     */
     public void doTick(){
+        String toAppend = "";
         for (int i = 0; i < entities.length; i++){
             if (turn) 
                 if (i == 1) continue;
@@ -75,6 +76,7 @@ public class Fight {
                 target = parseThis[2];
             }
             Boolean succeeded = false;
+            
             for (Entity e : entities){
                 if (e.getName().equals(target)){
                     //System.out.println("DAMAGE = " + damage);
@@ -83,14 +85,15 @@ public class Fight {
                     if (damage <= 0) damage = 1;
                     //System.out.println("DAMAGE = " + damage);
                     e.setHP(e.getHP() - damage);
-                    
-                    g.textOutput.append(g.commandHandler.wrap(("damaged for " + damage + " " + reason), ("damaged for " + damage + " " + reason).length()));
+                    toAppend += g.commandHandler.wrap(("damaged for " + damage + " " + reason), ("damaged for " + damage + " " + reason).length());
+                    //g.append(g.commandHandler.wrap(("damaged for " + damage + " " + reason), ("damaged for " + damage + " " + reason).length()));
                     succeeded = true;
                 }
             }
-            if (!succeeded) g.textOutput.append("Missed!");
+            if (!succeeded) toAppend += "Missed!";
             
             turn = !turn;
         }
+        g.append(toAppend);
     }
 }
