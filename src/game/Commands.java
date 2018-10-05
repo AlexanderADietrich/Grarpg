@@ -53,10 +53,9 @@ public class Commands {
     
     //0 = Str, 1 = Def, 2 = Int, 3 = Disc, 4 = Spd
     public double[] statMods        = {0, 0, 0, 0, 0};
-    //0 = blunt, 1 = shield, 2 = magic, 3 = chi/special, 4 = ranged/bladed
-    public double[] damageTypeMods  = {0, 0, 0, 0, 0};
     boolean mod = false;
     int mtemp;
+    String defString = "go";
     
     public void parsePlayerCommand(String command, Player p){
         //Processing
@@ -71,27 +70,27 @@ public class Commands {
         
         TODO: Add Stamina so that Running has a disadvantage
         */
-        if (command.startsWith("jog")){
+        if (command.toLowerCase().startsWith("jog")){
             statMods[4] = 1.5;
             mod = true;
             parsePlayerCommand("go " + command.substring(4), p);
         }
-        if (command.startsWith("run")){
+        if (command.toLowerCase().startsWith("run")){
             statMods[4] = 1.75;
             mod = true;
             parsePlayerCommand("go " + command.substring(4), p);
         }
-        if (command.startsWith("dash")){
+        if (command.toLowerCase().startsWith("dash")){
             statMods[4] = 2;
             mod = true;
             parsePlayerCommand("go " + command.substring(5), p);
         }
-        if (command.startsWith("rush")){
+        if (command.toLowerCase().startsWith("rush")){
             statMods[4] = 2.25;
             mod = true;
             parsePlayerCommand("go " + command.substring(5), p);
         }
-        if (command.startsWith("sprint")){
+        if (command.toLowerCase().startsWith("sprint")){
             statMods[4] = 2.5;
             mod = true;
             parsePlayerCommand("go " + command.substring(7), p);
@@ -103,24 +102,24 @@ public class Commands {
         //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         //Acronyms / Initialisms / Recursive Calls
         if (command.length() == 1){
-            if (command.startsWith("n")){
-                parsePlayerCommand("go up", p);
+            if (command.toLowerCase().startsWith("n")){
+                parsePlayerCommand(defString + " up", p);
                 return;
             }
-            if (command.startsWith("s")){
-                parsePlayerCommand("go down", p);
+            if (command.toLowerCase().startsWith("s")){
+                parsePlayerCommand(defString + " down", p);
                 return;
             }
-            if (command.startsWith("e")){
-                parsePlayerCommand("go right", p);
+            if (command.toLowerCase().startsWith("e")){
+                parsePlayerCommand(defString + " right", p);
                 return;
             }
-            if (command.startsWith("w")){
-                parsePlayerCommand("go left", p);
+            if (command.toLowerCase().startsWith("w")){
+                parsePlayerCommand(defString + " left", p);
                 return;
             }
         }
-        if (command.startsWith("equip") && command.length() < 6){
+        if (command.toLowerCase().startsWith("equip") && command.length() < 6){
             parsePlayerCommand("Equipped: ", p);
             return;
         }
@@ -130,7 +129,11 @@ public class Commands {
         
         //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         //Main Commands
-        if (command.startsWith("inventory")){
+        if (command.toLowerCase().startsWith("default")){
+            defString = command.substring(8);
+            return;
+        }
+        if (command.toLowerCase().startsWith("inventory")){
             game.swapInventoryState();
             if (game.p.inventory.getiSize() == 1){ 
                 game.append(game.p.inventory.getInventory().keySet().iterator().next() + "\n");
@@ -143,7 +146,7 @@ public class Commands {
             }
             game.append(retVal);
         }
-        if (command.startsWith("grab")){
+        if (command.toLowerCase().startsWith("grab")){
             for (Tile t : game.getPlayerAdjTiles()){
                 //System.out.println(t.x + " " + t.y + " " + t.imagePath);
                 if (TreasureTile.class.isInstance(t)){
@@ -155,7 +158,7 @@ public class Commands {
                 }
             }
         }
-        if (command.startsWith("PRINT")){//Debugging Tool
+        if (command.toLowerCase().startsWith("print")){//Debugging Tool
             System.out.println("PLAYER:\t\t" + game.p.getXPOS() + "," + game.p.getYPOS());
             Iterator i = game.m.currentChunk.fastEntities.iterator();
             Entity e;                
@@ -176,11 +179,11 @@ public class Commands {
             }
             System.out.println();
         }
-        if (command.startsWith("Enter Dungeon")){
+        if (command.toLowerCase().startsWith("enter dungeon")){
             if (EntranceTile.class.isInstance(game.getPlayerTile())) 
                 game.switchMap((EntranceTile) game.getPlayerTile());
         }
-        if (command.startsWith("Equipped:")){
+        if (command.toLowerCase().startsWith("Equipped:")){
             for (Item e : p.inventory.getInventory().values()){
                 if (EquipItem.class.isInstance(e)){
                     if (((EquipItem) e).equipped){
@@ -189,7 +192,7 @@ public class Commands {
                 }
             }
         }
-        if (command.startsWith("unequip")){
+        if (command.toLowerCase().startsWith("unequip")){
             Item item = p.inventory.getInventory().get(command.substring(8, command.length()));
             EquipItem eqitem;
             if (item != null){
@@ -206,7 +209,7 @@ public class Commands {
                 }
             }
         }
-        if (command.startsWith("equip")){
+        if (command.toLowerCase().startsWith("equip")){
             Item item = p.inventory.getInventory().get(command.substring(6, command.length()));
             EquipItem eqitem;
             if (item != null){
@@ -224,7 +227,7 @@ public class Commands {
             }
             return;
         }
-        if (command.startsWith("Use")){
+        if (command.toLowerCase().startsWith("use")){
             Item item = p.inventory.getInventory().get(command.substring(4, command.length()));
             OneUseItem oneuse;
             if (item != null){
@@ -234,12 +237,12 @@ public class Commands {
                 }
             }
         }
-        if (command.startsWith("I'm")){
+        if (command.toLowerCase().startsWith("i'm")){
                 game.p.setName(command.substring(4, command.length()));
                 game.append("You're now \n" + 
                 command.substring(4, command.length()) + "\n");
         } 
-        if (command.startsWith("Map")){ 
+        if (command.toLowerCase().startsWith("map")){ 
             game.mapActive = !game.mapActive;  
         }
         /*
@@ -247,11 +250,11 @@ public class Commands {
         -_O_+
         __+__
         */
-        if (command.startsWith("go") 
+        if (command.toLowerCase().startsWith("go") 
             && p.skillChecker.getSkillLevel("go") > 0){
                 command = command.substring(3, command.length());
                 game.makeSound(2);
-                if (command.startsWith("right")){
+                if (command.toLowerCase().startsWith("right")){
                     
                     //Switches Chunks
                     if (game.p.getXPOS() + 1 > 7 && game.m.chunkX < game.m.width / 8){
@@ -275,7 +278,7 @@ public class Commands {
                     } else
                         game.m.currentChunk.updateLoc(p, 1, 0, 250-(p.getStat(4)*5));
                 } 
-                else if (command.startsWith("left")){
+                else if (command.toLowerCase().startsWith("left")){
                     
                     //Switches Chunks
                     if (game.p.getXPOS() - 1 < 0 && game.m.chunkX > 0){
@@ -299,7 +302,7 @@ public class Commands {
                     } else
                         game.m.currentChunk.updateLoc(p, -1, 0, 250-(p.getStat(4)*5));
                 } 
-                else if (command.startsWith("down")){
+                else if (command.toLowerCase().startsWith("down")){
                     
                     //Switches Chunks
                     if (game.p.getYPOS() + 1 > 7 && game.m.chunkY < game.m.height / 8){
@@ -323,7 +326,7 @@ public class Commands {
                     } else
                         game.m.currentChunk.updateLoc(p, 0, 1, 250-(p.getStat(4)*5));
                 } 
-                else if (command.startsWith("up")){
+                else if (command.toLowerCase().startsWith("up")){
                     
                     //Switches Chunks
                     if (game.p.getYPOS() - 1 < 0 && game.m.chunkY > 0){
@@ -356,7 +359,7 @@ public class Commands {
         
         //test
         //Saves the Game. Latter add ability to specify file name.
-        if (command.startsWith("Save")){
+        if (command.toLowerCase().startsWith("save")){
             //System.out.println(game.textOutput.getText())
             game.mapToString();
             if (Save.saveFile(game.textOutput.getText(),game.worldMap))
@@ -366,7 +369,7 @@ public class Commands {
         } 
         
         //Loads the Game, Type file name after Load
-        if (command.startsWith("Load")){
+        if (command.toLowerCase().startsWith("load")){
             command = command.substring(5, command.length()-1) + ".txt";
             File f = new File(new File("").getAbsoluteFile() + "\\" + command);
             Map temp = Save.loadFile(f, game);
@@ -380,7 +383,7 @@ public class Commands {
         } 
         
         //Starts Game form Main Menu
-        if (command.startsWith("Start Game")){
+        if (command.toLowerCase().startsWith("start game")){
             game.running = true;
             game.append("Who are you?\n");
         }

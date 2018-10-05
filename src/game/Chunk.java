@@ -108,11 +108,26 @@ public class Chunk {
                 //If the entity is a Player type, and does not have the skill, break.
                 if (Player.class.isInstance(e)){
                     Player p = (Player) e;
-                    if (p.skillChecker.getSkillLevel(tiles[p.getYPOS()+yDif][p.getXPOS()+xDif].skillTraverse) > 0){}
-                    else return;
+                    if (p.skillChecker.getSkillLevel(tiles[p.getYPOS()+yDif][p.getXPOS()+xDif].skillTraverse) > 0){
+                        if (250 - ms > 0){
+                            System.out.println((250-ms)/10);
+                            if (!p.lockout){
+                                if (!p.useStamina((250-ms)/10))
+                                    e.setAni(ms, xDif, yDif);
+                                return;
+                            } else {
+                                return;
+                            }
+                        }
+                        else
+                            p.useStamina(1);
+                    } else {
+                        return;
+                    }
                 }
-
                 e.setAni(ms, xDif, yDif);
+                
+                
             } else {
 
 

@@ -34,7 +34,7 @@ public class Inventory {
         @Override
         public void actionPerformed(ActionEvent e) {
             clicked = !clicked;
-            System.out.println(clicked);
+            //System.out.println(clicked);
             //if (clicked){
             g.append(label + "\n");
             if (i instanceof OneUseItem){

@@ -12,5 +12,6 @@ package game;
 public class WaterTile extends AnimatedTile{
     public WaterTile(String[] slist, int x, int y, int flop) {
         super(slist, x, y, flop);
+        skillTraverse = "swim";
     }
 }

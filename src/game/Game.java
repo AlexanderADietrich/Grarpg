@@ -83,7 +83,8 @@ public class Game extends Applet implements Runnable{
     public Namer                    nameGen = new Namer();
     public boolean                  useKeys = true;
     public KeyHandler               keyHandler = new KeyHandler(this);
-    //public Button[]                 inventoryButtons = new Button[16];
+    //public Button[]               inventoryButtons = new Button[16];
+    public boolean                  viewStamina = true;
     
     
     
@@ -181,6 +182,7 @@ public class Game extends Applet implements Runnable{
     public void doTick(){
         //System.out.println("running = "+running);
         if (running){
+            p.regenStamina();
             keyHandler.doTick();
             p.skillChecker.doSkillTick();
             if (fighting) fight.doTick();
@@ -446,7 +448,6 @@ public class Game extends Applet implements Runnable{
         areaHeight = this.getHeight();
         areaWidth = this.getHeight();
         
-        
         //SECTION: MAIN RENDERING~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         
         if (!mapActive && running && !fighting && !inventory){
@@ -460,13 +461,13 @@ public class Game extends Applet implements Runnable{
                             areaWidth / m.currentChunk.chunkWidth + 2, areaHeight / m.currentChunk.chunkHeight + 2,
                             new Color(0, 0, 50),//This line could be used for day/night
                             this);
-                    if (AnimatedTile.class.isInstance(m.currentChunk.tiles[b][c]) && Math.random() < 0.5){
+                    if (AnimatedTile.class.isInstance(m.currentChunk.tiles[b][c]) && Math.random() < 0.15){
                         attemp = (AnimatedTile) m.currentChunk.tiles[b][c];
                         attemp.doTick();
                     }
                 }
             }
-            //Ensures Entities are "top level"
+            //Sequentially renders entities after tiles
             for (int b = 0; b < m.currentChunk.tiles.length; b++) {
                 for (int c = 0; c < m.currentChunk.tiles[b].length; c++) {
                     if (m.currentChunk.entities[b][c] != null) {
@@ -493,6 +494,14 @@ public class Game extends Applet implements Runnable{
                     }
                 }
             }
+            //Sequentially renders UI elements after tiles and entities.
+            mainGraphics.setColor(Color.BLACK);
+            mainGraphics.fillRect(0, this.getHeight()-((int) p.stamina+2), 12, (int) p.stamina+2);
+            if (p.lockout)
+                mainGraphics.setColor(Color.RED);
+            else 
+                mainGraphics.setColor(Color.GREEN);
+            mainGraphics.fillRect(1, this.getHeight()-((int) p.stamina+1), 10, (int) p.stamina);
         } 
 
         //Render fight graphics.

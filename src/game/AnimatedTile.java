@@ -22,7 +22,7 @@ public class AnimatedTile extends Tile{
     public int sentflop = 0;
     public void doTick(){
         if (sentflop++ == flop){
-            System.out.println(sentinel + " " + sentflop);
+            //System.out.println(sentinel + " " + sentflop);
             this.imagePath = slist[sentinel++];
         }
         if (sentflop > flop){

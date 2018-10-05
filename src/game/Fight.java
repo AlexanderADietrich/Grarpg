@@ -60,7 +60,7 @@ public class Fight {
             
             //Current Entity "attacks"
             parseThis = entities[i].doFightTick().trim().split(" ");
-            if (parseThis != null && parseThis.length >= 2) System.out.println(parseThis[1]);
+            //if (parseThis != null && parseThis.length >= 2) System.out.println(parseThis[1]);
             
             if (parseThis.length < 2) continue;
             if (parseThis.length == 2){
