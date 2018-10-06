@@ -129,6 +129,20 @@ public class Commands {
         
         //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         //Main Commands
+        if (command.toLowerCase().startsWith("show stamina")){
+            game.viewStamina = true;
+        }
+        if (command.toLowerCase().startsWith("hide stamina")){
+            game.viewStamina = false;
+        }
+        if (command.toLowerCase().startsWith("level up")){
+            game.swapLevelUpState();
+        }
+        if (command.toLowerCase().startsWith("close ui")){
+            if (game.inventory == true) game.swapInventoryState();
+            game.levelup = false;
+            game.viewStamina = false;
+        }
         if (command.toLowerCase().startsWith("default")){
             defString = command.substring(8);
             return;

@@ -63,19 +63,14 @@ public class Fight {
             //if (parseThis != null && parseThis.length >= 2) System.out.println(parseThis[1]);
             
             if (parseThis.length < 2) continue;
-            if (parseThis.length == 2){
+            if (parseThis.length >= 2){
                 try { damage = (double) Integer.parseInt(parseThis[0]); }
                 catch (Exception ex) { continue; }
                 parseThis[1] = parseThis[1].replace("/", " ");
                 reason = parseThis[1];
                 if (i == 0) target = entities[1].getName();
                 else target = entities[i-1].getName();
-            } else {
-                damage = (double) Integer.parseInt(parseThis[0]);
-                reason = parseThis[1];
-                target = parseThis[2];
             }
-            Boolean succeeded = false;
             
             for (Entity e : entities){
                 if (e.getName().equals(target)){
@@ -87,10 +82,8 @@ public class Fight {
                     e.setHP(e.getHP() - damage);
                     toAppend += g.commandHandler.wrap(("damaged for " + damage + " " + reason), ("damaged for " + damage + " " + reason).length());
                     //g.append(g.commandHandler.wrap(("damaged for " + damage + " " + reason), ("damaged for " + damage + " " + reason).length()));
-                    succeeded = true;
                 }
             }
-            if (!succeeded) toAppend += "Missed!";
             
             turn = !turn;
         }

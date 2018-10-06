@@ -85,6 +85,7 @@ public class Game extends Applet implements Runnable{
     public KeyHandler               keyHandler = new KeyHandler(this);
     //public Button[]               inventoryButtons = new Button[16];
     public boolean                  viewStamina = true;
+    public boolean                  levelup = false;
     
     
     
@@ -344,7 +345,8 @@ public class Game extends Applet implements Runnable{
             graphicsBuffer = image.getGraphics();
             prevWid = this.getWidth();
             prevHeight = this.getHeight();
-            p.inventory.updateInventory();
+            if (inventory) p.inventory.updateInventory();
+            if (levelup) levelupmenu.updateButtons();
         }
         //Render the buffer.
         graphicsBuffer.setColor(getBackground());
@@ -361,6 +363,22 @@ public class Game extends Applet implements Runnable{
             Thread.sleep(framerate);
         } catch (InterruptedException ex) {
             ex.printStackTrace();
+        }
+    }
+    public LevelUpMenu levelupmenu = new LevelUpMenu(this);
+    public void swapLevelUpState(){
+        if (levelup){
+            levelup = false;
+            for (Button b : levelupmenu.levelUpButtons){
+                remove(b);
+            }
+        } else {
+            levelup = true;
+            levelupmenu.updateButtons();
+            for (Button b: levelupmenu.levelUpButtons){
+                b.setFocusable(false);
+                add(b);
+            }
         }
     }
     Button[] btemplist;
@@ -450,7 +468,7 @@ public class Game extends Applet implements Runnable{
         
         //SECTION: MAIN RENDERING~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         
-        if (!mapActive && running && !fighting && !inventory){
+        if (!mapActive && running && !fighting && !inventory && !levelup){
             //Main rendering of the current section of map.
 
             for (int b = 0; b < m.currentChunk.tiles.length; b++) {
@@ -495,15 +513,27 @@ public class Game extends Applet implements Runnable{
                 }
             }
             //Sequentially renders UI elements after tiles and entities.
-            mainGraphics.setColor(Color.BLACK);
-            mainGraphics.fillRect(0, this.getHeight()-((int) p.stamina+2), 12, (int) p.stamina+2);
-            if (p.lockout)
-                mainGraphics.setColor(Color.RED);
-            else 
-                mainGraphics.setColor(Color.GREEN);
-            mainGraphics.fillRect(1, this.getHeight()-((int) p.stamina+1), 10, (int) p.stamina);
+            
+            if (viewStamina){
+                mainGraphics.setColor(Color.BLACK);
+                mainGraphics.fillRect(0, this.getHeight()-((int) p.stamina+2), 12, (int) p.stamina+2);
+                if (p.lockout)
+                    mainGraphics.setColor(Color.RED);
+                else 
+                    mainGraphics.setColor(Color.GREEN);
+                mainGraphics.fillRect(1, this.getHeight()-((int) p.stamina+1), 10, (int) p.stamina);
+            }
         } 
-
+        else if (levelup){
+            mainGraphics.setColor(Color.BLACK);
+            mainGraphics.fillRect(0, 0, this.areaWidth, this.areaHeight);
+            mainGraphics.drawImage(images.get(p.getImagePath()),
+                    20, 0,
+                    this.areaWidth-40, this.areaHeight-20, this);
+            mainGraphics.drawImage(images.get("images/darkTransparent.png"), 
+                    0, 0,
+                    this.areaWidth, this.areaHeight, this);
+        }
         //Render fight graphics.
         else if (fighting){
                 mainGraphics.setColor(Color.GREEN);

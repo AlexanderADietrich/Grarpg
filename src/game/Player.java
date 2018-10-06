@@ -4,7 +4,11 @@ import java.util.Random;
 
 public class Player extends Entity{
     public Inventory inventory;
+    
     public int level;
+    public int exp = 100;
+    public int expNeeded = 1;
+    
     public Skills skillChecker;
     public String previousFightCommand = "";
     public double stamina = 100; //Between 0 and 100;
@@ -18,11 +22,25 @@ public class Player extends Entity{
         this.setName(name);
         this.setHP(100);
         this.setImagePath(address);
-        this.setStats(new int[] {6,5,5,5,10});
+        this.setStats(new int[] {3,3,3,3,3});
         
         inventory = new Inventory(iSize, g);
         this.inventory.addInventory("SwimBottle", new OneUseItem(100, "swim", 10, 60, "SwimBottle"));
         this.inventory.addInventory("SWORD OF TOLEDO", new EquipItem(new int[] {2, 1, 0, 0, 3}, "SWORD OF TOLEDO"));   
+    }
+    
+    public boolean levelUp(int stat, int change){
+        if (canLevel()){
+                level++;
+                this.setStat(stat, this.getStat(stat) + change);
+                expNeeded = (int) Math.pow(1.3, level);
+                return true;
+            }
+        return false;
+    }
+    
+    public boolean canLevel(){
+        return (exp > expNeeded);
     }
     
     public boolean useStamina(int stamuse){
@@ -39,9 +57,9 @@ public class Player extends Entity{
         for (int i = 0; i < regen; i++){
             stamina++;
         }
+        if (stamina > 50) lockout = false;
         if (stamina > 100){
             stamina = 100;
-            lockout = false;
             return true;
         } else {
             return false;
@@ -73,7 +91,8 @@ public class Player extends Entity{
         
         //SECTION: Main Commands~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         if ("The Toledo Avocado".equalsIgnoreCase(temp)){
-            return "1000000 as/The/Toledo/Avocado/Obliterates/Their/Soul";
+            //TODO: Resistances/Immunities
+            return "1000000 as/The/Toledo/Avocado/Obliterates/Their/Soul (ENERGY)";
         }
         if ("slash".equals(temp)){
             if (this.getDamage(4) > 0){
