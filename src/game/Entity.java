@@ -92,12 +92,6 @@ public class Entity {
     
     public String doFightTick(){
         return "1 DEFAULTDAMAGECAUSE";
-        /*
-        Current plan is that during a fight, names should be printed
-        at the start (possibly reprinted onclick of sprite?) and that the player
-        should have to type in the name to attack. By default, not specifying a
-        name should attack a random entity within the fight container. 
-        */
     }
     
     public void doTick(){

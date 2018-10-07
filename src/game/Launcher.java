@@ -25,6 +25,8 @@ public class Launcher {
             "images/blackTile.png",
             "images/brickTile.png",
             "images/deafCreep.png",
+            "images/deafCreepBroken.png",
+            "images/fireSkeleton.png",
             "images/TEST_GIF.gif",
             "images/darkTransparent.png"
         };

@@ -12,14 +12,14 @@ public class ImprovedAI extends AI{
     @Override
     public void nextMove(){
         recalc();
-        if (TOTALDIST < 7){
+        if (TOTALDIST < 9){
             sound += incomingSound;
             incomingSound = 0;
         } else {
             if (incomingSound > 0) sound+=2;
-            else sound++;
             incomingSound = 0;
         }
+        sound++;
         
         if (sound > 72){ //Attack If Has Heard Target, Will Hear in ~3s
             temp = TOTALDIST;

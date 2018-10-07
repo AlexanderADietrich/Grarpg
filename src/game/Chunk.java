@@ -110,7 +110,6 @@ public class Chunk {
                     Player p = (Player) e;
                     if (p.skillChecker.getSkillLevel(tiles[p.getYPOS()+yDif][p.getXPOS()+xDif].skillTraverse) > 0){
                         if (250 - ms > 0){
-                            System.out.println((250-ms)/10);
                             if (!p.lockout){
                                 if (!p.useStamina((250-ms)/10))
                                     e.setAni(ms, xDif, yDif);

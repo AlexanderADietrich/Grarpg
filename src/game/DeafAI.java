@@ -35,22 +35,22 @@ public class DeafAI extends AI{
     }
     @Override
     public void moveRight(){
-        if (!heard) currentChunk.updateLoc(Body, 1, 0, 500);
+        if (!heard) currentChunk.updateLoc(Body, 1, 0, 250-Body.getStat(4)*5);
         else currentChunk.updateLoc(Body, 1, 0, 50);
     }
     @Override
     public void moveLeft(){
-        if (!heard) currentChunk.updateLoc(Body, -1, 0, 500);
+        if (!heard) currentChunk.updateLoc(Body, -1, 0, 250-Body.getStat(4)*5);
         else currentChunk.updateLoc(Body, -1, 0, 50);
     }
     @Override
     public void moveDown(){
-        if (!heard) currentChunk.updateLoc(Body, 0, 1, 500);
+        if (!heard) currentChunk.updateLoc(Body, 0, 1, 250-Body.getStat(4)*5);
         else currentChunk.updateLoc(Body, 0, 1, 50);
     }
     @Override
     public void moveUp(){
-        if (!heard) currentChunk.updateLoc(Body, 0, -1, 500);
+        if (!heard) currentChunk.updateLoc(Body, 0, -1, 250-Body.getStat(4)*5);
         else currentChunk.updateLoc(Body, 0, -1, 50);
     }
     
