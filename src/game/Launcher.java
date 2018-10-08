@@ -28,6 +28,10 @@ public class Launcher {
             "images/deafCreepBroken.png",
             "images/fireSkeleton.png",
             "images/fireSkeleton2.png",
+            "images/bileZombie.png",
+            "images/liarZombie.png",
+            "images/boomZombie.png",
+            "images/axeZombie.png",
             "images/TEST_GIF.gif",
             "images/darkTransparent.png"
         };
