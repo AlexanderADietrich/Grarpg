@@ -12,17 +12,6 @@ import java.awt.Image;
 public abstract class Cutscene {
     public Image[] images;
     public int sentinel = 0;
-    public Game game;
-    
-    /**
-     * 
-     * @param g, current game object
-     * @param i, first || only list of images to show
-     */
-    public Cutscene(Game g, Image[] i){
-        game=g;
-        images=i;
-    }
     
     /**
      * 
@@ -36,7 +25,8 @@ public abstract class Cutscene {
     
     /**
      * 
-     * @return the current image in the cutscene. Should never be called without
+     * @return the current image in the cutscene. Should be overriden for
+     * cutscenes with multiple possible 'paths.' Should never be called without
      * check().
      */
     public Image doCscTick() throws ArrayIndexOutOfBoundsException{
