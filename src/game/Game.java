@@ -256,6 +256,7 @@ public class Game extends Applet implements Runnable{
         e = new Enemy (7, 7, "BadGuy", 10, p, "images/BadGuy.png", m.currentChunk);
         m.currentChunk.addEntity(e, 7, 7);
         m.chunks[0][1].addEntity(new BlindCreep(3, 3, "CREEPO", 10, p, "images/deafCreep.png", m.chunks[0][1]), 3, 3);
+        m.chunks[1][0].addEntity(new FireSkeleton(3, 3, "FireSkeleton", 40.0, p, m.chunks[1][0], 2), 3, 3);
     }
     
     public void switchMap(EntranceTile e){
