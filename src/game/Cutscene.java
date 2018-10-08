@@ -12,6 +12,9 @@ import java.awt.Image;
 public abstract class Cutscene {
     public Image[] images;
     public int sentinel = 0;
+    public Cutscene(int len){
+        images = new Image[len];
+    }
     
     /**
      * 
@@ -20,16 +23,15 @@ public abstract class Cutscene {
      * doCscTick().
      */
     public boolean check(){
+        System.out.println("sent + " + sentinel);
         return sentinel < images.length;
     }
     
-    /**
-     * 
-     * @return the current image in the cutscene. Should be overriden for
-     * cutscenes with multiple possible 'paths.' Should never be called without
-     * check().
-     */
-    public Image doCscTick() throws ArrayIndexOutOfBoundsException{
-        return images[sentinel++];
+    public Image getImage() throws ArrayIndexOutOfBoundsException{
+        return images[sentinel];
+    }
+    
+    public void doCscTick(){
+        sentinel++;
     }
 }

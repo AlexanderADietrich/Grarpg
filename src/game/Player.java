@@ -14,8 +14,10 @@ public class Player extends Entity{
     public double stamina = 100; //Between 0 and 100;
     public int regen = 1;//Regen for Stamina
     public boolean lockout = false;
+    public Game g;
     
     public Player(int xPOS, int yPOS, String name, String address, int iSize, Game g){
+        this.g=g;
         skillChecker = new Skills(this);
         this.setXPOS(xPOS);
         this.setYPOS(yPOS);
@@ -95,6 +97,7 @@ public class Player extends Entity{
             return "1000000 as/The/Toledo/Avocado/Obliterates/Their/Soul (ENERGY)";
         }
         if ("slash".equals(temp)){
+            g.addCutscene(new SlashCutscene(g));
             if (this.getDamage(4) > 0){
                 stemp = this.getDamage(4)+this.getStat(0);
                 if (mod){
