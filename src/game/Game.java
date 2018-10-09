@@ -19,14 +19,10 @@ public class Game extends Applet implements Runnable{
     public Commands                 commandHandler = new Commands(this);
     public CombatCommands           combatCommandHandler = new CombatCommands(this);
     public HashMap<String, Image>   images;
-<<<<<<< HEAD
-=======
     public HashMap<String, Image>   cscImages;//Images for use in cutscene(s), not current cutscene's images
     
     public Cutscene                 currentCutscene;
     public boolean                  cutscene;
-    
->>>>>>> 5e3df9faba49066582f6fa2984f3b32b0db87faa
     public HashMap<String, Image>   resized = new HashMap<>();
     public Image                    image;
     public Image                    basicTile;
