@@ -19,6 +19,14 @@ public class Game extends Applet implements Runnable{
     public Commands                 commandHandler = new Commands(this);
     public CombatCommands           combatCommandHandler = new CombatCommands(this);
     public HashMap<String, Image>   images;
+<<<<<<< HEAD
+=======
+    public HashMap<String, Image>   cscImages;//Images for use in cutscene(s), not current cutscene's images
+    
+    public Cutscene                 currentCutscene;
+    public boolean                  cutscene;
+    
+>>>>>>> 5e3df9faba49066582f6fa2984f3b32b0db87faa
     public HashMap<String, Image>   resized = new HashMap<>();
     public Image                    image;
     public Image                    basicTile;
@@ -69,7 +77,6 @@ public class Game extends Applet implements Runnable{
             System.out.println(e.getX() + ", " + e.getY() + "__");
         }
     };*/
-    
     public Font                     mainFont = new Font(Font.MONOSPACED, 10, 15);
     public Player                   p;
     public Enemy                    e;
@@ -92,12 +99,11 @@ public class Game extends Applet implements Runnable{
     public int areaWidth;  //Width of Map Area (pixels).
     public int areaHeight; //Height of Map Area (pixels).
     
+    public void addCutscene(Cutscene c){
+        this.currentCutscene = c;
+        cutscene = true;
+    }
     
-    /*
-    TODO: 
-    Add a HashSet to Chunks for High-Speed but inaccurate access for blanket
-    statement type functions such as these.
-    */
     public Enemy tempE;
     public void makeSound(int s){
         Iterator i = m.currentChunk.fastEntities.iterator();
@@ -161,6 +167,9 @@ public class Game extends Applet implements Runnable{
     
     public void passImages(HashMap<String, Image> imageInput){
         images = imageInput;
+    }
+    public void passCSCImages(HashMap<String, Image> cscImageInput){
+        cscImages = cscImageInput;
     }
     
     public ActionListener  textInputListener = new ActionListener() {
@@ -411,6 +420,7 @@ public class Game extends Applet implements Runnable{
     Entity etemp;
     double ttemp;
     public AnimatedTile attemp;
+    boolean cscflop;//cutscenes run at ~30f/s
     public void paint(Graphics mainGraphics){
         //System.out.println("BIG\t" + m.chunkX + "\t" + m.chunkY + (m.chunks[m.chunkY][m.chunkX].g == null));
         
@@ -435,6 +445,10 @@ public class Game extends Applet implements Runnable{
             }
             prevTime = System.currentTimeMillis();
         }
+        cscflop = !cscflop;
+        if (cutscene && cscflop)
+            currentCutscene.doCscTick();
+        
         
         //SECTION: PREPARATORY~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         
@@ -469,7 +483,7 @@ public class Game extends Applet implements Runnable{
         
         //SECTION: MAIN RENDERING~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         
-        if (!mapActive && running && !fighting && !inventory && !levelup){
+        if (!mapActive && running && !fighting && !inventory && !levelup && !cutscene){
             //Main rendering of the current section of map.
 
             for (int b = 0; b < m.currentChunk.tiles.length; b++) {
@@ -525,6 +539,19 @@ public class Game extends Applet implements Runnable{
                 mainGraphics.fillRect(1, this.getHeight()-((int) p.stamina+1), 10, (int) p.stamina);
             }
         } 
+        else if (cutscene){
+            mainGraphics.setColor(Color.BLACK);
+            mainGraphics.fillRect(0, 0, this.areaWidth, this.areaHeight);
+            
+            if (currentCutscene.check()) mainGraphics.drawImage(currentCutscene.getImage(),
+                    0, 0, 
+                    this.areaWidth, this.areaHeight,
+                    this);
+            else {
+                currentCutscene = null;
+                cutscene = false;
+            }
+        }
         else if (levelup){
             mainGraphics.setColor(Color.BLACK);
             mainGraphics.fillRect(0, 0, this.areaWidth, this.areaHeight);

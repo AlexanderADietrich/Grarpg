@@ -35,6 +35,22 @@ public class Launcher {
             "images/TEST_GIF.gif",
             "images/darkTransparent.png"
         };
+        String[] cscImagePaths = new String[]{
+            "cscimages/slashcsc1.png",
+            "cscimages/slashcsc2.png",
+            "cscimages/slashcsc3.png",
+            "cscimages/slashcsc4.png",
+            "cscimages/slashcsc5.png",
+            "cscimages/slashcsc6.png",
+            "cscimages/slashcsc7.png",
+            "cscimages/slashcsc8.png",
+            "cscimages/slashcsc9.png",
+            "cscimages/slashcsc10.png",
+            "cscimages/slashcsc11.png",
+            "cscimages/slashcsc12.png",
+            "cscimages/slashcsc13.png",
+            "cscimages/slashcsc14.png",
+        };
         String s = "" + new File("").getAbsolutePath().replace('\\', '/') + "/src/";
         for (String path : imagePaths){
             //System.out.println(s + path);
@@ -47,8 +63,17 @@ public class Launcher {
                 ex.printStackTrace();
             }
         }
+        HashMap<String, Image> cscImages = new HashMap<>();
+        for (String path: cscImagePaths){
+            try {
+                cscImages.put(path, ImageIO.read(new File(s + path)));
+            } catch (IOException ex){
+                ex.printStackTrace();
+            }
+        }
         Game g = new Game();
         g.passImages(images);
+        g.passCSCImages(cscImages);
         
         //Fire Up applet using Hybrid.java
         Hybrid.fireup(g, "REEE", 584, 384);
