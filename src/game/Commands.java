@@ -366,17 +366,12 @@ public class Commands {
                 }
         }
         
-        
-        
-        
-        
-        
         //test
         //Saves the Game. Latter add ability to specify file name.
         if (command.toLowerCase().startsWith("save")){
             //System.out.println(game.textOutput.getText())
             game.mapToString();
-            if (Save.saveFile(game.textOutput.getText(),game.worldMap))
+            if (Save.saveFile(game.textOutput.getText(),game.worldMap, game ))
                 game.append("Save Successful");
             else
                 game.append("Save Failed");

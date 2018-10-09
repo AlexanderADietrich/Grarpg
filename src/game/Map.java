@@ -226,7 +226,7 @@ public class Map {
         tiles = new Tile[width][height];
         
         //First character is newline, last is not found. TODO:fix
-        s = s.substring(1, s.length()-1) + "_\n";
+        s = s.substring(1, s.length()-1) + "_\n"; //INDEX OUTOF BOUNDS -2 WHEN TRYING TO LOAD GAME WAS THIS CHANGED????
         
         String[] list = s.split("\\n");
         for (String ss : list){

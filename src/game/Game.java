@@ -18,7 +18,7 @@ public class Game extends Applet implements Runnable{
     public long                     framerate = 15;
     public Commands                 commandHandler = new Commands(this);
     public CombatCommands           combatCommandHandler = new CombatCommands(this);
-    public  HashMap<String, Image>  images;
+    public HashMap<String, Image>   images;
     public HashMap<String, Image>   resized = new HashMap<>();
     public Image                    image;
     public Image                    basicTile;
