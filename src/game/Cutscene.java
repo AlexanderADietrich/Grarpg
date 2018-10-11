@@ -23,7 +23,6 @@ public abstract class Cutscene {
      * doCscTick().
      */
     public boolean check(){
-        System.out.println("sent + " + sentinel);
         return sentinel < images.length;
     }
     

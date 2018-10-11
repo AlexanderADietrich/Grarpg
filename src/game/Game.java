@@ -95,6 +95,8 @@ public class Game extends Applet implements Runnable{
     public int areaWidth;  //Width of Map Area (pixels).
     public int areaHeight; //Height of Map Area (pixels).
     
+    public KillAllQuest kaq = new KillAllQuest();
+    
     public void addCutscene(Cutscene c){
         this.currentCutscene = c;
         cutscene = true;
@@ -183,9 +185,22 @@ public class Game extends Applet implements Runnable{
         fighting = true;
     }
     
-
+    
+    int flop = 0;
     //Tick any timers/ AI's.
     public void doTick(){
+        if (flop == 64){
+            if (kaq != null){
+                kaq.doTick();
+                if (kaq.check()){
+                    append("COMPLETED QUEST: Kill All Monsters\n");
+                    kaq = null;
+                }
+            }
+            flop = 0;
+        } else {
+            flop++;
+        }
         //System.out.println("running = "+running);
         if (running){
             p.regenStamina();
@@ -262,6 +277,7 @@ public class Game extends Applet implements Runnable{
         m.currentChunk.addEntity(e, 7, 7);
         m.chunks[0][1].addEntity(new BlindCreep(3, 3, "CREEPO", 10, p, "images/deafCreep.png", m.chunks[0][1]), 3, 3);
         m.chunks[1][0].addEntity(new FireSkeleton(3, 3, "FireSkeleton", 40.0, p, m.chunks[1][0], 2), 3, 3);
+        kaq.specialGen(m);
     }
     
     public void switchMap(EntranceTile e){
