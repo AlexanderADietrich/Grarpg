@@ -23,7 +23,6 @@ public class Game extends Applet implements Runnable{
     
     public Cutscene                 currentCutscene;
     public boolean                  cutscene;
-    
     public HashMap<String, Image>   resized = new HashMap<>();
     public Image                    image;
     public Image                    basicTile;
