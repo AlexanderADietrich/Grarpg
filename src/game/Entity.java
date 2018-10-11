@@ -7,6 +7,7 @@ package game;
  * @contributor Alexander Dietrich, 4/20/18
  */
 public class Entity {
+    public Trigger tSlot = null;
     private int xPOS;
     private int yPOS; 
     private double hp; // could be put in stats if changed to int. Not sure why it is double

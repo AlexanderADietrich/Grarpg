@@ -1,6 +1,7 @@
 package game;
 
 import java.util.HashSet;
+import java.util.Iterator;
 
 /**
  *
@@ -13,6 +14,16 @@ public class Chunk {
     public Entity[][] entities;
     public HashSet<Entity> fastEntities = new HashSet<>();
     public Game g;
+    
+    public Entity[] getAllEntities(){
+        Iterator iter = fastEntities.iterator();
+        Entity[] retVal = new Entity[fastEntities.size()];
+        int sentinel = 0;
+        while (iter.hasNext()){
+            retVal[sentinel++] = (Entity) iter.next();
+        }
+        return retVal;
+    }
     
     public boolean addEntity(Entity e, int x, int y){
         if (x < 0 || x >= entities[0].length || y < 0 || y >= entities.length || entities[y][x] != null) return false;
