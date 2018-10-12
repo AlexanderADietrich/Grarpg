@@ -116,13 +116,12 @@ public class Chunk {
 
             //If the tile attempted is empty.
             if (entities[e.getYPOS()+yDif][e.getXPOS()+xDif] == null) {
-                //If the entity is a Player type, and does not have the skill, break.
-                if (Player.class.isInstance(e)){
-                    Player p = (Player) e;
-                    if (p.skillChecker.getSkillLevel(tiles[p.getYPOS()+yDif][p.getXPOS()+xDif].skillTraverse) > 0){
+                
+                    
+                    if (e.skillChecker.getSkillLevel(tiles[e.getYPOS()+yDif][e.getXPOS()+xDif].skillTraverse) > 0){
                         if (250 - ms > 0){
-                            if (!p.lockout){
-                                if (!p.useStamina((250-ms)/10))
+                            if (!e.lockout){
+                                if (!e.useStamina((250-ms)/10))
                                     e.setAni(ms, xDif, yDif);
                                 return;
                             } else {
@@ -130,12 +129,13 @@ public class Chunk {
                             }
                         }
                         else
-                            p.useStamina(1);
+                            e.useStamina(1);
                     } else {
                         return;
                     }
-                }
-                e.setAni(ms, xDif, yDif);
+                    e.setAni(ms, xDif, yDif);
+                    
+                
                 
                 
             } else {

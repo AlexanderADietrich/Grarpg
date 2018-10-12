@@ -7,6 +7,10 @@ package game;
  * @contributor Alexander Dietrich, 4/20/18
  */
 public class Entity {
+    public Skills skillChecker;
+    public boolean lockout;
+    
+    
     public Trigger tSlot = null;
     private int xPOS;
     private int yPOS; 
@@ -25,8 +29,13 @@ public class Entity {
     
     private String name;
     
-    
-    
+    /**
+     * 
+     * @param i
+     * @return whether the entity has stamina left. Default is infinite stamina.
+     */
+    public boolean useStamina(int i){return false;}
+
     /* TIMER:
     movement/animation controller:
         currentMax              =0 not animating
@@ -75,6 +84,7 @@ public class Entity {
         timer.initTime      = System.currentTimeMillis();
         timer.currentMax    = currentMax;
     }
+   
     
     @Override
     public boolean equals(Object e){

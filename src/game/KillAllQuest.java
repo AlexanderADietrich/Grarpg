@@ -16,6 +16,7 @@ import java.util.Iterator;
 public class KillAllQuest extends Quest{
     public HashSet<Trigger> triggers = new HashSet<>();
     public Enemy etemp;
+    public Game g;
     
     public String message = "";
     public String getMessage(){
@@ -25,7 +26,7 @@ public class KillAllQuest extends Quest{
         return temp;
     }
     
-    public KillAllQuest(){}
+    public KillAllQuest(Game g){this.g=g;}
     
     @Override
     public void specialGen(Map m){
@@ -43,6 +44,12 @@ public class KillAllQuest extends Quest{
                 }
             }
         }
+        HashSet<FireSkeleton> set = new HashSet<>();
+        Iterator iter = set.iterator();
+        for (int i = 0; i < 12; i++){
+            set.add(new FireSkeleton(0, 0, "FireSkeleton" + Math.random(), 40, g.p, null, (int) (Math.random()*4)));
+        }
+        m.addDungeonMonsters(set);
     }
     public void doTick(){
         Iterator iter = triggers.iterator();

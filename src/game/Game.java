@@ -95,7 +95,7 @@ public class Game extends Applet implements Runnable{
     public int areaWidth;  //Width of Map Area (pixels).
     public int areaHeight; //Height of Map Area (pixels).
     
-    public KillAllQuest kaq = new KillAllQuest();
+    public KillAllQuest kaq = new KillAllQuest(this);
     
     public void addCutscene(Cutscene c){
         this.currentCutscene = c;

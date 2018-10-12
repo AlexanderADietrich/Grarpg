@@ -9,7 +9,6 @@ public class Player extends Entity{
     public int exp = 100;
     public int expNeeded = 1;
     
-    public Skills skillChecker;
     public String previousFightCommand = "";
     public double stamina = 100; //Between 0 and 100;
     public int regen = 1;//Regen for Stamina
@@ -44,7 +43,12 @@ public class Player extends Entity{
     public boolean canLevel(){
         return (exp > expNeeded);
     }
-    
+    /**
+     * 
+     * @param stamuse
+     * @return whether the entity has stamina left
+     */
+    @Override
     public boolean useStamina(int stamuse){
         stamina -= stamuse;
         if (stamina < 0){

@@ -57,6 +57,7 @@ public class Fight {
                 //System.out.println("DEAD");
                 g.m.currentChunk.removeEntity(entities[i].getXPOS(), entities[i].getYPOS());
                 g.fighting = false;
+                return;
             }
             
             

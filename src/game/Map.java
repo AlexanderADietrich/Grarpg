@@ -6,6 +6,7 @@
 package game;
 
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Random;
 
 /**
@@ -23,6 +24,8 @@ public class Map {
     public Chunk            currentChunk;
     private Random          rand = new Random();
     private Game            g;
+    public HashSet<Enemy>   allChildEntities = new HashSet<>();//Should Not Include Player
+    
     
     public Map(){}
     public Map(Game g){
@@ -50,6 +53,7 @@ public class Map {
             //System.out.println((i+1)+"/" +((this.width/8)));
             generateOcean(tiles);
         }
+        //for (int i = 0 ; i < 1; i++){
         for (int i = 0; i < this.width/4; i++){
             //System.out.println((i+1)+"/"+((this.width/4)));
             generateMountain(tiles);
@@ -166,7 +170,7 @@ public class Map {
                     m++;
                 } catch (Exception ex) {}
                 
-                //Places Entrance Tiles Once then Exits Function
+                //Places Entrance Tile Once then Exits Function
                 //System.out.println(d + " " + m + " test");
                 if (d != 0 && m != 0){
                     //System.out.println("\nDING DING\n");
@@ -179,6 +183,60 @@ public class Map {
             if (breaker) break;
         }
         //System.out.println(breaker);
+    }
+    
+    /**
+     * Adds one enemy of a passed in type to all dungeons on map.
+     * Enemy will necessarily have been created w/o accurate chunk, x, and y 
+     * values, set them.
+     * @param <E>
+     * @param enemy 
+     */
+    public <E extends Enemy> void addDungeonMonsters(HashSet<E> enemies){
+        E enemy;
+        Iterator iter = enemies.iterator();
+        boolean breaker = false;
+        for (Tile[] tlist : tiles){
+            for (Tile t : tlist){
+                if (EntranceTile.class.isInstance(t)){
+                    EntranceTile temp = (EntranceTile) t;
+                    temp = temp.reverse;
+                    if (Dungeon.class.isInstance(temp.Map)){//After here we've found a dungeon.
+                        for (Tile[] tlist2 : temp.Map.tiles){
+                            for (Tile t2 : tlist2){
+                                if (t2.skillTraverse.equals("go")){
+                                    if (Math.random() < 0.3){
+                                        if (iter.hasNext()){
+                                            enemy = (E) iter.next();
+                                        } else {
+                                            return;
+                                        }
+                                        temp.Map.chunks[t2.y / 8][t2.x / 8].addEntity(enemy, t2.x % 8, t2.y % 8);
+                                        
+                                        
+                                        allChildEntities.add(enemy);
+                                        System.out.println((t2.y % 8) + " " + (t2.x % 8));
+                                        
+                                        //Set up Enemy
+                                        enemy.setYPOS(t2.y % 8);
+                                        enemy.setXPOS(t2.x % 8);
+                                        enemy.setChunk(temp.Map.chunks[t2.y / 8][t2.x / 8]);
+                                        
+                                        breaker = true;
+                                    }
+                                }
+                                if (breaker) break;
+                            }
+                            if (breaker){
+                                breaker = false;
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        
     }
     
     public String[] waterAnimation = new String[] {"images/waterTile.png", "images/waterTileF1.5.png", "images/waterTileF2.png","images/waterTileF1.5.png"};
