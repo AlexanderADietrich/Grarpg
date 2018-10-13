@@ -47,7 +47,10 @@ public class KillAllQuest extends Quest{
         HashSet<FireSkeleton> set = new HashSet<>();
         Iterator iter = set.iterator();
         for (int i = 0; i < 12; i++){
-            set.add(new FireSkeleton(0, 0, "FireSkeleton" + Math.random(), 40, g.p, null, (int) (Math.random()*4)));
+            FireSkeleton temp = new FireSkeleton(0, 0, "FireSkeleton" + Math.random(), 40, g.p, null, (int) (Math.random()*4));
+            Trigger ttemp = new OnKillTrigger(temp);
+            temp.tSlot = ttemp;
+            set.add(temp);
         }
         m.addDungeonMonsters(set);
     }
