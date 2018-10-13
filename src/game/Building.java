@@ -31,7 +31,6 @@ public class Building extends Dungeon{
         int currentX =    1+(width/2);
         int currentY =    2;
         int flop =      0;
-        boolean first = true;
         
         //Generate
         while (true){
@@ -70,7 +69,6 @@ public class Building extends Dungeon{
                 int d = 0;
                 int m = 0;
                 
-                try {
                 if (g.m.tiles[i+inity+1][b+initx] != null && g.m.tiles[i+inity+1][b+initx].imagePath.startsWith("images/default"))
                     d++;
                 if (g.m.tiles[i+inity-1][b+initx] != null && g.m.tiles[i+inity-1][b+initx].imagePath.startsWith("images/default"))
@@ -87,7 +85,6 @@ public class Building extends Dungeon{
                     m++;
                 if (g.m.tiles[i+inity][b+initx-1] != null && g.m.tiles[i+inity][b+initx-1].imagePath.startsWith("images/brick"))
                     m++;
-                } catch (Exception ex) {}
                 
                 //System.out.println(d + " " + m + "test");
                 //Places Entrance Tiles Once then Exits Function

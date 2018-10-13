@@ -1,6 +1,9 @@
 
 package game;
 
+import java.util.Arrays;
+import java.util.Objects;
+
 /**
  * Basic Entity Class  
  * @author Nathan Geddis
@@ -99,6 +102,23 @@ public class Entity {
             }
         }
         return false;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 13 * hash + Objects.hashCode(this.skillChecker);
+        hash = 13 * hash + (this.lockout ? 1 : 0);
+        hash = 13 * hash + Objects.hashCode(this.tSlot);
+        hash = 13 * hash + this.xPOS;
+        hash = 13 * hash + this.yPOS;
+        hash = 13 * hash + (int) (Double.doubleToLongBits(this.hp) ^ (Double.doubleToLongBits(this.hp) >>> 32));
+        hash = 13 * hash + Arrays.hashCode(this.stats);
+        hash = 13 * hash + Arrays.hashCode(this.damageTypes);
+        hash = 13 * hash + Objects.hashCode(this.name);
+        hash = 13 * hash + Objects.hashCode(this.timer);
+        hash = 13 * hash + Objects.hashCode(this.imagePath);
+        return hash;
     }
     
     public String doFightTick(){

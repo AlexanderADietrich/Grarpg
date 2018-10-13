@@ -101,9 +101,9 @@ public class Player extends Entity{
             return "1000000 as/The/Toledo/Avocado/Obliterates/Their/Soul (ENERGY)";
         }
         if ("slash".equals(temp)){
-            g.addCutscene(new SlashCutscene(g));
             if (this.getDamage(4) > 0){
                 stemp = this.getDamage(4)+this.getStat(0);
+                g.addCutscene(new SlashCutscene(g));
                 if (mod){
                     stemp = 0;
                     for (int i = 0; i < statMods.length; i++){
