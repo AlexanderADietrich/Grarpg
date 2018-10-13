@@ -205,7 +205,7 @@ public class Map {
                         for (Tile[] tlist2 : temp.Map.tiles){
                             for (Tile t2 : tlist2){
                                 if (t2.skillTraverse.equals("go")){
-                                    if (Math.random() < 0.3){
+                                    if (Math.random() < 0.1){
                                         if (iter.hasNext()){
                                             enemy = (E) iter.next();
                                         } else {

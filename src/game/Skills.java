@@ -77,7 +77,7 @@ public class Skills {
     private static class Timer{
         public Long timeCreated = System.currentTimeMillis();
         public String skill;
-        public int timer;
+        public int timer;//How many seconds the timer should last
         public Timer(String skill, int timer){
             this.skill = skill;
             this.timer = timer;

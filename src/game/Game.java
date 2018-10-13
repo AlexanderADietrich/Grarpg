@@ -281,12 +281,11 @@ public class Game extends Applet implements Runnable{
     }
     
     public void switchMap(EntranceTile e){
-        if (e.reverse.Map.ID < 0) addMap(e.reverse.Map);
         
         //Remove From Current Map
         m.currentChunk.removeEntity(p.getXPOS(), p.getYPOS());
         
-        this.m = maps[e.reverse.Map.ID];
+        this.m = e.reverse.Map;
         
         //Add To Map That Was Switched To
         m.currentChunk.addEntity(p, e.reverse.x % 8, e.reverse.y % 8);
