@@ -129,6 +129,31 @@ public class Commands {
         
         //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         //Main Commands
+        
+        /*
+        'attack'  ;
+        
+        Somewhat unnecessary, as it will barely ever be used, yet being unable
+        to do so renders the player feeling somewhat powerless.
+        */
+        if (command.toLowerCase().startsWith("attack up")){
+            if (game.m.currentChunk.entities[game.p.getYPOS()+1][game.p.getXPOS()] != null)
+                game.startFight(game.p, game.m.currentChunk.entities[game.p.getYPOS()+1][game.p.getXPOS()]);
+        }
+        if (command.toLowerCase().startsWith("attack left")){
+            if (game.m.currentChunk.entities[game.p.getYPOS()][game.p.getXPOS()-1] != null)
+                game.startFight(game.p, game.m.currentChunk.entities[game.p.getYPOS()][game.p.getXPOS()-1]);
+        }
+        if (command.toLowerCase().startsWith("attack down")){
+            if (game.m.currentChunk.entities[game.p.getYPOS()-1][game.p.getXPOS()] != null)
+                game.startFight(game.p, game.m.currentChunk.entities[game.p.getYPOS()-1][game.p.getXPOS()]);
+        }
+        if (command.toLowerCase().startsWith("attack right")){
+            if (game.m.currentChunk.entities[game.p.getYPOS()][game.p.getXPOS()+1] != null)
+                game.startFight(game.p, game.m.currentChunk.entities[game.p.getYPOS()][game.p.getXPOS()+1]);
+        }
+        
+        
         if (command.toLowerCase().startsWith("show stamina")){
             game.viewStamina = true;
         }

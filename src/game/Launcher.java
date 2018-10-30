@@ -33,7 +33,8 @@ public class Launcher {
             "images/boomZombie.png",
             "images/axeZombie.png",
             "images/TEST_GIF.gif",
-            "images/darkTransparent.png"
+            "images/darkTransparent.png",
+            "images/defaultNPC.png"
         };
         String[] cscImagePaths = new String[]{
             "cscimages/slashcsc1.png",

@@ -221,22 +221,4 @@ public class Entity {
     public void setDamageTypes(int[] damagetypes) {
         this.damageTypes = damagetypes;
     }
-    
-    /*
-    FOR LATER; SOME ITEMS ALLOW ONE TO ATTACK WALLS/ USUALLY NON ATTACKABLE
-    ENTITIES.
-    public boolean changeHP(Entity e, double hp){
-        if (hp < 0)
-            if (e.canAttack(this)){
-                this.hp += hp;
-                return true;
-            }
-            else
-                return false;
-        else {
-            this.hp += hp;
-            return true;
-        }
-    }
-    */
 }

@@ -125,6 +125,22 @@ public class Game extends Applet implements Runnable{
         textInput.setText("");
     }
     
+    public Entity[] getPlayerAdjEntities(){
+        Entity[] adjentities = new Entity[4];
+        int place = 0; 
+        if (p.getXPOS() < 7) adjentities[place++] = m.currentChunk.entities[p.getYPOS()][p.getXPOS()+1];
+        if (p.getXPOS() > 1) adjentities[place++] = m.currentChunk.entities[p.getYPOS()][p.getXPOS()-1];
+        if (p.getYPOS() < 7) adjentities[place++] = m.currentChunk.entities[p.getYPOS()+1][p.getXPOS()];
+        if (p.getYPOS() > 1) adjentities[place++] = m.currentChunk.entities[p.getYPOS()-1][p.getXPOS()];
+        
+        if (place < 4){
+            Entity[] temp = new Entity[place];
+            System.arraycopy(adjentities, 0, temp, 0, place);
+            adjentities = temp;
+        }
+        return adjentities;
+    }
+    
     public Tile[] getPlayerAdjTiles(){
         Tile[] tiles = new Tile[4];
         int place = 0;
@@ -271,6 +287,8 @@ public class Game extends Applet implements Runnable{
         //this.addMouseMotionListener(mml);
         
         m.currentChunk.passGame(this);
+        NPC npc = new NPC(this, 3, 3);
+        m.chunks[0][2].addEntity(npc, 3, 3);
         p = new Player(0, 0, "", "images/GoodGuy.png", 49, this);
         m.currentChunk.addEntity(p, 0, 0);
         e = new Enemy (7, 7, "BadGuy", 10, p, "images/BadGuy.png", m.currentChunk);
