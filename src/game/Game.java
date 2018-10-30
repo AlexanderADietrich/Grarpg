@@ -1,4 +1,10 @@
 package game; 
+import game.Enemies.Enemy;
+import game.Enemies.FireSkeleton;
+import game.Enemies.BlindCreep;
+import game.Tiles.Tile;
+import game.Tiles.AnimatedTile;
+import game.Tiles.EntranceTile;
 import java.applet.Applet;
 import java.awt.*;
 import java.awt.event.ActionEvent;

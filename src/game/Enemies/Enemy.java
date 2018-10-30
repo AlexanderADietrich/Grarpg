@@ -1,4 +1,10 @@
-package game;
+package game.Enemies;
+
+import game.AI;
+import game.Chunk;
+import game.Entity;
+import game.ImprovedAI;
+import game.Skills;
 
 /**
  * Basic enemy class using basic AI can be extended for more complex enemies.

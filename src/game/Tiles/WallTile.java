@@ -1,5 +1,5 @@
 
-package game;
+package game.Tiles;
 
 /**
  * A Basic Wall tile

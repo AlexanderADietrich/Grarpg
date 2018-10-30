@@ -5,6 +5,9 @@
  */
 package game;
 
+import game.Tiles.Tile;
+import game.Tiles.TreasureTile;
+import game.Tiles.WallTile;
 import java.util.Random;
 
 /**

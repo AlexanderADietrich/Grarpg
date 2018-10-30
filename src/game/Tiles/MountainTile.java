@@ -3,15 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package game;
+package game.Tiles;
 
 /**
  *
  * @author voice
  */
-public class WaterTile extends AnimatedTile{
-    public WaterTile(String[] slist, int x, int y, int flop) {
-        super(slist, x, y, flop);
-        skillTraverse = "swim";
+public class MountainTile extends Tile{
+    public MountainTile(String s, int x, int y){
+        super(s, x, y);
+        skillTraverse = "climb";
     }
 }

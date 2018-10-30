@@ -14,9 +14,9 @@ public abstract class Trigger {
     /**
      * Updates whether the Trigger has been completed.
      */
-    public void doTick(){
+    public abstract void doTick();
         
-    }
+    
     /**
      * 
      * @return if the trigger has been completed.

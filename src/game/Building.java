@@ -5,6 +5,10 @@
  */
 package game;
 
+import game.Tiles.Tile;
+import game.Tiles.EntranceTile;
+import game.Tiles.WallTile;
+
 /**
  *
  * @author voice

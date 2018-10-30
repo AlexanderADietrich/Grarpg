@@ -1,4 +1,9 @@
-package game;
+package game.Tiles;
+
+import game.Dungeon;
+import game.Game;
+import game.Map;
+
 public class EntranceTile extends Tile{
     private Game g;
     public Map Map;

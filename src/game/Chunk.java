@@ -1,5 +1,7 @@
 package game;
 
+import game.Enemies.Enemy;
+import game.Tiles.Tile;
 import java.util.HashSet;
 import java.util.Iterator;
 

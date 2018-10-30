@@ -5,6 +5,8 @@
  */
 package game;
 
+import game.Enemies.Enemy;
+import game.Enemies.FireSkeleton;
 import java.util.HashSet;
 import java.util.Iterator;
 

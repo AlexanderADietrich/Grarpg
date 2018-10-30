@@ -1,5 +1,8 @@
 package game;
 
+import game.Tiles.Tile;
+import game.Tiles.EntranceTile;
+import game.Tiles.TreasureTile;
 import java.io.File;
 import java.util.Iterator;
 
@@ -165,8 +168,9 @@ public class Commands {
         }
         if (command.toLowerCase().startsWith("close ui")){
             if (game.inventory == true) game.swapInventoryState();
-            game.levelup = false;
+            if (game.levelup == true)  game.swapLevelUpState();
             game.viewStamina = false;
+            game.mapActive = false;
         }
         if (command.toLowerCase().startsWith("default")){
             defString = command.substring(8);

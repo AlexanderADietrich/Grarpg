@@ -5,6 +5,11 @@
  */
 package game;
 
+import game.Enemies.Enemy;
+import game.Tiles.Tile;
+import game.Tiles.EntranceTile;
+import game.Tiles.MountainTile;
+import game.Tiles.WaterTile;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Random;
