@@ -106,7 +106,7 @@ public class Chunk {
                 removeEntity(e.getXPOS(), e.getYPOS());
                 addEntity(e, e.getXPOS()+xDif, e.getYPOS()+yDif);
             }        
-        }    
+        } 
     }
     // Communication Entity <-> Chunk.
     public void updateLoc(Entity e, int xDif, int yDif, int ms){

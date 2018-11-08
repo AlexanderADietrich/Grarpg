@@ -11,8 +11,71 @@ public class Commands {
     public Commands(Game g){
         this.game = g;
     }
+    public void switchMap(int inpx, int inpy, Entity e, Map mnew){
+        //Remove Entity
+        game.m.currentChunk.removeEntity(e.getXPOS(), e.getYPOS());
+        
+        //Switch Maps
+        Map temp = game.m;
+        game.m=mnew;
+        //Switch Chunks
+        if (inpx > 0){
+            mnew.currentChunk = mnew.chunks[temp.chunkY][0];
+        } else if (inpy > 0){
+            mnew.currentChunk = mnew.chunks[0][temp.chunkX];
+        } else if (inpx < 0){
+            mnew.currentChunk = mnew.chunks[temp.chunkY][mnew.chunks[0][0].entities.length-1];
+        } else if (inpy < 0){
+            mnew.currentChunk = mnew.chunks[mnew.chunks[0][0].entities.length-1][temp.chunkX];
+        }
+         
+        //Re-Add Entity
+        if (inpx > 0){
+            game.m.currentChunk.addEntity(e, 0, e.getYPOS());
+            e.setXPOS(0);
+        }
+        else if (inpx < 0){
+            game.m.currentChunk.addEntity(e, mnew.chunks[0][0].entities.length-1, e.getYPOS());
+            e.setXPOS(7);
+        }
+        else if (inpy > 0){
+            game.m.currentChunk.addEntity(e, e.getXPOS(), 0);
+            e.setYPOS(0);
+        }
+        else if (inpy < 0){
+            game.m.currentChunk.addEntity(e, e.getXPOS(), mnew.chunks[0][0].entities.length-1);
+            e.setYPOS(7);
+        }
+    }
+    
+    public boolean checkIfMapSwap(int inpx, int inpy, Entity e){
+        if (game.m.chunkY+inpy > game.m.chunks.length-1){
+            //*Switch Map
+            if (game.mapy < game.mapGrid.length-1) switchMap(0, inpy, e, game.mapGrid[++game.mapy][game.mapx]);
+            return true;
+        } else if (game.m.chunkY+inpy < 0){
+            //*
+            if (game.mapy > 0) switchMap(0, inpy, e, game.mapGrid[--game.mapy][game.mapx]);
+            return true;
+        } else if (game.m.chunkX+inpx > game.m.chunks[0].length-1){
+            //*
+            if (game.mapx < game.mapGrid[0].length-1) switchMap(inpx, 0, e, game.mapGrid[game.mapy][++game.mapx]);
+            return true;
+        } else if (game.m.chunkX+inpx < 0){
+            //*
+            if (game.mapx > 0) switchMap(inpx, 0, e, game.mapGrid[game.mapy][--game.mapx]);
+            return true;
+        }
+        return false;
+    }
+    
     
     public void switchChunk(int inpx, int inpy, Entity e){
+        System.out.println(inpx + " " + inpy);
+        
+        if (checkIfMapSwap(inpx, inpy, e)) return;
+        
+        
         //Remove Entity
         game.m.currentChunk.removeEntity(e.getXPOS(), e.getYPOS());
 
@@ -59,6 +122,7 @@ public class Commands {
     boolean mod = false;
     int mtemp;
     String defString = "go";
+
     
     public void parsePlayerCommand(String command, Player p){
         //Processing
@@ -203,6 +267,11 @@ public class Commands {
         }
         if (command.toLowerCase().startsWith("print")){//Debugging Tool
             System.out.println("PLAYER:\t\t" + game.p.getXPOS() + "," + game.p.getYPOS());
+            for (int i = 0; i < game.m.chunks.length; i++){
+                for (int b = 0; b < game.m.chunks[i].length; b++)
+                    if (game.m.chunks[i][b] == game.m.currentChunk) System.out.println("Chunk:\t\tX" + b + " Y" +i);
+            }
+            System.out.println("MChunk:\t\tX" + game.m.chunkX + " Y" + game.m.chunkY);
             Iterator i = game.m.currentChunk.fastEntities.iterator();
             Entity e;                
             while (i.hasNext()){                    
@@ -224,7 +293,7 @@ public class Commands {
         }
         if (command.toLowerCase().startsWith("enter dungeon")){
             if (EntranceTile.class.isInstance(game.getPlayerTile())) 
-                game.switchMap((EntranceTile) game.getPlayerTile());
+                game.switchMapT((EntranceTile) game.getPlayerTile());
         }
         if (command.toLowerCase().startsWith("Equipped:")){
             for (Item e : p.inventory.getInventory().values()){
@@ -300,11 +369,15 @@ public class Commands {
                 if (command.toLowerCase().startsWith("right")){
                     
                     //Switches Chunks
-                    if (game.p.getXPOS() + 1 > 7 && game.m.chunkX < game.m.width / 8){
+                    if (game.p.getXPOS() + 1 > 7){
                         //if tile on other chunk can be traversed
-                        if (p.skillChecker.getSkillLevel(
-                                game.m.chunks[game.m.chunkY][game.m.chunkX+1].tiles[p.getYPOS()][0].skillTraverse) > 0){}
-                        else return;
+                        if (game.m.chunkX+1 < game.m.chunks[0].length){
+                            if (p.skillChecker.getSkillLevel(
+                                    game.m.chunks[game.m.chunkY][game.m.chunkX+1].tiles[p.getYPOS()][0].skillTraverse) > 0){}
+                            else return;
+                        }
+                        
+                        if (game.m.chunkX < game.m.width / 8 && game.mapx < game.mapGrid[0].length)
                         switchChunk(1, 0, p);
                         
                         return;
@@ -324,13 +397,16 @@ public class Commands {
                 else if (command.toLowerCase().startsWith("left")){
                     
                     //Switches Chunks
-                    if (game.p.getXPOS() - 1 < 0 && game.m.chunkX > 0){
-                        //if tile on other chunk can be traversed
-                        if (p.skillChecker.getSkillLevel(
-                                game.m.chunks[game.m.chunkY][game.m.chunkX-1].tiles[p.getYPOS()][7].skillTraverse) > 0){}
-                        else return;
+                    if (game.p.getXPOS() - 1 < 0){
                         
-                        switchChunk(-1, 0, p);
+                        //if tile on other chunk can be traversed
+                        if (game.m.chunkX-1 >= 0){
+                            if (p.skillChecker.getSkillLevel(
+                                    game.m.chunks[game.m.chunkY][game.m.chunkX-1].tiles[p.getYPOS()][7].skillTraverse) > 0){}
+                            else return;
+                        }
+                        if (game.m.chunkX > 0 || game.mapx > 0)
+                            switchChunk(-1, 0, p);
                         return;
                     }
                     
@@ -346,15 +422,17 @@ public class Commands {
                         game.m.currentChunk.updateLoc(p, -1, 0, 250-(p.getStat(4)*5));
                 } 
                 else if (command.toLowerCase().startsWith("down")){
-                    
                     //Switches Chunks
-                    if (game.p.getYPOS() + 1 > 7 && game.m.chunkY < game.m.height / 8){
+                    if (game.p.getYPOS() + 1 > 7 ){
                         //if tile on other chunk can be traversed
-                        if (p.skillChecker.getSkillLevel(
+                        if (game.m.chunkY+1 < game.m.chunks.length){
+                            if (p.skillChecker.getSkillLevel(
                                 game.m.chunks[game.m.chunkY+1][game.m.chunkX].tiles[0][p.getXPOS()].skillTraverse) > 0){}
-                        else return;
+                            else return;
+                        }
                         
-                        switchChunk(0, 1, p);
+                        if (game.m.chunkY < game.m.height / 8 || game.mapy < game.mapGrid.length)
+                            switchChunk(0, 1, p);
                         return;
                     }
                     
@@ -370,16 +448,21 @@ public class Commands {
                         game.m.currentChunk.updateLoc(p, 0, 1, 250-(p.getStat(4)*5));
                 } 
                 else if (command.toLowerCase().startsWith("up")){
-                    
                     //Switches Chunks
-                    if (game.p.getYPOS() - 1 < 0 && game.m.chunkY > 0){
+                    if (game.p.getYPOS() - 1 < 0){
                         //if tile on other chunk can be traversed
-                        if (p.skillChecker.getSkillLevel(
-                                game.m.chunks[game.m.chunkY-1][game.m.chunkX].tiles[7][p.getXPOS()].skillTraverse) > 0){}
-                        else return;
-                        
-                        switchChunk(0, -1, p);
+                        if (game.m.chunkY-1 >= 0){
+                            if (p.skillChecker.getSkillLevel(
+                                    game.m.chunks[game.m.chunkY-1][game.m.chunkX].tiles[7][p.getXPOS()].skillTraverse) > 0){}
+                            else return;
+                        }
+
+                        if (game.m.chunkY > 0 || game.mapy > 0)
+                            switchChunk(0, -1, p);
                         return;
+                    }
+                    if (game.m.chunkY == 0 && game.mapy > 0){
+                        switchChunk(0, -1, p);
                     }
                     
                     if (mod){

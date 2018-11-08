@@ -35,6 +35,10 @@ public class Game extends Applet implements Runnable{
     public Graphics                 graphicsBuffer;
     public URL                      mainURL;
     public Map                      m = new Map(this, true);
+    
+    int mapx = 0;
+    int mapy = 0;
+    public Map[][]                  mapGrid = new Map[][]{{m, new Map(this, true)},{new Map(this, true), new Map(this, true)}};
     public Map[]                    maps = new Map[1];
     public int                      idCounter = 0;
     
@@ -304,7 +308,9 @@ public class Game extends Applet implements Runnable{
         kaq.specialGen(m);
     }
     
-    public void switchMap(EntranceTile e){
+
+    
+    public void switchMapT(EntranceTile e){
         
         //Remove From Current Map
         m.currentChunk.removeEntity(p.getXPOS(), p.getYPOS());

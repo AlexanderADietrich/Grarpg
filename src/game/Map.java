@@ -32,6 +32,8 @@ public class Map {
     public HashSet<Enemy>   allChildEntities = new HashSet<>();//Should Not Include Player
     
     
+    
+    
     public Map(){}
     public Map(Game g){
         this.g=g;

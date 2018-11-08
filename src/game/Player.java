@@ -10,8 +10,8 @@ public class Player extends Entity{
     public int expNeeded = 1;
     
     public String previousFightCommand = "";
-    public double stamina = 100; //Between 0 and 100;
-    public int regen = 1;//Regen for Stamina
+    public double stamina = 10000; //Between 0 and 100;
+    public int regen = 50;//Regen for Stamina
     public boolean lockout = false;
     public Game g;
     
@@ -23,7 +23,7 @@ public class Player extends Entity{
         this.setName(name);
         this.setHP(100);
         this.setImagePath(address);
-        this.setStats(new int[] {3,3,3,3,3});
+        this.setStats(new int[] {3,3,3,3,100});
         
         inventory = new Inventory(iSize, g);
         this.inventory.addInventory("SwimBottle", new OneUseItem(100, "swim", 10, 60, "SwimBottle"));
