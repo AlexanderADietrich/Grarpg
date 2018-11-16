@@ -10,6 +10,7 @@ package game;
  * @author voice
  */
 public class OnKillTrigger extends Trigger{
+    //Entity that contains the trigger, and must be monitored by the trigger
     public Entity e;
     public OnKillTrigger(Entity e){
         this.e=e;

@@ -12,13 +12,11 @@ package game;
 public abstract class Trigger {
     public boolean completed;
     /**
-     * Updates whether the Trigger has been completed.
+     * Updates whether the Trigger has been completed. Keep very fast.
      */
     public abstract void doTick();
-        
-    
     /**
-     * 
+     * Checks if the trigger has been completed. Keep very fast.
      * @return if the trigger has been completed.
      */
     public boolean check(){

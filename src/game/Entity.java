@@ -10,18 +10,15 @@ import java.util.Objects;
  * @contributor Alexander Dietrich, 4/20/18
  */
 public class Entity {
+    private String imagePath;
     public Skills skillChecker;
     public boolean lockout;
-    
-    
     public Trigger tSlot = null;
     private int xPOS;
     private int yPOS; 
     private double hp; // could be put in stats if changed to int. Not sure why it is double
-    
     // Index 0 = Strength, Index 1 = Defence, Index 2 = Intelligence, Index 3 = Discipline, Index 4 = Speed
     private int[] stats = new int[4];
-    
     /*
     Damage Types for Weapons, 
     
@@ -29,8 +26,9 @@ public class Entity {
     index 2 = magic, index 3 = chi/special, index 4 = ranged/bladed
     */
     private int[] damageTypes = new int[5];
-    
     private String name;
+    public Timer timer = new Timer();
+    
     
     /**
      * 
@@ -39,7 +37,7 @@ public class Entity {
      */
     public boolean useStamina(int i){return false;}
 
-    /* TIMER:
+    /** TIMER:
     movement/animation controller:
         currentMax              =0 not animating
         currentMax              >0 animating
@@ -78,7 +76,6 @@ public class Entity {
             return ((currentTime - initTime)/currentMax);
         }
     }
-    public Timer timer = new Timer();
     
     public void setAni(int currentMax, int dx, int dy){
         timer.moving        = true;
@@ -87,7 +84,6 @@ public class Entity {
         timer.initTime      = System.currentTimeMillis();
         timer.currentMax    = currentMax;
     }
-   
     
     @Override
     public boolean equals(Object e){
@@ -128,6 +124,7 @@ public class Entity {
     public void doTick(){
         
     }
+    
     public String getImagePath() {
         return imagePath;
     }
@@ -135,7 +132,6 @@ public class Entity {
     public void setImagePath(String imagePath) {
         this.imagePath = imagePath;
     }
-    private String imagePath;
     
     public int getXPOS() {
         return xPOS;

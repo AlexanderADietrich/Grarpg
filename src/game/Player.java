@@ -1,14 +1,15 @@
 package game;
-import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Random;
 
 public class Player extends Entity{
     public Inventory inventory;
     
+    
+    public HashSet<Quest> currentQuests = new HashSet<>();
     public int level;
     public int exp = 100;
     public int expNeeded = 1;
-    
     public String previousFightCommand = "";
     public double stamina = 10000; //Between 0 and 100;
     public int regen = 50;//Regen for Stamina
@@ -28,6 +29,19 @@ public class Player extends Entity{
         inventory = new Inventory(iSize, g);
         this.inventory.addInventory("SwimBottle", new OneUseItem(100, "swim", 10, 60, "SwimBottle"));
         this.inventory.addInventory("SWORD OF TOLEDO", new EquipItem(new int[] {2, 1, 0, 0, 3}, "SWORD OF TOLEDO"));   
+    }
+    
+    /**
+     * Pulls all the quests that the Player has received in no particular order.
+     * @return an array of quests the player has received.
+     */
+    public Quest[] getQuests(){
+        Quest[] retVal = new Quest[currentQuests.size()];
+        int sent = 0;
+        for (Quest q : currentQuests){
+            retVal[sent++] = q;
+        }
+        return retVal;
     }
     
     public boolean levelUp(int stat, int change){

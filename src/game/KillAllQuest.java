@@ -16,6 +16,7 @@ import java.util.Iterator;
  * @author voice
  */
 public class KillAllQuest extends Quest{
+    
     public HashSet<Trigger> triggers = new HashSet<>();
     public Enemy etemp;
     public Game g;
@@ -28,7 +29,10 @@ public class KillAllQuest extends Quest{
         return temp;
     }
     
-    public KillAllQuest(Game g){this.g=g;}
+    public KillAllQuest(Game g){
+        this.g=g;
+        this.complete = "COMPLETED QUEST: Kill All Monsters";
+    }
     
     @Override
     public void specialGen(Map m){

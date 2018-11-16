@@ -10,15 +10,24 @@ package game;
  * @author voice
  */
 public abstract class Quest {
+    public String complete = "";
     
     
     /**
      * Generate points of interest for the quest, add triggers to them.
      * @param m the map to be edited
      */
-    public void specialGen(Map m){
-        
-    }
+    public abstract void specialGen(Map m);
     
+    /**
+     * Tick triggers and otherwise operate the quest's internal machinations.
+     */
+    public abstract void doTick();
+    
+    /**
+     * Check if the quest has been completed.
+     * @return if the quest has been completed.
+     */
+    public abstract boolean check();
     
 }
