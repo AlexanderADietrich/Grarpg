@@ -17,21 +17,23 @@ public class DeafAI extends AI{
     }
     @Override
     public void nextMove(){
-        //System.out.println(sound + "DEAF?");
-        XDIST = Target.getXPOS()-Body.getXPOS();
-        YDIST = Target.getYPOS()-Body.getYPOS();
-        sound += incomingSound;
-        incomingSound = 0;
-        if (sound > 10){ //Attack If Has Heard Target
-            heard = true;
-            attack();
+        if (this.Body.getHP() > 0){
+            //System.out.println(sound + "DEAF?");
+            XDIST = Target.getXPOS()-Body.getXPOS();
+            YDIST = Target.getYPOS()-Body.getYPOS();
+            sound += incomingSound;
+            incomingSound = 0;
+            if (sound > 10){ //Attack If Has Heard Target
+                heard = true;
+                attack();
+            }
+            else if (count == 20){ //Move Randomly Very Rarely
+                moveRand();
+                count = 0;
+            }
+            else
+                count++;
         }
-        else if (count == 20){ //Move Randomly Very Rarely
-            moveRand();
-            count = 0;
-        }
-        else
-            count++;
     }
     @Override
     public void moveRight(){

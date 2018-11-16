@@ -43,8 +43,10 @@ public class Fight {
                 
     */
     boolean isPhys; //Assumes physical, checks if magical. Use Discipline for Magic Defense.
+    boolean breaker;
     public void doTick(){
         isPhys = true;
+        breaker = false;
         String toAppend = "";
         for (int i = 0; i < entities.length; i++){
             if (turn) 
@@ -56,51 +58,58 @@ public class Fight {
             if (entities[i].getHP() <= 0){
                 //System.out.println("DEAD");
                 g.m.currentChunk.removeEntity(entities[i].getXPOS(), entities[i].getYPOS());
+                entities[i] = null;
                 g.fighting = false;
-                return;
+                System.out.println("Hgere");
+                breaker = true;
+                break;
             }
             
             
             //Current Entity "attacks"
-            parseThis = entities[i].doFightTick().trim().split(" ");
-            //if (parseThis != null && parseThis.length >= 2) System.out.println(parseThis[1]);
+            if (entities[i] != null){
+                parseThis = entities[i].doFightTick().trim().split(" ");
             
-            if (parseThis.length < 2) continue;
-            if (parseThis.length >= 2){
-                if (parseThis.length == 3){
-                    if (parseThis[2].equals("ENERGY")){
-                        isPhys = false;
+                //if (parseThis != null && parseThis.length >= 2) System.out.println(parseThis[1]);
+
+                if (parseThis.length < 2) continue;
+                if (parseThis.length >= 2){
+                    if (parseThis.length == 3){
+                        if (parseThis[2].equals("ENERGY")){
+                            isPhys = false;
+                        }
                     }
+                    try { damage = (double) Integer.parseInt(parseThis[0]); }
+                    catch (Exception ex) { continue; }
+                    parseThis[1] = parseThis[1].replace("/", " ");
+                    reason = parseThis[1];
+                    if (i == 0) target = entities[1].getName();
+                    else target = entities[i-1].getName();
                 }
-                try { damage = (double) Integer.parseInt(parseThis[0]); }
-                catch (Exception ex) { continue; }
-                parseThis[1] = parseThis[1].replace("/", " ");
-                reason = parseThis[1];
-                if (i == 0) target = entities[1].getName();
-                else target = entities[i-1].getName();
-            }
-            
-            for (Entity e : entities){
-                if (e.getName().equals(target)){
-                    if (damage == 0){
-                        toAppend += reason;
-                    } else {
-                    //System.out.println("DAMAGE = " + damage);
-                    if (!isPhys)
-                        damage -= e.getStat(1);
-                    else
-                        damage -= e.getStat(3);
-                    //System.out.println("DAMAGE = " + damage);
-                    if (damage <= 0) damage = 1;
-                    //System.out.println("DAMAGE = " + damage);
-                    e.setHP(e.getHP() - damage);
-                    toAppend += g.commandHandler.wrap(("damaged for " + damage + " " + reason), ("damaged for " + damage + " " + reason).length());
-                    //g.append(g.commandHandler.wrap(("damaged for " + damage + " " + reason), ("damaged for " + damage + " " + reason).length()));
+
+                for (Entity e : entities){
+                    if (e.getName().equals(target)){
+                        if (damage == 0){
+                            toAppend += reason;
+                        } else {
+                        //System.out.println("DAMAGE = " + damage);
+                        if (!isPhys)
+                            damage -= e.getStat(1);
+                        else
+                            damage -= e.getStat(3);
+                        //System.out.println("DAMAGE = " + damage);
+                        if (damage <= 0) damage = 1;
+                        //System.out.println("DAMAGE = " + damage);
+                        e.setHP(e.getHP() - damage);
+                        toAppend += g.commandHandler.wrap(("damaged for " + damage + " " + reason), ("damaged for " + damage + " " + reason).length());
+                        //g.append(g.commandHandler.wrap(("damaged for " + damage + " " + reason), ("damaged for " + damage + " " + reason).length()));
+                        }
                     }
                 }
             }
             
             turn = !turn;
+            if (breaker) break;
         }
         g.append(toAppend);
     }
